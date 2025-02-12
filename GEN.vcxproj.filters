@@ -56,5 +56,8 @@
     <ClInclude Include="GEN\include\Engine\EngineEvents.h">
       <Filter>Файлы заголовков\Engine</Filter>
     </ClInclude>
+    <ClInclude Include="GEN\include\Renderer\RenderSystem.h">
+      <Filter>Файлы заголовков\Renderer</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

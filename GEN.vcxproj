@@ -27,6 +27,7 @@
     <ClInclude Include="GEN\include\Engine\EngineEvents.h" />
     <ClInclude Include="GEN\include\Engine\EngineTypes.h" />
     <ClInclude Include="GEN\include\GameObject\GameObject.h" />
+    <ClInclude Include="GEN\include\Renderer\RenderSystem.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
@@ -114,12 +115,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)GEN\include\;$(SolutionDir)3rdparty\Vulkan\1.3.290.0\Include;$(SolutionDir)3rdparty\GECS\include;$(SolutionDir)3rdparty\SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)GEN\include\;$(SolutionDir)3rdparty\Vulkan\1.3.290.0\Include;$(SolutionDir)3rdparty\GECS\include;$(SolutionDir)3rdparty\SDL2\include;$(SolutionDir)3rdparty\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)3rdparty\GECS\lib\x64\debug;$(SolutionDir)3rdparty\Vulkan\1.3.283.0\Lib;$(SolutionDir)3rdparty\SDL2\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)3rdparty\GECS\lib\x64\debug;$(SolutionDir)3rdparty\Vulkan\1.3.290.0\Lib\debug;$(SolutionDir)3rdparty\SDL2\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>GECS.lib;vulkan-1.lib;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
