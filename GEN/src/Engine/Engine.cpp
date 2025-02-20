@@ -26,8 +26,8 @@ Engine::Engine(const WindowParams& params) {
 }
 
 void Engine::run() {
-	const float FPS = 60.f;
-	const float dt = 1.f / FPS;
+	const GECS::f32 FPS = 60.f;
+	const GECS::f32 dt = 1.f / FPS;
 
 	bool running = true;
 	SDL_Event SDLEvents;

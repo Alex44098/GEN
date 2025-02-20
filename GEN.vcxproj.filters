@@ -34,6 +34,12 @@
     <Filter Include="Исходные файлы\Renderer\Vulkan">
       <UniqueIdentifier>{657bf5ec-8c8f-4e76-9fef-74c30edae5d1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Файлы заголовков\Renderer\Vulkan\StructCreators">
+      <UniqueIdentifier>{cbe7234f-cbea-45fe-9fbe-0aefd711220a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Renderer\Vulkan\StructCreators">
+      <UniqueIdentifier>{2e50aed5-f99c-4f04-a4bc-135cc6d79b40}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GEN\src\GEN.cpp">
@@ -41,6 +47,21 @@
     </ClCompile>
     <ClCompile Include="GEN\src\Engine\Engine.cpp">
       <Filter>Исходные файлы\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="GEN\src\Renderer\Vulkan\Vulkan.cpp">
+      <Filter>Исходные файлы\Renderer\Vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="GEN\src\Renderer\Vulkan\StructCreators\VkBootstrapStructs.cpp">
+      <Filter>Исходные файлы\Renderer\Vulkan\StructCreators</Filter>
+    </ClCompile>
+    <ClCompile Include="GEN\src\Renderer\Vulkan\StructCreators\VMAStructs.cpp">
+      <Filter>Исходные файлы\Renderer\Vulkan\StructCreators</Filter>
+    </ClCompile>
+    <ClCompile Include="GEN\src\Renderer\Vulkan\StructCreators\Vk13SubmitStructs.cpp">
+      <Filter>Исходные файлы\Renderer\Vulkan\StructCreators</Filter>
+    </ClCompile>
+    <ClCompile Include="GEN\src\Renderer\Vulkan\StructCreators\VkCommandStructs.cpp">
+      <Filter>Исходные файлы\Renderer\Vulkan\StructCreators</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -58,6 +79,21 @@
     </ClInclude>
     <ClInclude Include="GEN\include\Renderer\RenderSystem.h">
       <Filter>Файлы заголовков\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="GEN\include\Renderer\Vulkan\Vulkan.h">
+      <Filter>Файлы заголовков\Renderer\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="GEN\include\Renderer\Vulkan\StructCreators\VkBootstrapStructs.h">
+      <Filter>Файлы заголовков\Renderer\Vulkan\StructCreators</Filter>
+    </ClInclude>
+    <ClInclude Include="GEN\include\Renderer\Vulkan\StructCreators\VMAStructs.h">
+      <Filter>Файлы заголовков\Renderer\Vulkan\StructCreators</Filter>
+    </ClInclude>
+    <ClInclude Include="GEN\include\Renderer\Vulkan\StructCreators\Vk13SubmitStructs.h">
+      <Filter>Файлы заголовков\Renderer\Vulkan\StructCreators</Filter>
+    </ClInclude>
+    <ClInclude Include="GEN\include\Renderer\Vulkan\StructCreators\VkCommandStructs.h">
+      <Filter>Файлы заголовков\Renderer\Vulkan\StructCreators</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -21,6 +21,11 @@
   <ItemGroup>
     <ClCompile Include="GEN\src\Engine\Engine.cpp" />
     <ClCompile Include="GEN\src\GEN.cpp" />
+    <ClCompile Include="GEN\src\Renderer\Vulkan\StructCreators\Vk13SubmitStructs.cpp" />
+    <ClCompile Include="GEN\src\Renderer\Vulkan\StructCreators\VkBootstrapStructs.cpp" />
+    <ClCompile Include="GEN\src\Renderer\Vulkan\StructCreators\VkCommandStructs.cpp" />
+    <ClCompile Include="GEN\src\Renderer\Vulkan\StructCreators\VMAStructs.cpp" />
+    <ClCompile Include="GEN\src\Renderer\Vulkan\Vulkan.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GEN\include\Engine\Engine.h" />
@@ -28,6 +33,11 @@
     <ClInclude Include="GEN\include\Engine\EngineTypes.h" />
     <ClInclude Include="GEN\include\GameObject\GameObject.h" />
     <ClInclude Include="GEN\include\Renderer\RenderSystem.h" />
+    <ClInclude Include="GEN\include\Renderer\Vulkan\StructCreators\Vk13SubmitStructs.h" />
+    <ClInclude Include="GEN\include\Renderer\Vulkan\StructCreators\VkBootstrapStructs.h" />
+    <ClInclude Include="GEN\include\Renderer\Vulkan\StructCreators\VkCommandStructs.h" />
+    <ClInclude Include="GEN\include\Renderer\Vulkan\StructCreators\VMAStructs.h" />
+    <ClInclude Include="GEN\include\Renderer\Vulkan\Vulkan.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
