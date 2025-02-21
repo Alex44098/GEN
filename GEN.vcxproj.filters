@@ -63,6 +63,9 @@
     <ClCompile Include="GEN\src\Renderer\Vulkan\StructCreators\VkCommandStructs.cpp">
       <Filter>Исходные файлы\Renderer\Vulkan\StructCreators</Filter>
     </ClCompile>
+    <ClCompile Include="GEN\src\Renderer\Vulkan\Swapchain.cpp">
+      <Filter>Исходные файлы\Renderer\Vulkan</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GEN\include\Engine\Engine.h">
@@ -94,6 +97,9 @@
     </ClInclude>
     <ClInclude Include="GEN\include\Renderer\Vulkan\StructCreators\VkCommandStructs.h">
       <Filter>Файлы заголовков\Renderer\Vulkan\StructCreators</Filter>
+    </ClInclude>
+    <ClInclude Include="GEN\include\Renderer\Vulkan\Swapchain.h">
+      <Filter>Файлы заголовков\Renderer\Vulkan</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

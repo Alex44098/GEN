@@ -22,7 +22,7 @@ namespace gvk {
 
 		volkLoadInstance(this->instance);
 
-		SDL_bool surfaceResult = SDL_Vulkan_CreateSurface(window, this->instance, &this->surface);
+		SDL_bool surfaceResult = SDL_Vulkan_CreateSurface(window, this->instance, &(this->surface));
 		if (surfaceResult != SDL_TRUE)
 			assert(false && "Vulkan surface not created");
 
@@ -46,65 +46,7 @@ namespace gvk {
 		VmaAllocatorCreateInfo vmaAllocatorInfo =
 			StructCreators::VmaAllocatorInfo(this->instance, this->phDevice, this->logDevice, &vmaVkFunctions);
 
-		vmaCreateAllocator(&vmaAllocatorInfo, &this->vkAllocator);
-	}
-
-	void Vulkan::CreateSwapchain(GECS::u64 width, GECS::u64 height) {
-		VkSurfaceFormatKHR surfaceFormat;
-		surfaceFormat.format = this->swapchainFormat;
-		surfaceFormat.colorSpace = VK_COLORSPACE_SRGB_NONLINEAR_KHR;
-
-		vkb::Result<vkb::Swapchain> swapchainResult = vkb::SwapchainBuilder{ this->logDevice }
-			.set_desired_format(surfaceFormat)
-			.add_image_usage_flags(VK_IMAGE_USAGE_TRANSFER_DST_BIT)
-			.set_desired_present_mode(VK_PRESENT_MODE_FIFO_KHR)
-			.set_desired_extent(width, height)
-			.build();
-		assert(swapchainResult.has_value() && "Swapchain don't created");
-
-		this->swapchain = swapchainResult.value();
-
-		this->swapChainImages = this->swapchain.get_images().value();
-		this->swapChainImageViews = this->swapchain.get_image_views().value();
-	}
-
-	void Vulkan::RecreateSwapchain(GECS::u64 width, GECS::u64 height) {
-		VkSurfaceFormatKHR surfaceFormat;
-		surfaceFormat.format = this->swapchainFormat;
-		surfaceFormat.colorSpace = VK_COLORSPACE_SRGB_NONLINEAR_KHR;
-
-		vkb::Result<vkb::Swapchain> swapchainResult = vkb::SwapchainBuilder{ this->logDevice }
-			.set_old_swapchain(this->swapchain)
-			.set_desired_format(surfaceFormat)
-			.add_image_usage_flags(VK_IMAGE_USAGE_TRANSFER_DST_BIT)
-			.set_desired_present_mode(VK_PRESENT_MODE_FIFO_KHR)
-			.set_desired_extent(width, height)
-			.build();
-		assert(swapchainResult.has_value() && "Swapchain don't created");
-
-		vkb::destroy_swapchain(this->swapchain);
-		for (VkImageView imageView : this->swapChainImageViews)
-			vkDestroyImageView(this->logDevice, imageView, nullptr);
-
-		this->swapchain = swapchainResult.value();
-
-		this->swapChainImages = this->swapchain.get_images().value();
-		this->swapChainImageViews = this->swapchain.get_image_views().value();
-	}
-
-	void Vulkan::InitSwapchainSyncs() {
-		VkFenceCreateInfo fenceCreateInfo;
-		fenceCreateInfo.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
-		fenceCreateInfo.flags = VK_FENCE_CREATE_SIGNALED_BIT;
-
-		VkSemaphoreCreateInfo semaphoreCreateInfo;
-		semaphoreCreateInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
-
-		for (GECS::i32 i = 0; i < MAX_FRAMES_IN_FLIGHT; i++) {
-			vkCreateFence(this->logDevice, &fenceCreateInfo, nullptr, &this->frameSyncs.fenceInFlight[i]);
-			vkCreateSemaphore(this->logDevice, &semaphoreCreateInfo, nullptr, &this->frameSyncs.semaphoreImageAvailable[i]);
-			vkCreateSemaphore(this->logDevice, &semaphoreCreateInfo, nullptr, &this->frameSyncs.semaphoreRenderFinished[i]);
-		}
+		vmaCreateAllocator(&vmaAllocatorInfo, &(this->vkAllocator));
 	}
 
 	void Vulkan::CreateCommandBuffers() {
@@ -125,17 +67,19 @@ namespace gvk {
 	void Vulkan::Init(SDL_Window* window) {
 		this->InitVulkan(window);
 
-		InitSwapchainSyncs();
+		this->swapchain.Init(this->logDevice.device);
 
 		GECS::i32 width, height;
 		SDL_GetWindowSize(window, &width, &height);
-		CreateSwapchain(width, height);
+
+		this->swapchainFormat = VK_FORMAT_B8G8R8A8_SRGB;
+		this->swapchain.Create(this->logDevice, this->swapchainFormat, width, height);
 
 		CreateCommandBuffers();
 	}
 
 	VkCommandBuffer Vulkan::StartFrameBuilding() {
-		vkWaitForFences(this->logDevice, 1, &this->frameSyncs.fenceInFlight[this->currentImage], VK_TRUE, UINT64_MAX);
+		this->swapchain.WaitFences(this->logDevice.device, currentImage);
 
 		VkCommandBufferBeginInfo cmdBeginInfo;
 		cmdBeginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;

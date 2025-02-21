@@ -25,6 +25,7 @@
     <ClCompile Include="GEN\src\Renderer\Vulkan\StructCreators\VkBootstrapStructs.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\StructCreators\VkCommandStructs.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\StructCreators\VMAStructs.cpp" />
+    <ClCompile Include="GEN\src\Renderer\Vulkan\Swapchain.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\Vulkan.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -37,6 +38,7 @@
     <ClInclude Include="GEN\include\Renderer\Vulkan\StructCreators\VkBootstrapStructs.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\StructCreators\VkCommandStructs.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\StructCreators\VMAStructs.h" />
+    <ClInclude Include="GEN\include\Renderer\Vulkan\Swapchain.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\Vulkan.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
