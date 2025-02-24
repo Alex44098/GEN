@@ -9,6 +9,7 @@
 
 #include "Engine/EngineTypes.h"
 #include "Renderer/Vulkan/Swapchain.h"
+#include "Renderer/Vulkan/Buffer.h"
 
 struct SDL_Window;
 
@@ -50,6 +51,10 @@ namespace gvk {
 		Vulkan& operator=(const Vulkan&) = delete;
 
 		void Init(SDL_Window* window);
+		void Destroy();
+
+		Buffer CreateBuffer(std::size_t size, VkBufferUsageFlags vkUsage, VmaMemoryUsage vmaUsage);
+		void DestroyBuffer(Buffer& buffer);
 
 		// for rendering
 		VkCommandBuffer StartFrameBuilding();

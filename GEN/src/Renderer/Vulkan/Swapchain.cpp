@@ -58,6 +58,21 @@ void Swapchain::Recreate(vkb::Device device, VkFormat format, GECS::u64 width, G
 	this->swapChainImageViews = this->swapchain.get_image_views().value();
 }
 
+void Swapchain::Destroy(VkDevice logDevice) {
+	for (GECS::u32 i = 0; i < MAX_FRAMES_IN_FLIGHT; i++) {
+		vkDestroyFence(logDevice, frameSyncs.fenceInFlight[i], nullptr);
+		vkDestroySemaphore(logDevice, frameSyncs.semaphoreImageAvailable[i], nullptr);
+		vkDestroySemaphore(logDevice, frameSyncs.semaphoreRenderFinished[i], nullptr);
+	}
+
+	for (VkImageView imageView : this->swapChainImageViews) {
+		vkDestroyImageView(logDevice, imageView, nullptr);
+	}
+	swapChainImageViews.clear();
+
+	vkb::destroy_swapchain(this->swapchain);
+}
+
 VkImage Swapchain::AcquireImage(VkDevice logDevice, GECS::u32 currentImage, GECS::u32* swapchainIndexImage) {
 	const VkResult result = vkAcquireNextImageKHR(logDevice,
 		this->swapchain,

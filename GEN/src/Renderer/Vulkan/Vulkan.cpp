@@ -49,6 +49,18 @@ namespace gvk {
 		vmaCreateAllocator(&vmaAllocatorInfo, &(this->vkAllocator));
 	}
 
+	void Vulkan::Destroy() {
+		for (GECS::u32 i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
+			vkDestroyCommandPool(this->logDevice.device, this->imageCommandPools[i], 0);
+
+		swapchain.Destroy(this->logDevice.device);
+
+		vkb::destroy_surface(this->instance, this->surface);
+		vmaDestroyAllocator(this->vkAllocator);
+		vkb::destroy_device(this->logDevice);
+		vkb::destroy_instance(this->instance);
+	}
+
 	void Vulkan::CreateCommandBuffers() {
 		const VkCommandPoolCreateInfo poolCreateInfo =
 			StructCreators::CommandPoolInfo(VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT, this->graphicsQueueFamily);
@@ -97,5 +109,36 @@ namespace gvk {
 
 
 		this->IncreaseImageIndex();
+	}
+
+	Buffer Vulkan::CreateBuffer(std::size_t size, VkBufferUsageFlags vkUsage, VmaMemoryUsage vmaUsage) {
+		VkBufferCreateInfo bufferInfo;
+		bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+		bufferInfo.size = size;
+		bufferInfo.usage = vkUsage;
+
+		VmaAllocationCreateInfo allocInfo;
+		allocInfo.flags = VMA_ALLOCATION_CREATE_MAPPED_BIT |
+			VMA_ALLOCATION_CREATE_HOST_ACCESS_SEQUENTIAL_WRITE_BIT;
+		allocInfo.usage = vmaUsage;
+
+		Buffer buffer;
+		vmaCreateBuffer(this->vkAllocator, &bufferInfo, &allocInfo,
+			&buffer.vkBuffer, &buffer.allocation, &buffer.allocInfo);
+
+		// create address for shaders
+		if ((vkUsage & VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT) != 0) {
+			VkBufferDeviceAddressInfo deviceAddressInfo;
+			deviceAddressInfo.sType = VK_STRUCTURE_TYPE_BUFFER_DEVICE_ADDRESS_INFO;
+			deviceAddressInfo.buffer = buffer.vkBuffer;
+
+			buffer.address = vkGetBufferDeviceAddress(this->logDevice.device, &deviceAddressInfo);
+		}
+
+		return buffer;
+	}
+
+	void Vulkan::DestroyBuffer(Buffer& buffer) {
+		vmaDestroyBuffer(this->vkAllocator, buffer.vkBuffer, buffer.allocation);
 	}
 }
