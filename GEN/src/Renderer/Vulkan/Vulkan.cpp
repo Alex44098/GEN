@@ -93,5 +93,9 @@ namespace gvk {
 
 	void Vulkan::EndFrameBuilding() {
 		// thinks about offscreen rendering
+
+
+
+		this->IncreaseImageIndex();
 	}
 }

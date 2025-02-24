@@ -13,3 +13,6 @@ struct WindowParams {
 
 using GameObjectId = GECS::Handle;
 
+using MeshId = GECS::u32;
+using MaterialId = GECS::u32;
+using ImageId = GECS::u32;

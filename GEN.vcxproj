@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="GEN\src\Engine\Engine.cpp" />
     <ClCompile Include="GEN\src\GEN.cpp" />
+    <ClCompile Include="GEN\src\Renderer\Vulkan\ImageManager.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\StructCreators\Vk13SubmitStructs.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\StructCreators\VkBootstrapStructs.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\StructCreators\VkCommandStructs.cpp" />
@@ -34,6 +35,10 @@
     <ClInclude Include="GEN\include\Engine\EngineTypes.h" />
     <ClInclude Include="GEN\include\GameObject\GameObject.h" />
     <ClInclude Include="GEN\include\Renderer\RenderSystem.h" />
+    <ClInclude Include="GEN\include\Renderer\Vulkan\Buffer.h" />
+    <ClInclude Include="GEN\include\Renderer\Vulkan\ImageManager.h" />
+    <ClInclude Include="GEN\include\Renderer\Vulkan\Material.h" />
+    <ClInclude Include="GEN\include\Renderer\Vulkan\Mesh.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\StructCreators\Vk13SubmitStructs.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\StructCreators\VkBootstrapStructs.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\StructCreators\VkCommandStructs.h" />
