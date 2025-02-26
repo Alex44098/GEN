@@ -1,7 +1,10 @@
 #pragma once
 
-#include <vulkan/vulkan.hpp>
-#include <Volk/volk.h>
+//#define VK_NO_PROTOTYPES
+#include <vulkan/vulkan.h>
+//#define VOLK_IMPLEMENTATION
+//#include "Volk/volk.h"
+
 #include <VkBootstrap/VkBootstrap.h>
 #include <vma/vk_mem_alloc.h>
 
@@ -37,6 +40,11 @@ namespace gvk {
 		VkCommandPool imageCommandPools[MAX_FRAMES_IN_FLIGHT];
 		VkCommandBuffer imageCommandBuffers[MAX_FRAMES_IN_FLIGHT];
 
+		// command buffer
+		VkCommandPool commandPool;
+		VkCommandBuffer commandBuffer;
+		VkFence commandFence;
+
 		// graphics objects
 		VkSurfaceKHR surface;
 		VkFormat swapchainFormat;
@@ -54,19 +62,24 @@ namespace gvk {
 		void Destroy();
 
 		Buffer CreateBuffer(std::size_t size, VkBufferUsageFlags vkUsage, VmaMemoryUsage vmaUsage);
-		void DestroyBuffer(Buffer& buffer);
+		void DestroyBuffer(const Buffer& buffer);
+
+		// commands recording
+		VkCommandBuffer BeginCommandBufferRecord();
+		void EndCommandBufferRecord(VkCommandBuffer cmd);
 
 		// for rendering
-		VkCommandBuffer StartFrameBuilding();
+		VkCommandBuffer& StartFrameBuilding();
 		void EndFrameBuilding();
 
 		// getters
 		inline VkDevice GetDevice() const { return this->logDevice; }
 
-		inline void IncreaseImageIndex() { currentImage = (currentImage + 1) % MAX_FRAMES_IN_FLIGHT; }
-
 	private:
 		void InitVulkan(SDL_Window* window);
 		void CreateCommandBuffers();
+		void CreateImageCommandBuffers();
+
+		inline void IncreaseImageIndex() { currentImage = (currentImage + 1) % MAX_FRAMES_IN_FLIGHT; }
 	};
 }

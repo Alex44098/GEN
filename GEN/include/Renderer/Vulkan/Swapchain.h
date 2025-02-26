@@ -20,8 +20,8 @@ class Swapchain {
 
 public:
 	void Init(VkDevice logDevice);
-	void Create(vkb::Device device, VkFormat format, GECS::u64 width, GECS::u64 height);
-	void Recreate(vkb::Device device, VkFormat format, GECS::u64 width, GECS::u64 height);
+	void Create(vkb::Device device, VkFormat format, GECS::u32 width, GECS::u32 height);
+	void Recreate(vkb::Device device, VkFormat format, GECS::u32 width, GECS::u32 height);
 	void Destroy(VkDevice logDevice);
 	VkImage AcquireImage(VkDevice logDevice, GECS::u32 currentImage, GECS::u32* indexImage);
 	VkResult Submit2AndPresent(VkCommandBuffer commandBuffer, VkQueue graphicsQueue, GECS::u32 currentImage, GECS::u32* swapchainIndexImage);

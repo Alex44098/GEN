@@ -22,5 +22,7 @@ namespace StructCreators {
 		vmaAllocatorInfo.device = logDevice;
 		vmaAllocatorInfo.pVulkanFunctions = vmaVulkanFunctions;
 		vmaAllocatorInfo.instance = instance;
+
+		return vmaAllocatorInfo;
 	}
 }

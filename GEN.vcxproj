@@ -21,12 +21,17 @@
   <ItemGroup>
     <ClCompile Include="GEN\src\Engine\Engine.cpp" />
     <ClCompile Include="GEN\src\GEN.cpp" />
+    <ClCompile Include="GEN\src\Renderer\Gltf\PrimitiveLoader.cpp" />
+    <ClCompile Include="GEN\src\Renderer\Gltf\TinyGLTFImplementation.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\ImageManager.cpp" />
+    <ClCompile Include="GEN\src\Renderer\Vulkan\MeshManager.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\StructCreators\Vk13SubmitStructs.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\StructCreators\VkBootstrapStructs.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\StructCreators\VkCommandStructs.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\StructCreators\VMAStructs.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\Swapchain.cpp" />
+    <ClCompile Include="GEN\src\Renderer\Vulkan\VmaImplementation.cpp" />
+    <ClCompile Include="GEN\src\Renderer\Vulkan\VolkImplementation.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\Vulkan.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -34,11 +39,13 @@
     <ClInclude Include="GEN\include\Engine\EngineEvents.h" />
     <ClInclude Include="GEN\include\Engine\EngineTypes.h" />
     <ClInclude Include="GEN\include\GameObject\GameObject.h" />
+    <ClInclude Include="GEN\include\Renderer\Gltf\PrimitiveLoader.h" />
     <ClInclude Include="GEN\include\Renderer\RenderSystem.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\Buffer.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\ImageManager.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\Material.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\Mesh.h" />
+    <ClInclude Include="GEN\include\Renderer\Vulkan\MeshManager.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\StructCreators\Vk13SubmitStructs.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\StructCreators\VkBootstrapStructs.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\StructCreators\VkCommandStructs.h" />
@@ -132,13 +139,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)GEN\include\;$(SolutionDir)3rdparty\Vulkan\1.3.290.0\Include;$(SolutionDir)3rdparty\GECS\include;$(SolutionDir)3rdparty\SDL2\include;$(SolutionDir)3rdparty\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)GEN\include\;$(SolutionDir)3rdparty\tinygltf;$(SolutionDir)3rdparty\Vulkan\1.3.290.0\Include;$(SolutionDir)3rdparty\GECS\include;$(SolutionDir)3rdparty\SDL2\include;$(SolutionDir)3rdparty\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)3rdparty\GECS\lib\x64\debug;$(SolutionDir)3rdparty\Vulkan\1.3.290.0\Lib\debug;$(SolutionDir)3rdparty\SDL2\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>GECS.lib;vulkan-1.lib;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>GECS.lib;vk-bootstrap.lib;vulkan-1.lib;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy /Y "$(SolutionDir)3rdparty\GECS\bin\x64\debug\GECS.dll" "$(TargetDir)GECS.dll"</Command>

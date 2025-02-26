@@ -1,3 +1,8 @@
+#define VK_NO_PROTOTYPES
+#include <vulkan/vulkan.h>
+#define VOLK_IMPLEMENTATION
+#include <Volk/volk.h>
+
 #include "Renderer/Vulkan/Vulkan.h"
 
 #include "Renderer/Vulkan/StructCreators/VkBootstrapStructs.h"
@@ -64,12 +69,26 @@ namespace gvk {
 	void Vulkan::CreateCommandBuffers() {
 		const VkCommandPoolCreateInfo poolCreateInfo =
 			StructCreators::CommandPoolInfo(VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT, this->graphicsQueueFamily);
+		vkCreateCommandPool(this->logDevice, &poolCreateInfo, nullptr, &(this->commandPool));
+
+		const VkCommandBufferAllocateInfo commandAllocInfo = StructCreators::CommandBufferAllocateInfo(commandPool, 1);
+		vkAllocateCommandBuffers(this->logDevice, &commandAllocInfo, &(this->commandBuffer));
+
+		VkFenceCreateInfo fenceCreateInfo;
+		fenceCreateInfo.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
+		fenceCreateInfo.flags = VK_FENCE_CREATE_SIGNALED_BIT;
+		vkCreateFence(this->logDevice.device, &fenceCreateInfo, nullptr, &(this->commandFence));
+	}
+
+	void Vulkan::CreateImageCommandBuffers() {
+		const VkCommandPoolCreateInfo poolCreateInfo =
+			StructCreators::CommandPoolInfo(VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT, this->graphicsQueueFamily);
 
 		for (GECS::i32 imageIndex = 0; imageIndex < MAX_FRAMES_IN_FLIGHT; imageIndex++) {
 			VkCommandPool& commandPool = this->imageCommandPools[imageIndex];
 			vkCreateCommandPool(this->logDevice, &poolCreateInfo, nullptr, &commandPool);
 			
-			VkCommandBufferAllocateInfo commandAllocInfo =
+			const VkCommandBufferAllocateInfo commandAllocInfo =
 				StructCreators::CommandBufferAllocateInfo(commandPool, 1);
 			VkCommandBuffer& commandBuffer = this->imageCommandBuffers[imageIndex];
 			vkAllocateCommandBuffers(this->logDevice, &commandAllocInfo, &commandBuffer);
@@ -88,9 +107,37 @@ namespace gvk {
 		this->swapchain.Create(this->logDevice, this->swapchainFormat, width, height);
 
 		CreateCommandBuffers();
+		CreateImageCommandBuffers();
 	}
 
-	VkCommandBuffer Vulkan::StartFrameBuilding() {
+	VkCommandBuffer Vulkan::BeginCommandBufferRecord() {
+		vkResetFences(this->logDevice.device, 1, &(this->commandFence));
+		vkResetCommandBuffer(this->commandBuffer, 0);
+
+		VkCommandBuffer cmd = this->commandBuffer;
+		VkCommandBufferBeginInfo cmdBeginInfo;
+		cmdBeginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+		cmdBeginInfo.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
+
+		vkBeginCommandBuffer(cmd, &cmdBeginInfo);
+
+		return cmd;
+	}
+
+	void Vulkan::EndCommandBufferRecord(VkCommandBuffer cmd) {
+		vkEndCommandBuffer(cmd);
+
+		VkCommandBufferSubmitInfo cmdSubmit;
+		cmdSubmit.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_SUBMIT_INFO;
+		cmdSubmit.commandBuffer = cmd;
+
+		VkSubmitInfo2 submit = StructCreators::SubmitInfo(&cmdSubmit, nullptr, nullptr);
+
+		vkQueueSubmit2(this->graphicsQueue, 1, &submit, this->commandFence);
+		vkWaitForFences(this->logDevice, 1, &(this->commandFence), VK_TRUE, UINT64_MAX);
+	}
+
+	VkCommandBuffer& Vulkan::StartFrameBuilding() {
 		this->swapchain.WaitFences(this->logDevice.device, currentImage);
 
 		VkCommandBufferBeginInfo cmdBeginInfo;
@@ -138,7 +185,7 @@ namespace gvk {
 		return buffer;
 	}
 
-	void Vulkan::DestroyBuffer(Buffer& buffer) {
+	void Vulkan::DestroyBuffer(const Buffer& buffer) {
 		vmaDestroyBuffer(this->vkAllocator, buffer.vkBuffer, buffer.allocation);
 	}
 }

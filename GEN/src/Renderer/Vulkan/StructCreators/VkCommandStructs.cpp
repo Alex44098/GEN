@@ -1,7 +1,7 @@
 #include "Renderer/Vulkan/StructCreators/VkCommandStructs.h"
 
 namespace StructCreators {
-    VkCommandPoolCreateInfo commandPoolInfo(
+    VkCommandPoolCreateInfo CommandPoolInfo(
         VkCommandPoolCreateFlags flags,
         GECS::i32 queueFamilyIndex) {
 

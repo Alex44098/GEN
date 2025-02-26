@@ -15,7 +15,7 @@ void Swapchain::Init(VkDevice logDevice) {
 	}
 }
 
-void Swapchain::Create(vkb::Device device, VkFormat format, GECS::u64 width, GECS::u64 height) {
+void Swapchain::Create(vkb::Device device, VkFormat format, GECS::u32 width, GECS::u32 height) {
 	VkSurfaceFormatKHR surfaceFormat;
 	surfaceFormat.format = format;
 	surfaceFormat.colorSpace = VK_COLORSPACE_SRGB_NONLINEAR_KHR;
@@ -34,7 +34,7 @@ void Swapchain::Create(vkb::Device device, VkFormat format, GECS::u64 width, GEC
 	this->swapChainImageViews = this->swapchain.get_image_views().value();
 }
 
-void Swapchain::Recreate(vkb::Device device, VkFormat format, GECS::u64 width, GECS::u64 height) {
+void Swapchain::Recreate(vkb::Device device, VkFormat format, GECS::u32 width, GECS::u32 height) {
 	VkSurfaceFormatKHR surfaceFormat;
 	surfaceFormat.format = format;
 	surfaceFormat.colorSpace = VK_COLORSPACE_SRGB_NONLINEAR_KHR;
