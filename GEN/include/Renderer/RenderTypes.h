@@ -4,12 +4,14 @@
 
 #define MAX_FRAMES_IN_FLIGHT 2
 
-#define INVALID_MESH_ID UINT64_MAX
-#define INVALID_MATERIAL_ID UINT64_MAX
+#define INVALID_MESH_ID UINT32_MAX
+#define INVALID_MATERIAL_ID UINT32_MAX
+#define INVALID_BINDLESS_ID UINT32_MAX
 
 using MeshId = GECS::u32;
 using MaterialId = GECS::u32;
 using ImageId = GECS::u32;
+using BindlessId = GECS::u32;
 
 struct RGBColor {
 	GECS::u8 r{ 0 };

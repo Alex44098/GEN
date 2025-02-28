@@ -24,6 +24,7 @@
     <ClCompile Include="GEN\src\Renderer\Gltf\PrimitiveLoader.cpp" />
     <ClCompile Include="GEN\src\Renderer\Gltf\TinyGLTFImplementation.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\ImageManager.cpp" />
+    <ClCompile Include="GEN\src\Renderer\Vulkan\MaterialManager.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\MeshManager.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\StructCreators\Vk13SubmitStructs.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\StructCreators\VkBootstrapStructs.cpp" />
@@ -43,7 +44,9 @@
     <ClInclude Include="GEN\include\Renderer\Gltf\PrimitiveLoader.h" />
     <ClInclude Include="GEN\include\Renderer\RenderSystem.h" />
     <ClInclude Include="GEN\include\Renderer\RenderTypes.h" />
+    <ClInclude Include="GEN\include\Renderer\Vulkan\BindlessManager.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\Buffer.h" />
+    <ClInclude Include="GEN\include\Renderer\Vulkan\Image.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\ImageManager.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\Material.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\MaterialManager.h" />

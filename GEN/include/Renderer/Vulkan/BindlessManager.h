@@ -1,0 +1,26 @@
+#pragma once
+
+#include <vulkan/vulkan.h>
+
+#include "Renderer/RenderTypes.h"
+
+class BindlessManager {
+	VkDevice device;
+
+	VkDescriptorPool descriptorPool;
+	VkDescriptorSetLayout descriptorSetLayout;
+	VkDescriptorSet descriptorSet;
+
+	VkSampler nearestSampler;
+	VkSampler linearSampler;
+
+public:
+	BindlessManager(VkDevice device, float maxAnisotropy);
+	void Clear();
+
+	VkDescriptorSetLayout getDescriptorSetLayout() const { return this->descriptorSetLayout; }
+	const VkDescriptorSet& getDescriptorSet() const { return this->descriptorSet; }
+
+	void AddImage(ImageId id, const VkImageView imageView);
+	void AddSampler(ImageId id, VkSampler sampler);
+};
