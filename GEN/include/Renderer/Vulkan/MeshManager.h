@@ -2,7 +2,7 @@
 
 #include <tiny_gltf.h>
 
-#include "Engine/EngineTypes.h"
+#include "Renderer/RenderTypes.h"
 #include "Renderer/Vulkan/Mesh.h"
 #include "Renderer/Vulkan/Vulkan.h"
 

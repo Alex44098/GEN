@@ -4,7 +4,7 @@
 #include <VkBootstrap/VkBootstrap.h>
 
 #include "Renderer/Vulkan/StructCreators/Vk13SubmitStructs.h"
-#include "Engine/EngineTypes.h"
+#include "Renderer/RenderTypes.h"
 
 class Swapchain {
 	struct FrameSync {

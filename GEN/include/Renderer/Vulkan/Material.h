@@ -1,8 +1,10 @@
 #pragma once
 
-#include "Engine/EngineTypes.h"
+#include "Renderer/RenderTypes.h"
 
 struct Material {
+	LinearColor baseColor;
+
 	ImageId diffuseTexture;
 	ImageId normalMapTexture;
 

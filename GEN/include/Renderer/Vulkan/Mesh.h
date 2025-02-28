@@ -3,7 +3,7 @@
 #include "glm.hpp"
 
 #include "Renderer/Vulkan/Buffer.h"
-#include "Engine/EngineTypes.h"
+#include "Renderer/RenderTypes.h"
 
 struct Mesh {
 	struct Vertex {

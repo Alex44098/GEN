@@ -143,5 +143,14 @@
     <ClInclude Include="GEN\include\Renderer\Gltf\PrimitiveLoader.h">
       <Filter>Файлы заголовков\Renderer\Gltf</Filter>
     </ClInclude>
+    <ClInclude Include="GEN\include\Renderer\Gltf\MaterialLoader.h">
+      <Filter>Файлы заголовков\Renderer\Gltf</Filter>
+    </ClInclude>
+    <ClInclude Include="GEN\include\Renderer\Vulkan\MaterialManager.h">
+      <Filter>Файлы заголовков\Renderer\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="GEN\include\Renderer\RenderTypes.h">
+      <Filter>Файлы заголовков\Renderer</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

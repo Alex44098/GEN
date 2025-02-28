@@ -39,11 +39,14 @@
     <ClInclude Include="GEN\include\Engine\EngineEvents.h" />
     <ClInclude Include="GEN\include\Engine\EngineTypes.h" />
     <ClInclude Include="GEN\include\GameObject\GameObject.h" />
+    <ClInclude Include="GEN\include\Renderer\Gltf\MaterialLoader.h" />
     <ClInclude Include="GEN\include\Renderer\Gltf\PrimitiveLoader.h" />
     <ClInclude Include="GEN\include\Renderer\RenderSystem.h" />
+    <ClInclude Include="GEN\include\Renderer\RenderTypes.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\Buffer.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\ImageManager.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\Material.h" />
+    <ClInclude Include="GEN\include\Renderer\Vulkan\MaterialManager.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\Mesh.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\MeshManager.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\StructCreators\Vk13SubmitStructs.h" />

@@ -3,7 +3,7 @@
 #include <span>
 #include "tiny_gltf.h"
 
-#include "Engine/EngineTypes.h"
+#include "Renderer/RenderTypes.h"
 #include "Renderer/Vulkan/Mesh.h"
 
 #define GLTF_POSITIONS_ACCESSOR "POSITION"

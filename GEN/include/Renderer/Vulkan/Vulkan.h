@@ -10,7 +10,7 @@
 
 #include <glm.hpp>
 
-#include "Engine/EngineTypes.h"
+#include "Renderer/RenderTypes.h"
 #include "Renderer/Vulkan/Swapchain.h"
 #include "Renderer/Vulkan/Buffer.h"
 
