@@ -14,7 +14,7 @@ void MaterialManager::Destroy(gvk::Vulkan& vulkan) {
 	vulkan.DestroyBuffer(this->materialDataBuffer);
 }
 
-MaterialId MaterialManager::AddMaterial(gvk::Vulkan& vulkan, Material material) {
-	MaterialData* matData = (MaterialData*)materialDataBuffer.allocInfo.pMappedData;
-
-}
+//MaterialId MaterialManager::AddMaterial(gvk::Vulkan& vulkan, Material material) {
+//	MaterialData* matData = (MaterialData*)materialDataBuffer.allocInfo.pMappedData;
+//
+//}

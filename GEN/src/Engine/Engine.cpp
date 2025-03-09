@@ -19,7 +19,6 @@ Engine::Engine(const WindowParams& params) {
 	}
 
 	GECS::Init();
-
 	// there should be a creation of engine systems here
 	// ...
 	//

@@ -8,6 +8,13 @@
 #define INVALID_MATERIAL_ID UINT32_MAX
 #define INVALID_BINDLESS_ID UINT32_MAX
 
+#define MAX_BINDLESS 20000
+#define MAX_SAMPLERS 32
+#define TEX_BIND 0
+#define SAMP_BIND 1
+#define NEAREST_SAMPLER_ID 0
+#define LINEAR_SAMPLER_ID 1
+
 using MeshId = GECS::u32;
 using MaterialId = GECS::u32;
 using ImageId = GECS::u32;

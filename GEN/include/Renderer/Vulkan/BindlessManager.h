@@ -23,4 +23,11 @@ public:
 
 	void AddImage(ImageId id, const VkImageView imageView);
 	void AddSampler(ImageId id, VkSampler sampler);
+
+private:
+	void CreateDescriptorPool();
+	void CreateDescriptorSetLayout();
+	void AllocateDescriptorSet();
+
+	void InitDefaultSamplers(float maxAnisotropy);
 };

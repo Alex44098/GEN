@@ -23,6 +23,7 @@
     <ClCompile Include="GEN\src\GEN.cpp" />
     <ClCompile Include="GEN\src\Renderer\Gltf\PrimitiveLoader.cpp" />
     <ClCompile Include="GEN\src\Renderer\Gltf\TinyGLTFImplementation.cpp" />
+    <ClCompile Include="GEN\src\Renderer\Vulkan\BindlessManager.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\ImageManager.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\MaterialManager.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\MeshManager.cpp" />
