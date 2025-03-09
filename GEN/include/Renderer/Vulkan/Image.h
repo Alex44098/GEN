@@ -7,7 +7,7 @@
 #include "Renderer/RenderTypes.h"
 
 struct Image {
-	BindlessId id{ INVALID_BINDLESS_ID };
+	ImageId id{ INVALID_IMAGE_ID };
 
 	VkImage image;
 	VkImageView imageView;

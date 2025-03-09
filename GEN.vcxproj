@@ -30,8 +30,11 @@
     <ClCompile Include="GEN\src\Renderer\Vulkan\StructCreators\Vk13SubmitStructs.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\StructCreators\VkBootstrapStructs.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\StructCreators\VkCommandStructs.cpp" />
+    <ClCompile Include="GEN\src\Renderer\Vulkan\StructCreators\VkImageSubresourceRange.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\StructCreators\VMAStructs.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\Swapchain.cpp" />
+    <ClCompile Include="GEN\src\Renderer\Vulkan\Util\MipMapGenerator.cpp" />
+    <ClCompile Include="GEN\src\Renderer\Vulkan\Util\PipelineImageTransition.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\VmaImplementation.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\VolkImplementation.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\Vulkan.cpp" />
@@ -56,8 +59,11 @@
     <ClInclude Include="GEN\include\Renderer\Vulkan\StructCreators\Vk13SubmitStructs.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\StructCreators\VkBootstrapStructs.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\StructCreators\VkCommandStructs.h" />
+    <ClInclude Include="GEN\include\Renderer\Vulkan\StructCreators\VkImageSubresourceRange.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\StructCreators\VMAStructs.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\Swapchain.h" />
+    <ClInclude Include="GEN\include\Renderer\Vulkan\Util\MipMapGenerator.h" />
+    <ClInclude Include="GEN\include\Renderer\Vulkan\Util\PipelineImageTransition.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\Vulkan.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -1,12 +1,13 @@
 #pragma once
 
 #include <GECSHeaders.h>
+#include <vulkan/vulkan.h>
 
 #define MAX_FRAMES_IN_FLIGHT 2
 
 #define INVALID_MESH_ID UINT32_MAX
 #define INVALID_MATERIAL_ID UINT32_MAX
-#define INVALID_BINDLESS_ID UINT32_MAX
+#define INVALID_IMAGE_ID UINT32_MAX
 
 #define MAX_BINDLESS 20000
 #define MAX_SAMPLERS 32
@@ -38,4 +39,15 @@ struct LinearColorWithoutAlpha {
 	float r{ 0.f };
 	float g{ 0.f };
 	float b{ 0.f };
+};
+
+struct CreateImageInfo {
+	VkFormat format;
+	VkImageUsageFlags usage;
+	VkImageCreateFlags flags;
+	VkExtent3D extent{};
+	std::uint32_t numLayers{ 1 };
+	VkSampleCountFlagBits samples{ VK_SAMPLE_COUNT_1_BIT };
+	VkImageTiling tiling{ VK_IMAGE_TILING_OPTIMAL };
+	bool mipMap{ false };
 };

@@ -46,6 +46,12 @@
     <Filter Include="Файлы заголовков\Renderer\Gltf">
       <UniqueIdentifier>{c2a6cec6-2cc2-4c14-8b28-156c33d19902}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Файлы заголовков\Renderer\Vulkan\Util">
+      <UniqueIdentifier>{0e5c4d8b-1f1a-4bd5-9f24-47a02eeb1cce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Renderer\Vulkan\Util">
+      <UniqueIdentifier>{cec1aeaa-7b36-4989-a7c8-08e7cd2914f6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GEN\src\GEN.cpp">
@@ -95,6 +101,15 @@
     </ClCompile>
     <ClCompile Include="GEN\src\Renderer\Vulkan\BindlessManager.cpp">
       <Filter>Исходные файлы\Renderer\Vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="GEN\src\Renderer\Vulkan\StructCreators\VkImageSubresourceRange.cpp">
+      <Filter>Исходные файлы\Renderer\Vulkan\StructCreators</Filter>
+    </ClCompile>
+    <ClCompile Include="GEN\src\Renderer\Vulkan\Util\MipMapGenerator.cpp">
+      <Filter>Исходные файлы\Renderer\Vulkan\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="GEN\src\Renderer\Vulkan\Util\PipelineImageTransition.cpp">
+      <Filter>Исходные файлы\Renderer\Vulkan\Util</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -163,6 +178,15 @@
     </ClInclude>
     <ClInclude Include="GEN\include\Renderer\Vulkan\BindlessManager.h">
       <Filter>Файлы заголовков\Renderer\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="GEN\include\Renderer\Vulkan\StructCreators\VkImageSubresourceRange.h">
+      <Filter>Файлы заголовков\Renderer\Vulkan\StructCreators</Filter>
+    </ClInclude>
+    <ClInclude Include="GEN\include\Renderer\Vulkan\Util\MipMapGenerator.h">
+      <Filter>Файлы заголовков\Renderer\Vulkan\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="GEN\include\Renderer\Vulkan\Util\PipelineImageTransition.h">
+      <Filter>Файлы заголовков\Renderer\Vulkan\Util</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

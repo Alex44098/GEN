@@ -74,6 +74,7 @@ namespace gvk {
 
 		// getters
 		inline VkDevice GetDevice() const { return this->logDevice; }
+		inline VmaAllocator GetAllocator() const { return this->vkAllocator; }
 
 	private:
 		void InitVulkan(SDL_Window* window);
