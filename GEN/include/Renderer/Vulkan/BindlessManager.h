@@ -7,15 +7,17 @@
 class BindlessManager {
 	VkDevice device;
 
-	VkDescriptorPool descriptorPool;
-	VkDescriptorSetLayout descriptorSetLayout;
-	VkDescriptorSet descriptorSet;
+	VkDescriptorPool descriptorPool{};
+	VkDescriptorSetLayout descriptorSetLayout{};
+	VkDescriptorSet descriptorSet{};
 
-	VkSampler nearestSampler;
-	VkSampler linearSampler;
+	VkSampler nearestSampler{};
+	VkSampler linearSampler{};
 
 public:
-	BindlessManager(VkDevice device, float maxAnisotropy);
+	BindlessManager(VkDevice device);
+
+	void InitSamplers(float maxAnisotropy);
 	void Clear();
 
 	VkDescriptorSetLayout getDescriptorSetLayout() const { return this->descriptorSetLayout; }

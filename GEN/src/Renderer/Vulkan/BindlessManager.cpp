@@ -1,5 +1,15 @@
 #include "Renderer/Vulkan/BindlessManager.h"
 
+BindlessManager::BindlessManager(VkDevice device) : device(device) {
+	this->CreateDescriptorPool();
+	this->CreateDescriptorSetLayout();
+	this->AllocateDescriptorSet();
+}
+
+void BindlessManager::InitSamplers(float maxAnisotropy) {
+	this->InitDefaultSamplers(maxAnisotropy);
+}
+
 void BindlessManager::CreateDescriptorPool() {
 	const VkDescriptorPoolSize poolSizes[2]{
 		{VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE, MAX_BINDLESS},
@@ -87,13 +97,6 @@ void BindlessManager::InitDefaultSamplers(float maxAnisotropy) {
 	};
 	vkCreateSampler(this->device, &linearCreateInfo, nullptr, &(this->linearSampler));
 	this->AddSampler(LINEAR_SAMPLER_ID, this->linearSampler);
-}
-
-BindlessManager::BindlessManager(VkDevice device, float maxAnisotropy) : device(device) {
-	this->CreateDescriptorPool();
-	this->CreateDescriptorSetLayout();
-	this->AllocateDescriptorSet();
-	
 }
 
 void BindlessManager::Clear() {

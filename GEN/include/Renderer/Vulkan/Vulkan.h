@@ -13,6 +13,7 @@
 #include "Renderer/RenderTypes.h"
 #include "Renderer/Vulkan/Swapchain.h"
 #include "Renderer/Vulkan/Buffer.h"
+#include "Renderer/Vulkan/ImageManager.h"
 
 struct SDL_Window;
 
@@ -50,13 +51,18 @@ namespace gvk {
 		VkFormat swapchainFormat;
 		GECS::i32 graphicsQueueFamily{ 0 };
 		VkQueue graphicsQueue; // With present queue
-
 		GECS::u32 currentImage{ 0 };
+
+		// sampler variables
+		VkSampleCountFlagBits supportedSampleCounts{};
+		VkSampleCountFlagBits highestSupportedSamples{ VK_SAMPLE_COUNT_1_BIT };
+		float maxAnisotropy{ 1.f };
+
+		// managers
+		ImageManager imageManager;
 
 	public:
 		Vulkan();
-		Vulkan(const Vulkan&) = delete;
-		Vulkan& operator=(const Vulkan&) = delete;
 
 		void Init(SDL_Window* window);
 		void Destroy();
@@ -78,8 +84,10 @@ namespace gvk {
 
 	private:
 		void InitVulkan(SDL_Window* window);
+		void SetSamplerParameters();
 		void CreateCommandBuffers();
 		void CreateImageCommandBuffers();
+		
 
 		inline void IncreaseImageIndex() { currentImage = (currentImage + 1) % MAX_FRAMES_IN_FLIGHT; }
 	};

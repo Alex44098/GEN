@@ -13,7 +13,24 @@
 #include <SDL_vulkan.h>
 
 namespace gvk {
-	Vulkan::Vulkan() {}
+	Vulkan::Vulkan() : imageManager(*this) {}
+
+	void Vulkan::Init(SDL_Window* window) {
+		this->InitVulkan(window);
+
+		this->imageManager.InitSamplers(this->maxAnisotropy);
+
+		this->swapchain.Init(this->logDevice.device);
+
+		GECS::i32 width, height;
+		SDL_GetWindowSize(window, &width, &height);
+
+		this->swapchainFormat = VK_FORMAT_B8G8R8A8_SRGB;
+		this->swapchain.Create(this->logDevice, this->swapchainFormat, width, height);
+
+		CreateCommandBuffers();
+		CreateImageCommandBuffers();
+	}
 
 	void Vulkan::InitVulkan(SDL_Window* window) {
 		volkInitialize();
@@ -40,6 +57,8 @@ namespace gvk {
 			.select()
 			.value();
 
+		this->SetSamplerParameters();
+
 		this->logDevice = vkb::DeviceBuilder{ phDevice }.build().value();
 
 		this->graphicsQueueFamily = this->logDevice.get_queue_index(vkb::QueueType::graphics).value();
@@ -64,6 +83,33 @@ namespace gvk {
 		vmaDestroyAllocator(this->vkAllocator);
 		vkb::destroy_device(this->logDevice);
 		vkb::destroy_instance(this->instance);
+	}
+
+	void Vulkan::SetSamplerParameters() {
+		VkPhysicalDeviceProperties props{};
+		vkGetPhysicalDeviceProperties(this->phDevice, &props);
+		maxAnisotropy = props.limits.maxSamplerAnisotropy;
+
+		const VkSampleCountFlagBits sampleCounts[7]
+		{
+			VK_SAMPLE_COUNT_1_BIT,
+			VK_SAMPLE_COUNT_2_BIT,
+			VK_SAMPLE_COUNT_4_BIT,
+			VK_SAMPLE_COUNT_8_BIT,
+			VK_SAMPLE_COUNT_16_BIT,
+			VK_SAMPLE_COUNT_32_BIT,
+			VK_SAMPLE_COUNT_64_BIT
+		};
+
+		const VkSampleCountFlags supportedByDepthAndColor =
+			props.limits.framebufferColorSampleCounts & props.limits.framebufferDepthSampleCounts;
+
+		for (const VkSampleCountFlagBits& count : sampleCounts) {
+			if (supportedByDepthAndColor & count) {
+				this->supportedSampleCounts = (VkSampleCountFlagBits)(supportedSampleCounts | count);
+				this->highestSupportedSamples = count;
+			}
+		}
 	}
 
 	void Vulkan::CreateCommandBuffers() {
@@ -93,21 +139,6 @@ namespace gvk {
 			VkCommandBuffer& commandBuffer = this->imageCommandBuffers[imageIndex];
 			vkAllocateCommandBuffers(this->logDevice, &commandAllocInfo, &commandBuffer);
 		}
-	}
-
-	void Vulkan::Init(SDL_Window* window) {
-		this->InitVulkan(window);
-
-		this->swapchain.Init(this->logDevice.device);
-
-		GECS::i32 width, height;
-		SDL_GetWindowSize(window, &width, &height);
-
-		this->swapchainFormat = VK_FORMAT_B8G8R8A8_SRGB;
-		this->swapchain.Create(this->logDevice, this->swapchainFormat, width, height);
-
-		CreateCommandBuffers();
-		CreateImageCommandBuffers();
 	}
 
 	VkCommandBuffer Vulkan::BeginCommandBufferRecord() {

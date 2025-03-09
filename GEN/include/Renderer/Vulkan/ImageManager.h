@@ -2,13 +2,16 @@
 
 #include <filesystem>
 
-#include "Renderer/Vulkan/Vulkan.h"
 #include "Renderer/RenderTypes.h"
 #include "Renderer/Vulkan/Image.h"
 #include "Renderer/Vulkan/BindlessManager.h"
 
 #include "Renderer/Vulkan/Util/MipMapGenerator.h"
 #include "Renderer/Vulkan/Util/PipelineImageTransition.h"
+
+namespace gvk {
+    class Vulkan;
+}
 
 class ImageManager {
     struct LoadedImageInfo {
@@ -26,7 +29,9 @@ class ImageManager {
     BindlessManager bindlessManager;
 
 public:
-    ImageManager(gvk::Vulkan& vulkan, float maxAnisotropy);
+    ImageManager(gvk::Vulkan& vulkan);
+    void InitSamplers(float maxAnisotropy);
+
     void Clear();
 
     ImageId LoadImageFromFile(const std::filesystem::path& path, VkFormat format, VkImageUsageFlags usage, bool mipMap);

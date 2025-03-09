@@ -1,8 +1,12 @@
 #include "Renderer/Vulkan/ImageManager.h"
+#include "Renderer/Vulkan/Vulkan.h"
 
-ImageManager::ImageManager(gvk::Vulkan& vulkan, float maxAnisotropy)
-	: vulkanInstance(vulkan), bindlessManager(vulkan.GetDevice(), maxAnisotropy)
+ImageManager::ImageManager(gvk::Vulkan& vulkan) : vulkanInstance(vulkan), bindlessManager(vulkan.GetDevice())
 {}
+
+void ImageManager::InitSamplers(float maxAnisotropy) {
+	this->bindlessManager.InitSamplers(maxAnisotropy);
+}
 
 void ImageManager::Clear() {
 	for (const Image& image : this->images)
