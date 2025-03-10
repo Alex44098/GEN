@@ -24,6 +24,45 @@ const Image& ImageManager::GetImage(ImageId id) const {
 	return this->images.at(id);
 }
 
+ImageId ImageManager::LoadImageFromFile(const std::filesystem::path& path, VkFormat format, VkImageUsageFlags usage, bool mipMap) {
+	for (const std::pair<ImageId, LoadedImageInfo>& info : this->loadedImagesInfo)
+		if (info.second.path == path && info.second.format == format &&
+			info.second.usage == usage && info.second.mipMap == mipMap)
+			return info.first;
+
+	STBImage stbImage = Util::LoadSTBImage(path);
+	if (!stbImage.data || !stbImage.hdrData)
+		assert(false && "Image didn't load");
+
+	Image image = this->AllocateImage({
+			.format = format,
+			.usage = usage | VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT,
+			.extent = VkExtent3D {
+				.width = (GECS::u32)stbImage.width,
+				.height = (GECS::u32)stbImage.height,
+				.depth = 1
+			},
+			.mipMap = mipMap
+		}
+	);
+	this->LoadToGPU(image, (stbImage.data != nullptr
+		? stbImage.data : static_cast<void*>(stbImage.hdrData)), 0U);
+
+	const GECS::u32 id = this->images.size();
+	this->PushToMemory(id, std::move(image));
+	this->loadedImagesInfo.emplace(
+		id,
+		LoadedImageInfo{
+			.path = path,
+			.format = format,
+			.usage = usage,
+			.mipMap = mipMap
+	});
+
+	stbImage.Destroy();
+	return id;
+}
+
 ImageId ImageManager::CreateImage(const CreateImageInfo& createInfo, void* data, ImageId id) {
 	Image image = this->AllocateImage(createInfo);
 	if (data)

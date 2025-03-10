@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="GEN\src\Engine\Engine.cpp" />
     <ClCompile Include="GEN\src\GEN.cpp" />
+    <ClCompile Include="GEN\src\Renderer\Gltf\MaterialLoader.cpp" />
     <ClCompile Include="GEN\src\Renderer\Gltf\PrimitiveLoader.cpp" />
     <ClCompile Include="GEN\src\Renderer\Gltf\TinyGLTFImplementation.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\BindlessManager.cpp" />
@@ -35,6 +36,7 @@
     <ClCompile Include="GEN\src\Renderer\Vulkan\Swapchain.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\Util\MipMapGenerator.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\Util\PipelineImageTransition.cpp" />
+    <ClCompile Include="GEN\src\Renderer\Vulkan\Util\STBImageLoader.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\VmaImplementation.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\VolkImplementation.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\Vulkan.cpp" />
@@ -64,6 +66,7 @@
     <ClInclude Include="GEN\include\Renderer\Vulkan\Swapchain.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\Util\MipMapGenerator.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\Util\PipelineImageTransition.h" />
+    <ClInclude Include="GEN\include\Renderer\Vulkan\Util\STBImageLoader.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\Vulkan.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

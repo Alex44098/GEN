@@ -63,6 +63,8 @@ namespace gvk {
 
 	public:
 		Vulkan();
+		Vulkan(const Vulkan& o) = delete;
+		Vulkan& operator=(const Vulkan& o) = delete;
 
 		void Init(SDL_Window* window);
 		void Destroy();
@@ -81,6 +83,7 @@ namespace gvk {
 		// getters
 		inline VkDevice GetDevice() const { return this->logDevice; }
 		inline VmaAllocator GetAllocator() const { return this->vkAllocator; }
+		inline ImageManager GetImageManager() const { return this->imageManager; }
 
 	private:
 		void InitVulkan(SDL_Window* window);

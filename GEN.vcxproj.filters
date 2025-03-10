@@ -111,6 +111,12 @@
     <ClCompile Include="GEN\src\Renderer\Vulkan\Util\PipelineImageTransition.cpp">
       <Filter>Исходные файлы\Renderer\Vulkan\Util</Filter>
     </ClCompile>
+    <ClCompile Include="GEN\src\Renderer\Gltf\MaterialLoader.cpp">
+      <Filter>Исходные файлы\Renderer\Gltf</Filter>
+    </ClCompile>
+    <ClCompile Include="GEN\src\Renderer\Vulkan\Util\STBImageLoader.cpp">
+      <Filter>Исходные файлы\Renderer\Vulkan\Util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GEN\include\Engine\Engine.h">
@@ -186,6 +192,9 @@
       <Filter>Файлы заголовков\Renderer\Vulkan\Util</Filter>
     </ClInclude>
     <ClInclude Include="GEN\include\Renderer\Vulkan\Util\PipelineImageTransition.h">
+      <Filter>Файлы заголовков\Renderer\Vulkan\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="GEN\include\Renderer\Vulkan\Util\STBImageLoader.h">
       <Filter>Файлы заголовков\Renderer\Vulkan\Util</Filter>
     </ClInclude>
   </ItemGroup>

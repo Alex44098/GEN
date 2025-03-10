@@ -8,6 +8,7 @@
 
 #include "Renderer/Vulkan/Util/MipMapGenerator.h"
 #include "Renderer/Vulkan/Util/PipelineImageTransition.h"
+#include "Renderer/Vulkan/Util/STBImageLoader.h"
 
 namespace gvk {
     class Vulkan;
