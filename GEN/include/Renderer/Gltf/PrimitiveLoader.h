@@ -13,5 +13,7 @@
 #define GLTF_TANGENTS_ACCESSOR "TANGENT"
 #define GLTF_TEXCOORD_ACCESSOR "TEXCOORD_0"
 
-GECS::i32 GetAccessorIndex(const tinygltf::Primitive& primitive, const std::string& name);
-Mesh CreateMeshFromPrimitive(const tinygltf::Model& model, const std::string& name, const tinygltf::Primitive& primitive);
+namespace Gltf {
+	GECS::i32 GetAccessorIndex(const tinygltf::Primitive& primitive, const std::string& name);
+	Mesh CreateMeshFromPrimitive(const tinygltf::Model& model, const std::string& name, const tinygltf::Primitive& primitive);
+}

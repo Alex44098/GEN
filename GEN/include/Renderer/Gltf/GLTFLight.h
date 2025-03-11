@@ -6,33 +6,35 @@
 #include "Renderer/RenderTypes.h"
 #include "glm.hpp"
 
-enum class GLTFLightType {
-	None,
-	Directional,
-	Point,
-	Spot
-};
+namespace Gltf {
+	enum class GLTFLightType {
+		None,
+		Directional,
+		Point,
+		Spot
+	};
 
-struct GLTFLightData {
-	glm::vec3 position;
-	std::uint32_t type;
-	glm::vec3 direction;
-	float range;
-	LinearColorWithoutAlpha color;
-	float intensity;
-	glm::vec2 scaleOffset;
-	float unused;
-};
+	struct GLTFLightData {
+		glm::vec3 position;
+		std::uint32_t type;
+		glm::vec3 direction;
+		float range;
+		LinearColorWithoutAlpha color;
+		float intensity;
+		glm::vec2 scaleOffset;
+		float unused;
+	};
 
-struct GLTFLight {
-	std::string name;
-	GLTFLightType type{ GLTFLightType::None };
-	LinearColor color;
-	float range{ 0.f };
-	float intensity{ 0.f };
-	glm::vec2 scaleOffset;
-	
-	void SetConeAngles(float innerConeAngle, float outerConeAngle);
+	struct GLTFLight {
+		std::string name;
+		GLTFLightType type{ GLTFLightType::None };
+		LinearColor color;
+		float range{ 0.f };
+		float intensity{ 0.f };
+		glm::vec2 scaleOffset;
 
-	int GetTypeCode() const;
-};
+		void SetConeAngles(float innerConeAngle, float outerConeAngle);
+
+		int GetTypeCode() const;
+	};
+}

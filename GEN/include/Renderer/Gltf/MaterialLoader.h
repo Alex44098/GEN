@@ -8,11 +8,13 @@
 #include "Renderer/Vulkan/Material.h"
 #include "Renderer/Vulkan/Vulkan.h"
 
-Material LoadMaterial(gvk::Vulkan& vulkan, const tinygltf::Model& model, const std::filesystem::path& path, const tinygltf::Material& gltfMaterial);
+namespace Gltf {
+	Material LoadMaterial(gvk::Vulkan& vulkan, const tinygltf::Model& model, const std::filesystem::path& path, const tinygltf::Material& gltfMaterial);
 
-LinearColor GetDiffuseColor(const tinygltf::Material& gltfMaterial);
-std::filesystem::path GetDiffuseTexturePath(const tinygltf::Model& model, const tinygltf::Material& gltfMaterial, const std::filesystem::path& fileDir);
-std::filesystem::path GetNormalMapTexturePath(const tinygltf::Model& model, const tinygltf::Material& gltfMaterial, const std::filesystem::path& fileDir);
+	LinearColor GetDiffuseColor(const tinygltf::Material& gltfMaterial);
+	std::filesystem::path GetDiffuseTexturePath(const tinygltf::Model& model, const tinygltf::Material& gltfMaterial, const std::filesystem::path& fileDir);
+	std::filesystem::path GetNormalMapTexturePath(const tinygltf::Model& model, const tinygltf::Material& gltfMaterial, const std::filesystem::path& fileDir);
 
-bool HasDiffuseTexture(const tinygltf::Material& gltfMaterial);
-bool HasNormalMapTexture(const tinygltf::Material& gltfMaterial);
+	bool HasDiffuseTexture(const tinygltf::Material& gltfMaterial);
+	bool HasNormalMapTexture(const tinygltf::Material& gltfMaterial);
+}
