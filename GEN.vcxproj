@@ -21,6 +21,8 @@
   <ItemGroup>
     <ClCompile Include="GEN\src\Engine\Engine.cpp" />
     <ClCompile Include="GEN\src\GEN.cpp" />
+    <ClCompile Include="GEN\src\Math\Transform.cpp" />
+    <ClCompile Include="GEN\src\Renderer\Gltf\GLTFLight.cpp" />
     <ClCompile Include="GEN\src\Renderer\Gltf\MaterialLoader.cpp" />
     <ClCompile Include="GEN\src\Renderer\Gltf\PrimitiveLoader.cpp" />
     <ClCompile Include="GEN\src\Renderer\Gltf\TinyGLTFImplementation.cpp" />
@@ -46,6 +48,10 @@
     <ClInclude Include="GEN\include\Engine\EngineEvents.h" />
     <ClInclude Include="GEN\include\Engine\EngineTypes.h" />
     <ClInclude Include="GEN\include\GameObject\GameObject.h" />
+    <ClInclude Include="GEN\include\Math\CoordinateSystem.h" />
+    <ClInclude Include="GEN\include\Math\Transform.h" />
+    <ClInclude Include="GEN\include\Renderer\Gltf\GLTFLight.h" />
+    <ClInclude Include="GEN\include\Renderer\Gltf\GLTFScene.h" />
     <ClInclude Include="GEN\include\Renderer\Gltf\MaterialLoader.h" />
     <ClInclude Include="GEN\include\Renderer\Gltf\PrimitiveLoader.h" />
     <ClInclude Include="GEN\include\Renderer\RenderSystem.h" />

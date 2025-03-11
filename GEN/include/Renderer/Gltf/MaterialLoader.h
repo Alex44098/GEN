@@ -1,5 +1,7 @@
 #pragma once
 
+// Read more: https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html#materials
+
 #include <filesystem>
 #include <tiny_gltf.h>
 

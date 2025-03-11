@@ -52,6 +52,12 @@
     <Filter Include="Исходные файлы\Renderer\Vulkan\Util">
       <UniqueIdentifier>{cec1aeaa-7b36-4989-a7c8-08e7cd2914f6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Файлы заголовков\Math">
+      <UniqueIdentifier>{06a1e90e-c7de-4221-963b-479a7d90d49c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Math">
+      <UniqueIdentifier>{c510f327-5bc5-4ffc-a222-071fdab55a4e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GEN\src\GEN.cpp">
@@ -116,6 +122,12 @@
     </ClCompile>
     <ClCompile Include="GEN\src\Renderer\Vulkan\Util\STBImageLoader.cpp">
       <Filter>Исходные файлы\Renderer\Vulkan\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="GEN\src\Math\Transform.cpp">
+      <Filter>Исходные файлы\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="GEN\src\Renderer\Gltf\GLTFLight.cpp">
+      <Filter>Исходные файлы\Renderer\Gltf</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -196,6 +208,18 @@
     </ClInclude>
     <ClInclude Include="GEN\include\Renderer\Vulkan\Util\STBImageLoader.h">
       <Filter>Файлы заголовков\Renderer\Vulkan\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="GEN\include\Renderer\Gltf\GLTFScene.h">
+      <Filter>Файлы заголовков\Renderer\Gltf</Filter>
+    </ClInclude>
+    <ClInclude Include="GEN\include\Math\Transform.h">
+      <Filter>Файлы заголовков\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="GEN\include\Math\CoordinateSystem.h">
+      <Filter>Файлы заголовков\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="GEN\include\Renderer\Gltf\GLTFLight.h">
+      <Filter>Файлы заголовков\Renderer\Gltf</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
