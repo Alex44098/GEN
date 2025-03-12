@@ -90,14 +90,8 @@
     <ClCompile Include="GEN\src\Renderer\Vulkan\MeshManager.cpp">
       <Filter>Исходные файлы\Renderer\Vulkan</Filter>
     </ClCompile>
-    <ClCompile Include="GEN\src\Renderer\Gltf\PrimitiveLoader.cpp">
-      <Filter>Исходные файлы\Renderer\Gltf</Filter>
-    </ClCompile>
     <ClCompile Include="GEN\src\Renderer\Vulkan\VolkImplementation.cpp">
       <Filter>Исходные файлы\Renderer\Vulkan</Filter>
-    </ClCompile>
-    <ClCompile Include="GEN\src\Renderer\Gltf\TinyGLTFImplementation.cpp">
-      <Filter>Исходные файлы\Renderer\Gltf</Filter>
     </ClCompile>
     <ClCompile Include="GEN\src\Renderer\Vulkan\VmaImplementation.cpp">
       <Filter>Исходные файлы\Renderer\Vulkan</Filter>
@@ -117,9 +111,6 @@
     <ClCompile Include="GEN\src\Renderer\Vulkan\Util\PipelineImageTransition.cpp">
       <Filter>Исходные файлы\Renderer\Vulkan\Util</Filter>
     </ClCompile>
-    <ClCompile Include="GEN\src\Renderer\Gltf\MaterialLoader.cpp">
-      <Filter>Исходные файлы\Renderer\Gltf</Filter>
-    </ClCompile>
     <ClCompile Include="GEN\src\Renderer\Vulkan\Util\STBImageLoader.cpp">
       <Filter>Исходные файлы\Renderer\Vulkan\Util</Filter>
     </ClCompile>
@@ -127,6 +118,9 @@
       <Filter>Исходные файлы\Math</Filter>
     </ClCompile>
     <ClCompile Include="GEN\src\Renderer\Gltf\GLTFLight.cpp">
+      <Filter>Исходные файлы\Renderer\Gltf</Filter>
+    </ClCompile>
+    <ClCompile Include="GEN\src\Renderer\Gltf\SceneLoader.cpp">
       <Filter>Исходные файлы\Renderer\Gltf</Filter>
     </ClCompile>
   </ItemGroup>
@@ -179,12 +173,6 @@
     <ClInclude Include="GEN\include\Renderer\Vulkan\MeshManager.h">
       <Filter>Файлы заголовков\Renderer\Vulkan</Filter>
     </ClInclude>
-    <ClInclude Include="GEN\include\Renderer\Gltf\PrimitiveLoader.h">
-      <Filter>Файлы заголовков\Renderer\Gltf</Filter>
-    </ClInclude>
-    <ClInclude Include="GEN\include\Renderer\Gltf\MaterialLoader.h">
-      <Filter>Файлы заголовков\Renderer\Gltf</Filter>
-    </ClInclude>
     <ClInclude Include="GEN\include\Renderer\Vulkan\MaterialManager.h">
       <Filter>Файлы заголовков\Renderer\Vulkan</Filter>
     </ClInclude>
@@ -219,6 +207,9 @@
       <Filter>Файлы заголовков\Math</Filter>
     </ClInclude>
     <ClInclude Include="GEN\include\Renderer\Gltf\GLTFLight.h">
+      <Filter>Файлы заголовков\Renderer\Gltf</Filter>
+    </ClInclude>
+    <ClInclude Include="GEN\include\Renderer\Gltf\SceneLoader.h">
       <Filter>Файлы заголовков\Renderer\Gltf</Filter>
     </ClInclude>
   </ItemGroup>

@@ -17,7 +17,7 @@ namespace Gltf {
 		GECS::i32 lightIndex{ -1 };
 
 		GLTFSceneNode* parent{ nullptr };
-		std::vector<GLTFSceneNode*> children;
+		std::vector<std::unique_ptr<GLTFSceneNode>> children;
 	};
 
 	struct GLTFSceneMesh {
@@ -29,10 +29,9 @@ namespace Gltf {
 		std::filesystem::path path;
 
 		// root nodes
-		std::vector<GLTFSceneNode*> nodes;
+		std::vector<std::unique_ptr<GLTFSceneNode>> nodes;
 
-		std::vector<GLTFSceneMesh> meshes;
+		std::vector<GLTFSceneMesh> sceneMeshes;
 		std::vector<GLTFLight> lights;
-		std::unordered_map<MeshId, Mesh*> meshes;
 	};
 }

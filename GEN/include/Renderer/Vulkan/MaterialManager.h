@@ -32,6 +32,8 @@ public:
 	inline const Buffer& GetMaterialDataBuffer() const { return this->materialDataBuffer; }
 	inline VkDeviceAddress GetMaterialDataBufferAddress() const{ return this->materialDataBuffer.address; }
 
+	inline const MaterialId GetPlaceholder() const { return this->placeholderMaterialId; }
+
 private:
 	void CreatePlaceholders(gvk::Vulkan& vulkan);
 };

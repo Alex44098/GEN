@@ -72,3 +72,17 @@ void Transform::SetScale(const glm::vec3& sc)
     this->scale = sc;
     this->needUpdate = true;
 }
+
+glm::vec3 Transform::Tg2GlmVec3(const std::vector<double>& vec) {
+    assert(vec.size() == 3 && "Transform conversion: unexpected vec");
+    return { vec[0], vec[1], vec[2] };
+}
+
+glm::quat Transform::Tg2GlmQuat(const std::vector<double>& vec) {
+    return {
+        static_cast<float>(vec[3]), // w
+        static_cast<float>(vec[0]), // x
+        static_cast<float>(vec[1]), // y
+        static_cast<float>(vec[2]), // z
+    };
+}

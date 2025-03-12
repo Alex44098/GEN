@@ -1,7 +1,5 @@
 #pragma once
 
-#include <tiny_gltf.h>
-
 #include "Renderer/RenderTypes.h"
 #include "Renderer/Vulkan/Mesh.h"
 #include "Renderer/Vulkan/Vulkan.h"

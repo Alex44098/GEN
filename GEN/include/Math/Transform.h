@@ -4,6 +4,7 @@
 #include <gtc/quaternion.hpp>
 #include <gtx/matrix_decompose.hpp>
 
+#include "Renderer/RenderTypes.h"
 #include "CoordinateSystem.h"
 
 class Transform {
@@ -39,4 +40,8 @@ public:
 	void SetScale(const glm::vec3& sc);
 
 	Transform Inverse() const;
+
+	// Conversion funcs
+	static glm::vec3 Tg2GlmVec3(const std::vector<double>& vec);
+	static glm::quat Tg2GlmQuat(const std::vector<double>& vec);
 };
