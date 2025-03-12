@@ -24,6 +24,7 @@
     <ClCompile Include="GEN\src\Math\Transform.cpp" />
     <ClCompile Include="GEN\src\Renderer\Gltf\GLTFLight.cpp" />
     <ClCompile Include="GEN\src\Renderer\Gltf\SceneLoader.cpp" />
+    <ClCompile Include="GEN\src\Renderer\Gltf\SceneManager.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\BindlessManager.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\ImageManager.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\MaterialManager.cpp" />
@@ -51,6 +52,7 @@
     <ClInclude Include="GEN\include\Renderer\Gltf\GLTFLight.h" />
     <ClInclude Include="GEN\include\Renderer\Gltf\GLTFScene.h" />
     <ClInclude Include="GEN\include\Renderer\Gltf\SceneLoader.h" />
+    <ClInclude Include="GEN\include\Renderer\Gltf\SceneManager.h" />
     <ClInclude Include="GEN\include\Renderer\RenderSystem.h" />
     <ClInclude Include="GEN\include\Renderer\RenderTypes.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\BindlessManager.h" />
