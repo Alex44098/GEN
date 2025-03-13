@@ -126,6 +126,9 @@
     <ClCompile Include="GEN\src\Renderer\Gltf\SceneManager.cpp">
       <Filter>Исходные файлы\Renderer\Gltf</Filter>
     </ClCompile>
+    <ClCompile Include="GEN\src\Renderer\Vulkan\PreallocatedMemory.cpp">
+      <Filter>Исходные файлы\Renderer\Vulkan</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GEN\include\Engine\Engine.h">
@@ -217,6 +220,9 @@
     </ClInclude>
     <ClInclude Include="GEN\include\Renderer\Gltf\SceneManager.h">
       <Filter>Файлы заголовков\Renderer\Gltf</Filter>
+    </ClInclude>
+    <ClInclude Include="GEN\include\Renderer\Vulkan\PreallocatedBuffer.h">
+      <Filter>Файлы заголовков\Renderer\Vulkan</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

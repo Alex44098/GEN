@@ -169,13 +169,13 @@ namespace gvk {
 	}
 
 	VkCommandBuffer& Vulkan::StartFrameBuilding() {
-		this->swapchain.WaitFences(this->logDevice.device, currentImage);
+		this->swapchain.WaitFences(this->logDevice.device, currentFrame);
 
 		VkCommandBufferBeginInfo cmdBeginInfo;
 		cmdBeginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
 		cmdBeginInfo.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
 
-		VkCommandBuffer& imageCommandBuffer = this->imageCommandBuffers[this->currentImage];
+		VkCommandBuffer& imageCommandBuffer = this->imageCommandBuffers[this->currentFrame];
 		vkBeginCommandBuffer(imageCommandBuffer, &cmdBeginInfo);
 
 		return imageCommandBuffer;

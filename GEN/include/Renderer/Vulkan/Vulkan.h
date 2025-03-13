@@ -51,7 +51,7 @@ namespace gvk {
 		VkFormat swapchainFormat;
 		GECS::i32 graphicsQueueFamily{ 0 };
 		VkQueue graphicsQueue; // With present queue
-		GECS::u32 currentImage{ 0 };
+		GECS::u32 currentFrame{ 0 };
 
 		// sampler variables
 		VkSampleCountFlagBits supportedSampleCounts{};
@@ -92,6 +92,6 @@ namespace gvk {
 		void CreateImageCommandBuffers();
 		
 
-		inline void IncreaseImageIndex() { currentImage = (currentImage + 1) % MAX_FRAMES_IN_FLIGHT; }
+		inline void IncreaseImageIndex() { currentFrame = (currentFrame + 1) % MAX_FRAMES_IN_FLIGHT; }
 	};
 }
