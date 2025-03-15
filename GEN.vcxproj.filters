@@ -129,6 +129,9 @@
     <ClCompile Include="GEN\src\Renderer\Vulkan\PreallocatedMemory.cpp">
       <Filter>Исходные файлы\Renderer\Vulkan</Filter>
     </ClCompile>
+    <ClCompile Include="GEN\src\Renderer\Camera.cpp">
+      <Filter>Исходные файлы\Renderer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GEN\include\Engine\Engine.h">
@@ -223,6 +226,12 @@
     </ClInclude>
     <ClInclude Include="GEN\include\Renderer\Vulkan\PreallocatedBuffer.h">
       <Filter>Файлы заголовков\Renderer\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="GEN\include\Renderer\Vulkan\VulkanRenderer.h">
+      <Filter>Файлы заголовков\Renderer\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="GEN\include\Renderer\Camera.h">
+      <Filter>Файлы заголовков\Renderer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

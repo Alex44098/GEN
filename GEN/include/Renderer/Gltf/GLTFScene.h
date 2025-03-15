@@ -34,4 +34,31 @@ namespace Gltf {
 		std::vector<GLTFSceneMesh> sceneMeshes;
 		std::vector<GLTFLight> lights;
 	};
+
+	struct GLTFSceneData {
+		LinearColor ambientColor;
+		GECS::f32 ambientIntensity;
+		LinearColor fogColor;
+		GECS::f32 fogIntensity;
+	};
+
+	struct GLTFShaderSceneData {
+		glm::mat4 view;
+		glm::mat4 projection;
+		glm::mat4 viewProjection;
+		glm::vec4 cameraPos;
+
+		LinearColorWithoutAlpha ambientColor;
+		GECS::f32 ambientIntensity;
+		LinearColorWithoutAlpha fogColor;
+		GECS::f32 fogIntensity;
+
+		VkDeviceAddress materialsBuffer; // for bindless textures
+
+		// Lightings
+		VkDeviceAddress lightsBuffer;
+		GECS::u32 numLights;
+		GECS::u32 sunIndex;
+		GECS::f32 pointLightFarPlane;
+	};
 }

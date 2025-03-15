@@ -18,4 +18,7 @@ public:
 	~RenderSystem();
 
 	virtual void Update(GECS::f32 delta);
+
+private:
+
 };

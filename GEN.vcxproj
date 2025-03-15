@@ -22,6 +22,7 @@
     <ClCompile Include="GEN\src\Engine\Engine.cpp" />
     <ClCompile Include="GEN\src\GEN.cpp" />
     <ClCompile Include="GEN\src\Math\Transform.cpp" />
+    <ClCompile Include="GEN\src\Renderer\Camera.cpp" />
     <ClCompile Include="GEN\src\Renderer\Gltf\GLTFLight.cpp" />
     <ClCompile Include="GEN\src\Renderer\Gltf\SceneLoader.cpp" />
     <ClCompile Include="GEN\src\Renderer\Gltf\SceneManager.cpp" />
@@ -50,6 +51,7 @@
     <ClInclude Include="GEN\include\GameObject\GameObject.h" />
     <ClInclude Include="GEN\include\Math\CoordinateSystem.h" />
     <ClInclude Include="GEN\include\Math\Transform.h" />
+    <ClInclude Include="GEN\include\Renderer\Camera.h" />
     <ClInclude Include="GEN\include\Renderer\Gltf\GLTFLight.h" />
     <ClInclude Include="GEN\include\Renderer\Gltf\GLTFScene.h" />
     <ClInclude Include="GEN\include\Renderer\Gltf\SceneLoader.h" />
@@ -75,6 +77,7 @@
     <ClInclude Include="GEN\include\Renderer\Vulkan\Util\PipelineImageTransition.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\Util\STBImageLoader.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\Vulkan.h" />
+    <ClInclude Include="GEN\include\Renderer\Vulkan\VulkanRenderer.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
