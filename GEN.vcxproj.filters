@@ -132,6 +132,9 @@
     <ClCompile Include="GEN\src\Renderer\Camera.cpp">
       <Filter>Исходные файлы\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="GEN\src\Renderer\Vulkan\VulkanRenderer.cpp">
+      <Filter>Исходные файлы\Renderer\Vulkan</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GEN\include\Engine\Engine.h">
@@ -232,6 +235,9 @@
     </ClInclude>
     <ClInclude Include="GEN\include\Renderer\Camera.h">
       <Filter>Файлы заголовков\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="GEN\include\Renderer\Vulkan\GeometryRenderingUnit.h">
+      <Filter>Файлы заголовков\Renderer\Vulkan</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

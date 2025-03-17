@@ -8,6 +8,7 @@
 #include "Renderer/Vulkan/Mesh.h"
 #include "Renderer/RenderTypes.h"
 #include "Math/Transform.h"
+#include "Renderer/Camera.h"
 
 namespace Gltf {
 	struct GLTFSceneNode {
@@ -36,6 +37,7 @@ namespace Gltf {
 	};
 
 	struct GLTFSceneData {
+		const Camera& camera;
 		LinearColor ambientColor;
 		GECS::f32 ambientIntensity;
 		LinearColor fogColor;

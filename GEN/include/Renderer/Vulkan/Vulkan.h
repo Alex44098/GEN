@@ -84,6 +84,7 @@ namespace gvk {
 		inline VkDevice GetDevice() const { return this->logDevice; }
 		inline VmaAllocator GetAllocator() const { return this->vkAllocator; }
 		inline ImageManager GetImageManager() const { return this->imageManager; }
+		inline VkSampleCountFlagBits GetMaxSampleCount() const { return this->highestSupportedSamples; }
 
 	private:
 		void InitVulkan(SDL_Window* window);
