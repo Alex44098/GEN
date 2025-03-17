@@ -147,6 +147,9 @@
     <ClCompile Include="GEN\src\Renderer\Vulkan\Pipelines\Pipeline.cpp">
       <Filter>Исходные файлы\Renderer\Vulkan\Pipelines</Filter>
     </ClCompile>
+    <ClCompile Include="GEN\src\Renderer\Vulkan\Util\ShaderModuleLoader.cpp">
+      <Filter>Исходные файлы\Renderer\Vulkan\Util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GEN\include\Engine\Engine.h">
@@ -256,6 +259,9 @@
     </ClInclude>
     <ClInclude Include="GEN\include\Renderer\Vulkan\Pipelines\Pipeline.h">
       <Filter>Файлы заголовков\Renderer\Vulkan\Pipelines</Filter>
+    </ClInclude>
+    <ClInclude Include="GEN\include\Renderer\Vulkan\Util\ShaderModuleLoader.h">
+      <Filter>Файлы заголовков\Renderer\Vulkan\Util</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

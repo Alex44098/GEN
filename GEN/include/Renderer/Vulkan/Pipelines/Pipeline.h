@@ -5,9 +5,6 @@
 #include "Renderer/Vulkan/Vulkan.h"
 
 class Pipeline {
-	VkPipeline pipeline;
-	VkPipelineLayout pipelineLayout;
-
     std::vector<VkPipelineShaderStageCreateInfo> shaderStages;
     VkPipelineInputAssemblyStateCreateInfo inputAssembly;
     VkPipelineRasterizationStateCreateInfo rasterizer;
@@ -18,17 +15,20 @@ class Pipeline {
     VkFormat colorAttachmentformat;
     bool dynamicDepth{ false };
 	
+protected:
+    VkPipeline pipeline;
+    VkPipelineLayout pipelineLayout;
+
 public:
     Pipeline();
 
 	virtual void Init(gvk::Vulkan& vulkan, VkFormat drawImageFormat, VkFormat depthImageFormat, VkSampleCountFlagBits samples) = 0;
 	virtual void Cleanup(VkDevice device) = 0;
 
-private:
+protected:
 	void CreatePipelineLayout(VkDevice device, std::span<const VkDescriptorSetLayout> layouts,
 		std::span<const VkPushConstantRange> pushConstantRanges);
     void BuildPipeline(VkDevice device);
-
     void SetShaders(VkShaderModule vertexShader, VkShaderModule fragmentShader);
     void SetShaders(VkShaderModule vertexShader, VkShaderModule geometryShader, VkShaderModule fragmentShader);
     void SetInputTopology(VkPrimitiveTopology topology);

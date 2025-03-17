@@ -9,6 +9,10 @@ MeshId MeshManager::AddMesh(gvk::Vulkan& vulkan, Mesh& mesh) {
 	return id;
 }
 
+const Mesh& MeshManager::GetMesh(MeshId id) const {
+	return this->meshes.at(id);
+}
+
 void MeshManager::LoadToBuffer(gvk::Vulkan& vulkan, Mesh& mesh) const {
 	const GECS::u32 vertexBufferSize = mesh.vertices.size() * sizeof(Mesh::Vertex);
 	mesh.vertexBuffer = vulkan.CreateBuffer(vertexBufferSize,

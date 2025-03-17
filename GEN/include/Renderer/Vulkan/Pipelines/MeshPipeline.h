@@ -12,9 +12,10 @@
 #include "Renderer/Vulkan/MaterialManager.h"
 #include "Renderer/Vulkan/GeometryRenderingUnit.h"
 #include "Renderer/Camera.h"
+#include "Renderer/Vulkan/Util/ShaderModuleLoader.h"
 
 class MeshPipeline : public Pipeline {
-	struct UnitParameters {
+	struct Constants {
 		glm::mat4 transform;
 		VkDeviceAddress sceneDataBuffer;
 		VkDeviceAddress vertexBuffer;
@@ -27,11 +28,11 @@ public:
 	virtual void Cleanup(VkDevice device) override;
 
 	void Draw(
-		VkCommandBuffer cmd,
+		VkCommandBuffer cmdBuffer,
 		VkExtent2D extent,
 		const gvk::Vulkan& vulkan,
-		const MeshManager& meshCache,
-		const MaterialManager& materialCache,
+		const MeshManager& meshManafer,
+		const MaterialManager& materialmanager,
 		const Camera& camera,
 		const Buffer& sceneDataBuffer,
 		const std::vector<GeometryRenderingUnit>& units,

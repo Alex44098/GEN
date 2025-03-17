@@ -28,7 +28,7 @@ class ImageManager {
     std::unordered_map<ImageId, LoadedImageInfo> loadedImagesInfo;
 
     BindlessManager bindlessManager;
-
+    
 public:
     ImageManager(gvk::Vulkan& vulkan);
     void InitSamplers(float maxAnisotropy);
@@ -39,6 +39,8 @@ public:
     ImageId CreateImage(const CreateImageInfo& createInfo, void* data, ImageId id);
 
     const Image& GetImage(ImageId id) const;
+    inline VkDescriptorSetLayout GetDescSetLayout() const { return this->bindlessManager.getDescriptorSetLayout(); }
+    inline const VkDescriptorSet& GetDescSet() const { return this->bindlessManager.getDescriptorSet(); }
 
 private:
     Image AllocateImage(const CreateImageInfo& createInfo) const;

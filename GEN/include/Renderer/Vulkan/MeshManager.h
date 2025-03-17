@@ -11,6 +11,8 @@ public:
 	MeshId AddMesh(gvk::Vulkan& vulkan, Mesh& mesh);
 	void CleanMeshes(gvk::Vulkan& vulkan);
 
+	const Mesh& GetMesh(MeshId mesh) const;
+
 private:
 	void LoadToBuffer(gvk::Vulkan& vulkan, Mesh& mesh) const;
 };

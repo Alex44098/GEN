@@ -41,6 +41,7 @@
     <ClCompile Include="GEN\src\Renderer\Vulkan\Swapchain.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\Util\MipMapGenerator.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\Util\PipelineImageTransition.cpp" />
+    <ClCompile Include="GEN\src\Renderer\Vulkan\Util\ShaderModuleLoader.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\Util\STBImageLoader.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\VmaImplementation.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\VolkImplementation.cpp" />
@@ -81,6 +82,7 @@
     <ClInclude Include="GEN\include\Renderer\Vulkan\Swapchain.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\Util\MipMapGenerator.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\Util\PipelineImageTransition.h" />
+    <ClInclude Include="GEN\include\Renderer\Vulkan\Util\ShaderModuleLoader.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\Util\STBImageLoader.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\Vulkan.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\VulkanRenderer.h" />
