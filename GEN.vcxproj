@@ -30,6 +30,8 @@
     <ClCompile Include="GEN\src\Renderer\Vulkan\ImageManager.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\MaterialManager.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\MeshManager.cpp" />
+    <ClCompile Include="GEN\src\Renderer\Vulkan\Pipelines\MeshPipeline.cpp" />
+    <ClCompile Include="GEN\src\Renderer\Vulkan\Pipelines\Pipeline.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\PreallocatedMemory.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\StructCreators\Vk13SubmitStructs.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\StructCreators\VkBootstrapStructs.cpp" />
@@ -68,6 +70,8 @@
     <ClInclude Include="GEN\include\Renderer\Vulkan\Mesh.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\MeshManager.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\GeometryRenderingUnit.h" />
+    <ClInclude Include="GEN\include\Renderer\Vulkan\Pipelines\MeshPipeline.h" />
+    <ClInclude Include="GEN\include\Renderer\Vulkan\Pipelines\Pipeline.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\PreallocatedBuffer.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\StructCreators\Vk13SubmitStructs.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\StructCreators\VkBootstrapStructs.h" />

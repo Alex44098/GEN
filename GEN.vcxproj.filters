@@ -58,6 +58,12 @@
     <Filter Include="Исходные файлы\Math">
       <UniqueIdentifier>{c510f327-5bc5-4ffc-a222-071fdab55a4e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Исходные файлы\Renderer\Vulkan\Pipelines">
+      <UniqueIdentifier>{ebb7d655-b9e9-40bd-b939-8677b02157ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Renderer\Vulkan\Pipelines">
+      <UniqueIdentifier>{1830af27-1891-4a3b-9a88-42c43d421a79}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GEN\src\GEN.cpp">
@@ -134,6 +140,12 @@
     </ClCompile>
     <ClCompile Include="GEN\src\Renderer\Vulkan\VulkanRenderer.cpp">
       <Filter>Исходные файлы\Renderer\Vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="GEN\src\Renderer\Vulkan\Pipelines\MeshPipeline.cpp">
+      <Filter>Исходные файлы\Renderer\Vulkan\Pipelines</Filter>
+    </ClCompile>
+    <ClCompile Include="GEN\src\Renderer\Vulkan\Pipelines\Pipeline.cpp">
+      <Filter>Исходные файлы\Renderer\Vulkan\Pipelines</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -238,6 +250,12 @@
     </ClInclude>
     <ClInclude Include="GEN\include\Renderer\Vulkan\GeometryRenderingUnit.h">
       <Filter>Файлы заголовков\Renderer\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="GEN\include\Renderer\Vulkan\Pipelines\MeshPipeline.h">
+      <Filter>Файлы заголовков\Renderer\Vulkan\Pipelines</Filter>
+    </ClInclude>
+    <ClInclude Include="GEN\include\Renderer\Vulkan\Pipelines\Pipeline.h">
+      <Filter>Файлы заголовков\Renderer\Vulkan\Pipelines</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
