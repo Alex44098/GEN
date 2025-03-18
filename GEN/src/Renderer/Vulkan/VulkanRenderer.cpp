@@ -7,8 +7,11 @@ VulkanRenderer::VulkanRenderer(MeshManager& meshManager, MaterialManager& materi
 void VulkanRenderer::Init(gvk::Vulkan& vulkan, const glm::ivec2& drawImageSize) {
 	this->InitSceneData(vulkan);
     this->CreateImages(vulkan, drawImageSize);
-
     this->samples = vulkan.GetMaxSampleCount();
+
+    this->meshPipeline.Init(vulkan, drawImageFormat, depthImageFormat, samples);
+    this->skyboxPipeline.Init(vulkan, drawImageFormat, depthImageFormat, samples);
+    this->depthResolvePipeline.Init(vulkan, drawImageFormat, depthImageFormat, samples);
 }
 
 void VulkanRenderer::Destroy(gvk::Vulkan& vulkan) {
@@ -107,6 +110,153 @@ void VulkanRenderer::EndFrameBuilding() {
     this->SortRenderingUnits();
 }
 
+void VulkanRenderer::RenderFrame(VkCommandBuffer cmdBuffer, gvk::Vulkan& vulkan, const Gltf::GLTFSceneData& sceneData) {
+    LinearColorWithoutAlpha ambient{
+        .r = sceneData.ambientColor.r,
+        .g = sceneData.ambientColor.g,
+        .b = sceneData.ambientColor.b
+    };
+
+    LinearColorWithoutAlpha fog{
+        .r = sceneData.fogColor.r,
+        .g = sceneData.fogColor.g,
+        .b = sceneData.fogColor.b
+    };
+
+    const Gltf::GLTFShaderSceneData shaderSceneData{
+        .view = sceneData.camera.GetView(),
+        .projection = sceneData.camera.GetProjection(),
+        .viewProjection = sceneData.camera.GetViewProjection(),
+        .cameraPos = glm::vec4{ sceneData.camera.GetPosition(), 1.f},
+        .ambientColor = ambient,
+        .ambientIntensity = sceneData.ambientIntensity,
+        .fogColor = fog,
+        .fogIntensity = sceneData.fogIntensity,
+        .materialsBuffer = this->materialManager.GetMaterialDataBufferAddress(),
+        .lightsBuffer = this->lightDataBuffer.GetBuffer().address,
+        .numLights = (std::uint32_t)this->lightData.size(),
+        .sunIndex = this->sunlightIndex,
+    };
+    this->sceneDataBuffer.UploadNewFrameData(
+        cmdBuffer,
+        vulkan.GetCurrentFrame(),
+        (void*)&shaderSceneData,
+        sizeof(Gltf::GLTFShaderSceneData),
+        0,
+        true
+    );
+
+    const Image& drawImage = vulkan.GetImageManager().GetImage(this->drawImageId);
+    const Image& resolveImage = vulkan.GetImageManager().GetImage(this->resolveDrawImageId);
+    const Image& depthImage = vulkan.GetImageManager().GetImage(this->depthImageId);
+
+    // geometry rendering
+    Util::PipelineImageTransition(
+        cmdBuffer,
+        drawImage.image,
+        VK_IMAGE_LAYOUT_UNDEFINED,
+        VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL
+    );
+    Util::PipelineImageTransition(
+        cmdBuffer,
+        depthImage.image,
+        VK_IMAGE_LAYOUT_UNDEFINED,
+        VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL
+    );
+    if (this->MultisamplingEnabled()) {
+        Util::PipelineImageTransition(
+            cmdBuffer,
+            resolveImage.image,
+            VK_IMAGE_LAYOUT_UNDEFINED,
+            VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL
+        );
+    }
+
+    const RenderInfo meshRenderInfo = StructCreators::CreateRenderingInfo({
+            .extent = drawImage.getExtent2D(),
+            .colorImageView = drawImage.imageView,
+            .hasColorClearValue = true,
+            .colorImageClearValue = glm::vec4{0.f, 0.f, 0.f, 1.f},
+            .depthImageView = depthImage.imageView,
+            .depthImageClearValue = 0.f,
+            .resolveImageView = this->MultisamplingEnabled() ? resolveImage.imageView : VK_NULL_HANDLE,
+        });
+
+    vkCmdBeginRendering(cmdBuffer, &meshRenderInfo.renderingInfo);
+
+    meshPipeline.Draw(
+        cmdBuffer,
+        drawImage.getExtent2D(),
+        vulkan,
+        this->meshManager,
+        this->materialManager,
+        sceneData.camera,
+        sceneDataBuffer.GetBuffer(),
+        this->renderingUnits,
+        this->renderingUnitsOrder
+    );
+    skyboxPipeline.Draw(cmdBuffer, vulkan, sceneData.camera);
+    vkCmdEndRendering(cmdBuffer);
+
+    //// Synchronization with next frame ////
+    const VkImageMemoryBarrier2 imageBarrier{
+        .sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER_2,
+        .srcStageMask = VK_PIPELINE_STAGE_2_COLOR_ATTACHMENT_OUTPUT_BIT,
+        .srcAccessMask = VK_ACCESS_2_COLOR_ATTACHMENT_WRITE_BIT,
+        .dstStageMask = VK_PIPELINE_STAGE_2_FRAGMENT_SHADER_BIT,
+        .dstAccessMask = VK_ACCESS_2_SHADER_READ_BIT,
+        .oldLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
+        .newLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
+        .image = this->MultisamplingEnabled() ? resolveImage.image : drawImage.image,
+        .subresourceRange = StructCreators::ImageSubresourceRange(VK_IMAGE_ASPECT_COLOR_BIT),
+    };
+    const VkImageMemoryBarrier2 depthBarrier{
+        .sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER_2,
+        .srcStageMask = VK_PIPELINE_STAGE_2_LATE_FRAGMENT_TESTS_BIT,
+        .srcAccessMask = VK_ACCESS_2_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT,
+        .dstStageMask = VK_PIPELINE_STAGE_2_FRAGMENT_SHADER_BIT,
+        .dstAccessMask = VK_ACCESS_2_SHADER_READ_BIT,
+        .oldLayout = VK_IMAGE_LAYOUT_DEPTH_ATTACHMENT_OPTIMAL,
+        .newLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
+        .image = depthImage.image,
+        .subresourceRange = StructCreators::ImageSubresourceRange(VK_IMAGE_ASPECT_DEPTH_BIT),
+    };
+    const VkImageMemoryBarrier2 barriers[2] {imageBarrier, depthBarrier};
+    const auto dependencyInfo = VkDependencyInfo{
+        .sType = VK_STRUCTURE_TYPE_DEPENDENCY_INFO,
+        .imageMemoryBarrierCount = 2,
+        .pImageMemoryBarriers = barriers,
+    };
+    vkCmdPipelineBarrier2(cmdBuffer, &dependencyInfo);
+    ////////
+
+    if (this->MultisamplingEnabled()) {
+        const Image& resolveDepthImage = vulkan.GetImageManager().GetImage(this->resolveDepthImageId);
+        Util::PipelineImageTransition(
+            cmdBuffer,
+            resolveDepthImage.image,
+            VK_IMAGE_LAYOUT_UNDEFINED,
+            VK_IMAGE_LAYOUT_DEPTH_ATTACHMENT_OPTIMAL);
+
+        const RenderInfo resolveRenderInfo = StructCreators::CreateRenderingInfo({
+            .extent = resolveDepthImage.getExtent2D(),
+            .depthImageView = resolveDepthImage.imageView
+        });
+        vkCmdBeginRendering(cmdBuffer, &resolveRenderInfo.renderingInfo);
+
+        this->depthResolvePipeline.Draw(cmdBuffer, vulkan, depthImage, this->SamplesToInt(this->samples));
+
+        vkCmdEndRendering(cmdBuffer);
+
+        // post FX rendering
+        Util::PipelineImageTransition(
+            cmdBuffer,
+            resolveDepthImage.image,
+            VK_IMAGE_LAYOUT_DEPTH_ATTACHMENT_OPTIMAL,
+            VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
+    }
+}
+
 void VulkanRenderer::AddRenderingUnit(MeshId meshId, MaterialId materialId, const glm::mat4& transform, bool castShadow) {
     assert(meshId != INVALID_MESH_ID && materialId != INVALID_MATERIAL_ID);
 
@@ -171,4 +321,26 @@ VkFormat VulkanRenderer::GetDrawImageFormat() const {
 
 VkFormat VulkanRenderer::GetDepthImageFormat() const {
     return this->depthImageFormat;
+}
+
+int VulkanRenderer::SamplesToInt(VkSampleCountFlagBits samples)
+{
+    switch (samples) {
+    case VK_SAMPLE_COUNT_1_BIT:
+        return 1;
+    case VK_SAMPLE_COUNT_2_BIT:
+        return 2;
+    case VK_SAMPLE_COUNT_4_BIT:
+        return 4;
+    case VK_SAMPLE_COUNT_8_BIT:
+        return 8;
+    case VK_SAMPLE_COUNT_16_BIT:
+        return 16;
+    case VK_SAMPLE_COUNT_32_BIT:
+        return 32;
+    case VK_SAMPLE_COUNT_64_BIT:
+        return 64;
+    default:
+        return 0;
+    }
 }

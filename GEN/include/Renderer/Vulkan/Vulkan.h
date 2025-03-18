@@ -81,6 +81,7 @@ namespace gvk {
 		void EndFrameBuilding();
 
 		// getters
+		inline GECS::u32 GetCurrentFrame() const { return this->currentFrame; }
 		inline VkDevice GetDevice() const { return this->logDevice; }
 		inline VmaAllocator GetAllocator() const { return this->vkAllocator; }
 		inline ImageManager GetImageManager() const { return this->imageManager; }

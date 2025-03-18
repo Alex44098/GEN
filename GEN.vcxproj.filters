@@ -153,6 +153,12 @@
     <ClCompile Include="GEN\src\Renderer\Vulkan\Pipelines\SkyboxPipeline.cpp">
       <Filter>Исходные файлы\Renderer\Vulkan\Pipelines</Filter>
     </ClCompile>
+    <ClCompile Include="GEN\src\Renderer\Vulkan\StructCreators\VkRendering13.cpp">
+      <Filter>Исходные файлы\Renderer\Vulkan\StructCreators</Filter>
+    </ClCompile>
+    <ClCompile Include="GEN\src\Renderer\Vulkan\Pipelines\DepthResolvePipeline.cpp">
+      <Filter>Исходные файлы\Renderer\Vulkan\Pipelines</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GEN\include\Engine\Engine.h">
@@ -267,6 +273,12 @@
       <Filter>Файлы заголовков\Renderer\Vulkan\Util</Filter>
     </ClInclude>
     <ClInclude Include="GEN\include\Renderer\Vulkan\Pipelines\SkyboxPipeline.h">
+      <Filter>Файлы заголовков\Renderer\Vulkan\Pipelines</Filter>
+    </ClInclude>
+    <ClInclude Include="GEN\include\Renderer\Vulkan\StructCreators\VkRendering13.h">
+      <Filter>Файлы заголовков\Renderer\Vulkan\StructCreators</Filter>
+    </ClInclude>
+    <ClInclude Include="GEN\include\Renderer\Vulkan\Pipelines\DepthResolvePipeline.h">
       <Filter>Файлы заголовков\Renderer\Vulkan\Pipelines</Filter>
     </ClInclude>
   </ItemGroup>

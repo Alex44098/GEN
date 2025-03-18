@@ -30,6 +30,7 @@
     <ClCompile Include="GEN\src\Renderer\Vulkan\ImageManager.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\MaterialManager.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\MeshManager.cpp" />
+    <ClCompile Include="GEN\src\Renderer\Vulkan\Pipelines\DepthResolvePipeline.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\Pipelines\MeshPipeline.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\Pipelines\Pipeline.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\Pipelines\SkyboxPipeline.cpp" />
@@ -38,6 +39,7 @@
     <ClCompile Include="GEN\src\Renderer\Vulkan\StructCreators\VkBootstrapStructs.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\StructCreators\VkCommandStructs.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\StructCreators\VkImageSubresourceRange.cpp" />
+    <ClCompile Include="GEN\src\Renderer\Vulkan\StructCreators\VkRendering13.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\StructCreators\VMAStructs.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\Swapchain.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\Util\MipMapGenerator.cpp" />
@@ -72,6 +74,7 @@
     <ClInclude Include="GEN\include\Renderer\Vulkan\Mesh.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\MeshManager.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\GeometryRenderingUnit.h" />
+    <ClInclude Include="GEN\include\Renderer\Vulkan\Pipelines\DepthResolvePipeline.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\Pipelines\MeshPipeline.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\Pipelines\Pipeline.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\Pipelines\SkyboxPipeline.h" />
@@ -80,6 +83,7 @@
     <ClInclude Include="GEN\include\Renderer\Vulkan\StructCreators\VkBootstrapStructs.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\StructCreators\VkCommandStructs.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\StructCreators\VkImageSubresourceRange.h" />
+    <ClInclude Include="GEN\include\Renderer\Vulkan\StructCreators\VkRendering13.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\StructCreators\VMAStructs.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\Swapchain.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\Util\MipMapGenerator.h" />
