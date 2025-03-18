@@ -73,13 +73,13 @@ void Swapchain::Destroy(VkDevice logDevice) {
 	vkb::destroy_swapchain(this->swapchain);
 }
 
-VkImage Swapchain::AcquireImage(VkDevice logDevice, GECS::u32 currentImage, GECS::u32* swapchainIndexImage) {
+VkImage Swapchain::AcquireImage(VkDevice logDevice, GECS::u32 currentImage, GECS::u32& swapchainIndexImage) {
 	const VkResult result = vkAcquireNextImageKHR(logDevice,
 		this->swapchain,
 		UINT64_MAX,
 		this->frameSyncs.semaphoreImageAvailable[currentImage],
 		VK_NULL_HANDLE,
-		swapchainIndexImage);
+		&swapchainIndexImage);
 
 	if (result == VK_ERROR_OUT_OF_DATE_KHR)
 		return VK_NULL_HANDLE;
@@ -87,7 +87,7 @@ VkImage Swapchain::AcquireImage(VkDevice logDevice, GECS::u32 currentImage, GECS
 	if (result != VK_SUCCESS || result == VK_SUBOPTIMAL_KHR)
 		assert(false && "Swapchain: image doesn't acquired");
 
-	return this->swapChainImages[*swapchainIndexImage];
+	return this->swapChainImages[swapchainIndexImage];
 }
 
 VkResult Swapchain::Submit2AndPresent(VkCommandBuffer commandBuffer, VkQueue graphicsQueue, GECS::u32 currentImage, GECS::u32* swapchainIndexImage) {

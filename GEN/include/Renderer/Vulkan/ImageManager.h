@@ -42,6 +42,17 @@ public:
     inline VkDescriptorSetLayout GetDescSetLayout() const { return this->bindlessManager.getDescriptorSetLayout(); }
     inline const VkDescriptorSet& GetDescSet() const { return this->bindlessManager.getDescriptorSet(); }
 
+    void CopyImage(
+        VkCommandBuffer cmdBuffer,
+        VkImage srcImage,
+        VkImage destImage,
+        VkExtent2D srcSize,
+        int destX,
+        int destY,
+        int destW,
+        int destH,
+        VkFilter filter);
+
 private:
     Image AllocateImage(const CreateImageInfo& createInfo) const;
     void LoadToGPU(const Image& image, void* data, GECS::u32 layer) const;

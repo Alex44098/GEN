@@ -8,6 +8,7 @@
 #include "Renderer/Vulkan/StructCreators/VkBootstrapStructs.h"
 #include "Renderer/Vulkan/StructCreators/VMAStructs.h"
 #include "Renderer/Vulkan/StructCreators/VkCommandStructs.h"
+#include "Renderer/Vulkan/StructCreators/VkImageSubresourceRange.h"
 
 #include <SDL.h>
 #include <SDL_vulkan.h>
@@ -181,10 +182,87 @@ namespace gvk {
 		return imageCommandBuffer;
 	}
 
-	void Vulkan::EndFrameBuilding() {
+	void Vulkan::EndFrameBuilding(
+		VkCommandBuffer cmdBuffer,
+		const Image& drawImage,
+		const LinearColor clearColor,
+		bool copyImageIntoSwapchain,
+		glm::ivec4 drawImageBlitRect,
+		bool drawImageLinearBlit) {
+
 		// thinks about offscreen rendering
+		GECS::u32 swapchainImageIndex{ 0 };
+		const VkImage swapchainImage = this->swapchain.AcquireImage(this->logDevice, this->currentFrame, swapchainImageIndex);
+		if (swapchainImage == VK_NULL_HANDLE)
+			return;
 
+		this->swapchain.ResetFences(this->logDevice, this->currentFrame);
+		
+		VkImageLayout swapchainLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+		VkImageSubresourceRange clearRange = StructCreators::ImageSubresourceRange(VK_IMAGE_ASPECT_COLOR_BIT);
+		Util::PipelineImageTransition(
+			cmdBuffer, swapchainImage, swapchainLayout, VK_IMAGE_LAYOUT_GENERAL);
+		swapchainLayout = VK_IMAGE_LAYOUT_GENERAL;
+		const VkClearColorValue clearValue{
+			clearColor.r, clearColor.g, clearColor.b
+		};
+		vkCmdClearColorImage(cmdBuffer, swapchainImage, VK_IMAGE_LAYOUT_GENERAL, &clearValue, 1, &clearRange);
 
+		if (copyImageIntoSwapchain) {
+			Util::PipelineImageTransition(
+				cmdBuffer,
+				drawImage.image,
+				VK_IMAGE_LAYOUT_ATTACHMENT_OPTIMAL,
+				VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL);
+			Util::PipelineImageTransition(
+				cmdBuffer,
+				swapchainImage,
+				swapchainLayout,
+				VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
+			swapchainLayout = VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;
+			const VkFilter filter = drawImageLinearBlit ? VK_FILTER_LINEAR : VK_FILTER_NEAREST;
+
+			if (drawImageBlitRect != glm::ivec4{})
+				this->imageManager.CopyImage(
+					cmdBuffer,
+					drawImage.image,
+					swapchainImage,
+					drawImage.getExtent2D(),
+					drawImageBlitRect.x,
+					drawImageBlitRect.y,
+					drawImageBlitRect.z,
+					drawImageBlitRect.w,
+					filter);
+			else {
+				const VkExtent2D imageExtent = drawImage.getExtent2D();
+				this->imageManager.CopyImage(
+					cmdBuffer,
+					drawImage.image,
+					swapchainImage,
+					imageExtent,
+					0,
+					0,
+					imageExtent.width,
+					imageExtent.height,
+					filter);
+			}
+				
+		}
+
+		Util::PipelineImageTransition(
+			cmdBuffer,
+			swapchainImage,
+			swapchainLayout,
+			VK_IMAGE_LAYOUT_PRESENT_SRC_KHR);
+		swapchainLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+
+		vkEndCommandBuffer(cmdBuffer);
+		this->swapchain.Submit2AndPresent(
+			cmdBuffer,
+			this->graphicsQueue,
+			this->currentFrame,
+			&swapchainImageIndex
+		);
 
 		this->IncreaseImageIndex();
 	}

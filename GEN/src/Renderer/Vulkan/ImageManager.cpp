@@ -208,3 +208,56 @@ void ImageManager::LoadToGPU(const Image& image, void* data, GECS::u32 layer) co
 
 	this->vulkanInstance.DestroyBuffer(staggingBuffer);
 }
+
+void ImageManager::CopyImage(
+	VkCommandBuffer cmdBuffer,
+	VkImage srcImage,
+	VkImage destImage,
+	VkExtent2D srcSize,
+	int destX,
+	int destY,
+	int destW,
+	int destH,
+	VkFilter filter) {
+	
+	const VkImageBlit2 blitRegion{
+		.sType = VK_STRUCTURE_TYPE_IMAGE_BLIT_2,
+		.srcSubresource =
+			{
+				.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT,
+				.mipLevel = 0,
+				.baseArrayLayer = 0,
+				.layerCount = 1,
+			},
+		.srcOffsets =
+			{
+				{},
+				{(std::int32_t)srcSize.width, (std::int32_t)srcSize.height, 1},
+			},
+		.dstSubresource =
+			{
+				.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT,
+				.mipLevel = 0,
+				.baseArrayLayer = 0,
+				.layerCount = 1,
+			},
+		.dstOffsets =
+			{
+				{(std::int32_t)destX, (std::int32_t)destY},
+				{(std::int32_t)(destX + destW), (std::int32_t)(destY + destH), 1},
+			},
+	};
+
+	const VkBlitImageInfo2 blitInfo{
+		.sType = VK_STRUCTURE_TYPE_BLIT_IMAGE_INFO_2,
+		.srcImage = srcImage,
+		.srcImageLayout = VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
+		.dstImage = destImage,
+		.dstImageLayout = VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+		.regionCount = 1,
+		.pRegions = &blitRegion,
+		.filter = filter
+	};
+
+	vkCmdBlitImage2(cmdBuffer, &blitInfo);
+}

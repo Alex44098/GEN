@@ -78,7 +78,13 @@ namespace gvk {
 
 		// for rendering
 		VkCommandBuffer& StartFrameBuilding();
-		void EndFrameBuilding();
+		void EndFrameBuilding(
+			VkCommandBuffer cmdBuffer,
+			const Image& drawImage,
+			const LinearColor clearColor,
+			bool copyImageIntoSwapchain = true,
+			glm::ivec4 drawImageBlitRect = glm::ivec4{},
+			bool drawImageLinearBlit = true);
 
 		// getters
 		inline GECS::u32 GetCurrentFrame() const { return this->currentFrame; }
