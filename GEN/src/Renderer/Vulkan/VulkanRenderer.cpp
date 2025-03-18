@@ -12,11 +12,18 @@ void VulkanRenderer::Init(gvk::Vulkan& vulkan, const glm::ivec2& drawImageSize) 
     this->meshPipeline.Init(vulkan, drawImageFormat, depthImageFormat, samples);
     this->skyboxPipeline.Init(vulkan, drawImageFormat, depthImageFormat, samples);
     this->depthResolvePipeline.Init(vulkan, drawImageFormat, depthImageFormat, samples);
+    this->postFXPipeline.Init(vulkan, drawImageFormat, depthImageFormat, samples);
 }
 
 void VulkanRenderer::Destroy(gvk::Vulkan& vulkan) {
     this->lightDataBuffer.Cleanup(vulkan);
     this->sceneDataBuffer.Cleanup(vulkan);
+
+    const VkDevice device = vulkan.GetDevice();
+    this->meshPipeline.Cleanup(device);
+    this->skyboxPipeline.Cleanup(device);
+    this->depthResolvePipeline.Cleanup(device);
+    this->postFXPipeline.Cleanup(device);
 }
 
 void VulkanRenderer::InitSceneData(gvk::Vulkan& vulkan) {
@@ -255,6 +262,38 @@ void VulkanRenderer::RenderFrame(VkCommandBuffer cmdBuffer, gvk::Vulkan& vulkan,
             VK_IMAGE_LAYOUT_DEPTH_ATTACHMENT_OPTIMAL,
             VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
     }
+
+    const Image& postFXDrawImage = vulkan.GetImageManager().GetImage(this->postFXDrawImageId);
+    Util::PipelineImageTransition(
+        cmdBuffer,
+        postFXDrawImage.image,
+        VK_IMAGE_LAYOUT_UNDEFINED,
+        VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
+
+    const RenderInfo postFXRenderInfo = StructCreators::CreateRenderingInfo({
+        .extent = postFXDrawImage.getExtent2D(),
+        .depthImageView = postFXDrawImage.imageView
+    });
+    vkCmdBeginRendering(cmdBuffer, &postFXRenderInfo.renderingInfo);
+
+    if (this->MultisamplingEnabled()) {
+        const Image& resolveDepthImage = vulkan.GetImageManager().GetImage(this->resolveDepthImageId);
+        this->postFXPipeline.Draw(
+            cmdBuffer,
+            vulkan,
+            resolveImage,
+            resolveDepthImage,
+            this->sceneDataBuffer.GetBuffer());
+    }
+    else
+        this->postFXPipeline.Draw(
+            cmdBuffer,
+            vulkan,
+            drawImage,
+            depthImage,
+            this->sceneDataBuffer.GetBuffer());
+
+    vkCmdEndRendering(cmdBuffer);
 }
 
 void VulkanRenderer::AddRenderingUnit(MeshId meshId, MaterialId materialId, const glm::mat4& transform, bool castShadow) {

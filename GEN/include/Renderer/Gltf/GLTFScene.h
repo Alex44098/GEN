@@ -60,7 +60,7 @@ namespace Gltf {
 		// Lightings
 		VkDeviceAddress lightsBuffer;
 		GECS::u32 numLights;
-		GECS::u32 sunIndex;
+		GECS::i64 sunIndex;
 		GECS::f32 pointLightFarPlane;
 	};
 }

@@ -33,6 +33,7 @@
     <ClCompile Include="GEN\src\Renderer\Vulkan\Pipelines\DepthResolvePipeline.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\Pipelines\MeshPipeline.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\Pipelines\Pipeline.cpp" />
+    <ClCompile Include="GEN\src\Renderer\Vulkan\Pipelines\PostFXPipeline.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\Pipelines\SkyboxPipeline.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\PreallocatedMemory.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\StructCreators\Vk13SubmitStructs.cpp" />
@@ -77,6 +78,7 @@
     <ClInclude Include="GEN\include\Renderer\Vulkan\Pipelines\DepthResolvePipeline.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\Pipelines\MeshPipeline.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\Pipelines\Pipeline.h" />
+    <ClInclude Include="GEN\include\Renderer\Vulkan\Pipelines\PostFXPipeline.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\Pipelines\SkyboxPipeline.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\PreallocatedBuffer.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\StructCreators\Vk13SubmitStructs.h" />

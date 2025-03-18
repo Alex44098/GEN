@@ -14,6 +14,7 @@
 #include "Renderer/Vulkan/Pipelines/MeshPipeline.h"
 #include "Renderer/Vulkan/Pipelines/SkyboxPipeline.h"
 #include "Renderer/Vulkan/Pipelines/DepthResolvePipeline.h"
+#include "Renderer/Vulkan/Pipelines/PostFXPipeline.h"
 
 #include "Renderer/Vulkan/StructCreators/VkRendering13.h"
 #include "Renderer/Vulkan/StructCreators/VkImageSubresourceRange.h"
@@ -43,6 +44,7 @@ class VulkanRenderer {
 	MeshPipeline meshPipeline;
 	SkyboxPipeline skyboxPipeline;
 	DepthResolvePipeline depthResolvePipeline;
+	PostFXPipeline postFXPipeline;
 
 	VkFormat drawImageFormat{ VK_FORMAT_R16G16B16A16_SFLOAT };
 	VkFormat depthImageFormat{ VK_FORMAT_D32_SFLOAT };
