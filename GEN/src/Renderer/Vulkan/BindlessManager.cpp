@@ -1,6 +1,8 @@
 #include "Renderer/Vulkan/BindlessManager.h"
 
-BindlessManager::BindlessManager(VkDevice device) : device(device) {
+void BindlessManager::Init(VkDevice device) {
+	this->device = device;
+
 	this->CreateDescriptorPool();
 	this->CreateDescriptorSetLayout();
 	this->AllocateDescriptorSet();
@@ -15,12 +17,14 @@ void BindlessManager::CreateDescriptorPool() {
 		{VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE, MAX_BINDLESS},
 		{VK_DESCRIPTOR_TYPE_SAMPLER, MAX_SAMPLERS}
 	};
-	VkDescriptorPoolCreateInfo poolInfo;
-	poolInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
-	poolInfo.flags = VK_DESCRIPTOR_POOL_CREATE_UPDATE_AFTER_BIND_BIT_EXT;
-	poolInfo.maxSets = MAX_BINDLESS * 2;
-	poolInfo.poolSizeCount = 2;
-	poolInfo.pPoolSizes = poolSizes;
+
+	const VkDescriptorPoolCreateInfo poolInfo{
+		.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO,
+		.flags = VK_DESCRIPTOR_POOL_CREATE_UPDATE_AFTER_BIND_BIT_EXT,
+		.maxSets = MAX_BINDLESS * 2,
+		.poolSizeCount = 2,
+		.pPoolSizes = poolSizes
+	};
 
 	vkCreateDescriptorPool(this->device, &poolInfo, nullptr, &(this->descriptorPool));
 }

@@ -4,6 +4,7 @@
 // About material: https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html#materials
 
 #include <filesystem>
+#include <span>
 
 #include "Renderer/Vulkan/Vulkan.h"
 #include "Renderer/Vulkan/MeshManager.h"

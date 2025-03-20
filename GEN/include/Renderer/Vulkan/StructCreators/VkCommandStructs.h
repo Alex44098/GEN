@@ -1,13 +1,13 @@
 #pragma once
 
 #include <GECSHeaders.h>
-#include <vulkan/vulkan.h>
+#include <Volk/volk.h>
 
 namespace StructCreators {
-    VkCommandPoolCreateInfo CommandPoolInfo(
+    const VkCommandPoolCreateInfo CommandPoolInfo(
         VkCommandPoolCreateFlags flags,
-        GECS::i32 queueFamilyIndex);
-    VkCommandBufferAllocateInfo CommandBufferAllocateInfo(
+        GECS::u32 queueFamilyIndex);
+    const VkCommandBufferAllocateInfo CommandBufferAllocateInfo(
         VkCommandPool commandPool,
-        GECS::i32 commandBufferCount);
+        GECS::u32 commandBufferCount);
 }

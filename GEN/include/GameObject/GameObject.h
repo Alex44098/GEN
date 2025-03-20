@@ -6,5 +6,5 @@ template<class T>
 class GameObject : public GECS::Entity<T> {
 public:
 	GameObject() {}
-	~GameObject() {}
+	virtual ~GameObject() {}
 };

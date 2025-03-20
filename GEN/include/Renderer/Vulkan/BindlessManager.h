@@ -1,6 +1,6 @@
 #pragma once
 
-#include <vulkan/vulkan.h>
+#include <Volk/volk.h>
 
 #include "Renderer/RenderTypes.h"
 
@@ -15,7 +15,7 @@ class BindlessManager {
 	VkSampler linearSampler{};
 
 public:
-	BindlessManager(VkDevice device);
+	void Init(VkDevice device);
 
 	void InitSamplers(float maxAnisotropy);
 	void Clear();

@@ -1,10 +1,10 @@
 #pragma once
 
-#include <vulkan/vulkan.h>
+#include <Volk/volk.h>
 
 namespace StructCreators {
-	VkSemaphoreSubmitInfo SemaphoreSubmitInfo(VkPipelineStageFlags2 stageMask, VkSemaphore semaphore);
-    VkSubmitInfo2 SubmitInfo(
+	const VkSemaphoreSubmitInfo SemaphoreSubmitInfo(VkPipelineStageFlags2 stageMask, VkSemaphore semaphore);
+    const VkSubmitInfo2 SubmitInfo(
         const VkCommandBufferSubmitInfo* cmd,
         const VkSemaphoreSubmitInfo* waitSemaphoreInfo,
         const VkSemaphoreSubmitInfo* signalSemaphoreInfo);

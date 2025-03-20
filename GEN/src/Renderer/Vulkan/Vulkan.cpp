@@ -2,6 +2,7 @@
 #include <vulkan/vulkan.h>
 #define VOLK_IMPLEMENTATION
 #include <Volk/volk.h>
+#include "Renderer/Vulkan/VmaUsage.h"
 
 #include "Renderer/Vulkan/Vulkan.h"
 
@@ -19,9 +20,7 @@ namespace gvk {
 	void Vulkan::Init(SDL_Window* window) {
 		this->InitVulkan(window);
 
-		this->imageManager.InitSamplers(this->maxAnisotropy);
-
-		this->swapchain.Init(this->logDevice.device);
+		this->swapchain.Init(this->logDevice);
 
 		GECS::i32 width, height;
 		SDL_GetWindowSize(window, &width, &height);
@@ -31,10 +30,13 @@ namespace gvk {
 
 		CreateCommandBuffers();
 		CreateImageCommandBuffers();
+
+		this->imageManager.InitBindlessManager(this->logDevice);
+		this->imageManager.InitSamplers(this->maxAnisotropy);
 	}
 
 	void Vulkan::InitVulkan(SDL_Window* window) {
-		volkInitialize();
+		assert(volkInitialize() == VK_SUCCESS);
 
 		this->instance = vkb::InstanceBuilder{}
 			.request_validation_layers()
@@ -66,19 +68,32 @@ namespace gvk {
 		this->graphicsQueue = this->logDevice.get_queue(vkb::QueueType::graphics).value();
 
 		// Init VMA
-		VmaVulkanFunctions vmaVkFunctions = StructCreators::VmaVkFunctions();
+		const VmaVulkanFunctions vmaVkFunctions{
+			// !!! funcs from volk.h !!!
+			.vkGetInstanceProcAddr = vkGetInstanceProcAddr,
+			.vkGetDeviceProcAddr = vkGetDeviceProcAddr
+		};
 
-		VmaAllocatorCreateInfo vmaAllocatorInfo =
-			StructCreators::VmaAllocatorInfo(this->instance, this->phDevice, this->logDevice, &vmaVkFunctions);
+		const VmaAllocatorCreateInfo vmaAllocatorInfo =
+			StructCreators::VmaAllocatorInfo(
+				this->instance.instance,
+				this->phDevice.physical_device,
+				this->logDevice.device,
+				vmaVkFunctions);
 
-		vmaCreateAllocator(&vmaAllocatorInfo, &(this->vkAllocator));
+		assert(vmaCreateAllocator(&vmaAllocatorInfo, &(this->vkAllocator)) == VK_SUCCESS);
 	}
 
 	void Vulkan::Destroy() {
+		this->imageManager.Clear();
+
 		for (GECS::u32 i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
 			vkDestroyCommandPool(this->logDevice.device, this->imageCommandPools[i], 0);
 
 		swapchain.Destroy(this->logDevice.device);
+
+		vkDestroyCommandPool(this->logDevice, this->commandPool, nullptr);
+		vkDestroyFence(this->logDevice, this->commandFence, nullptr);
 
 		vkb::destroy_surface(this->instance, this->surface);
 		vmaDestroyAllocator(this->vkAllocator);
@@ -121,9 +136,10 @@ namespace gvk {
 		const VkCommandBufferAllocateInfo commandAllocInfo = StructCreators::CommandBufferAllocateInfo(commandPool, 1);
 		vkAllocateCommandBuffers(this->logDevice, &commandAllocInfo, &(this->commandBuffer));
 
-		VkFenceCreateInfo fenceCreateInfo;
-		fenceCreateInfo.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
-		fenceCreateInfo.flags = VK_FENCE_CREATE_SIGNALED_BIT;
+		const VkFenceCreateInfo fenceCreateInfo{
+			.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO,
+			.flags = VK_FENCE_CREATE_SIGNALED_BIT
+		};
 		vkCreateFence(this->logDevice.device, &fenceCreateInfo, nullptr, &(this->commandFence));
 	}
 
@@ -136,7 +152,7 @@ namespace gvk {
 			vkCreateCommandPool(this->logDevice, &poolCreateInfo, nullptr, &commandPool);
 			
 			const VkCommandBufferAllocateInfo commandAllocInfo =
-				StructCreators::CommandBufferAllocateInfo(commandPool, 1);
+				StructCreators::CommandBufferAllocateInfo(commandPool, 1U);
 			VkCommandBuffer& commandBuffer = this->imageCommandBuffers[imageIndex];
 			vkAllocateCommandBuffers(this->logDevice, &commandAllocInfo, &commandBuffer);
 		}
@@ -147,9 +163,10 @@ namespace gvk {
 		vkResetCommandBuffer(this->commandBuffer, 0);
 
 		VkCommandBuffer cmd = this->commandBuffer;
-		VkCommandBufferBeginInfo cmdBeginInfo;
-		cmdBeginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-		cmdBeginInfo.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
+		const VkCommandBufferBeginInfo cmdBeginInfo{
+			.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO,
+			.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT
+		};
 
 		vkBeginCommandBuffer(cmd, &cmdBeginInfo);
 
@@ -159,11 +176,12 @@ namespace gvk {
 	void Vulkan::EndCommandBufferRecord(VkCommandBuffer cmd) {
 		vkEndCommandBuffer(cmd);
 
-		VkCommandBufferSubmitInfo cmdSubmit;
-		cmdSubmit.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_SUBMIT_INFO;
-		cmdSubmit.commandBuffer = cmd;
+		VkCommandBufferSubmitInfo cmdSubmit{
+			.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_SUBMIT_INFO,
+			.commandBuffer = cmd
+		};
 
-		VkSubmitInfo2 submit = StructCreators::SubmitInfo(&cmdSubmit, nullptr, nullptr);
+		const VkSubmitInfo2 submit = StructCreators::SubmitInfo(&cmdSubmit, nullptr, nullptr);
 
 		vkQueueSubmit2(this->graphicsQueue, 1, &submit, this->commandFence);
 		vkWaitForFences(this->logDevice, 1, &(this->commandFence), VK_TRUE, UINT64_MAX);
@@ -172,9 +190,10 @@ namespace gvk {
 	VkCommandBuffer& Vulkan::StartFrameBuilding() {
 		this->swapchain.WaitFences(this->logDevice.device, currentFrame);
 
-		VkCommandBufferBeginInfo cmdBeginInfo;
-		cmdBeginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-		cmdBeginInfo.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
+		const VkCommandBufferBeginInfo cmdBeginInfo{
+			.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO,
+			.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT
+		};
 
 		VkCommandBuffer& imageCommandBuffer = this->imageCommandBuffers[this->currentFrame];
 		vkBeginCommandBuffer(imageCommandBuffer, &cmdBeginInfo);
@@ -268,15 +287,17 @@ namespace gvk {
 	}
 
 	Buffer Vulkan::CreateBuffer(std::size_t size, VkBufferUsageFlags vkUsage, VmaMemoryUsage vmaUsage) {
-		VkBufferCreateInfo bufferInfo;
-		bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
-		bufferInfo.size = size;
-		bufferInfo.usage = vkUsage;
+		const VkBufferCreateInfo bufferInfo{
+			.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO,
+			.size = size,
+			.usage = vkUsage
+		};
 
-		VmaAllocationCreateInfo allocInfo;
-		allocInfo.flags = VMA_ALLOCATION_CREATE_MAPPED_BIT |
-			VMA_ALLOCATION_CREATE_HOST_ACCESS_SEQUENTIAL_WRITE_BIT;
-		allocInfo.usage = vmaUsage;
+		const VmaAllocationCreateInfo allocInfo{
+			.flags = VMA_ALLOCATION_CREATE_MAPPED_BIT |
+			VMA_ALLOCATION_CREATE_HOST_ACCESS_SEQUENTIAL_WRITE_BIT,
+			.usage = vmaUsage
+		};
 
 		Buffer buffer;
 		vmaCreateBuffer(this->vkAllocator, &bufferInfo, &allocInfo,
@@ -284,9 +305,10 @@ namespace gvk {
 
 		// create address for shaders
 		if ((vkUsage & VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT) != 0) {
-			VkBufferDeviceAddressInfo deviceAddressInfo;
-			deviceAddressInfo.sType = VK_STRUCTURE_TYPE_BUFFER_DEVICE_ADDRESS_INFO;
-			deviceAddressInfo.buffer = buffer.vkBuffer;
+			const VkBufferDeviceAddressInfo deviceAddressInfo{
+				.sType = VK_STRUCTURE_TYPE_BUFFER_DEVICE_ADDRESS_INFO,
+				.buffer = buffer.vkBuffer
+			};
 
 			buffer.address = vkGetBufferDeviceAddress(this->logDevice.device, &deviceAddressInfo);
 		}

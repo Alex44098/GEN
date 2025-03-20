@@ -1,27 +1,29 @@
 #include "Renderer/Vulkan/StructCreators/VkCommandStructs.h"
 
 namespace StructCreators {
-    VkCommandPoolCreateInfo CommandPoolInfo(
+    const VkCommandPoolCreateInfo CommandPoolInfo(
         VkCommandPoolCreateFlags flags,
-        GECS::i32 queueFamilyIndex) {
+        GECS::u32 queueFamilyIndex) {
 
-        VkCommandPoolCreateInfo commandCreateInfo;
-        commandCreateInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
-        commandCreateInfo.flags = flags;
-        commandCreateInfo.queueFamilyIndex = queueFamilyIndex;
+        const VkCommandPoolCreateInfo commandCreateInfo{
+            .sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO,
+            .flags = flags,
+            .queueFamilyIndex = queueFamilyIndex
+        };
 
         return commandCreateInfo;
     }
 
-    VkCommandBufferAllocateInfo CommandBufferAllocateInfo(
+    const VkCommandBufferAllocateInfo CommandBufferAllocateInfo(
         VkCommandPool commandPool,
-        GECS::i32 commandBufferCount) {
+        GECS::u32 commandBufferCount) {
 
-        VkCommandBufferAllocateInfo commandBufferInfo;
-        commandBufferInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
-        commandBufferInfo.commandPool = commandPool;
-        commandBufferInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
-        commandBufferInfo.commandBufferCount = commandBufferCount;
+        const VkCommandBufferAllocateInfo commandBufferInfo{
+            .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO,
+            .commandPool = commandPool,
+            .level = VK_COMMAND_BUFFER_LEVEL_PRIMARY,
+            .commandBufferCount = commandBufferCount
+        };
 
         return commandBufferInfo;
     }

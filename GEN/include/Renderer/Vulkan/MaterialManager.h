@@ -23,7 +23,7 @@ class MaterialManager {
 	ImageId placeholderNormalTex;
 
 public:
-	MaterialManager(gvk::Vulkan& vulkan);
+	void Init(gvk::Vulkan& vulkan);
 	void Destroy(gvk::Vulkan& vulkan);
 
 	MaterialId AddMaterial(gvk::Vulkan& vulkan, Material material);

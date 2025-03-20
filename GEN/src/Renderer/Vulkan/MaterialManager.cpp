@@ -1,6 +1,6 @@
 #include "Renderer/Vulkan/MaterialManager.h"
 
-MaterialManager::MaterialManager(gvk::Vulkan& vulkan) {
+void MaterialManager::Init(gvk::Vulkan& vulkan) {
 	this->materialDataBuffer = vulkan.CreateBuffer(MAX_NUM_MATERIALS * sizeof(MaterialData),
 		VK_BUFFER_USAGE_STORAGE_BUFFER_BIT | VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT,
 		VMA_MEMORY_USAGE_AUTO);

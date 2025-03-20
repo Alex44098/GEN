@@ -1,8 +1,12 @@
 #include "Renderer/Vulkan/ImageManager.h"
 #include "Renderer/Vulkan/Vulkan.h"
 
-ImageManager::ImageManager(gvk::Vulkan& vulkan) : vulkanInstance(vulkan), bindlessManager(vulkan.GetDevice())
+ImageManager::ImageManager(gvk::Vulkan& vulkan) : vulkanInstance(vulkan)
 {}
+
+void ImageManager::InitBindlessManager(VkDevice device) {
+	this->bindlessManager.Init(device);
+}
 
 void ImageManager::InitSamplers(float maxAnisotropy) {
 	this->bindlessManager.InitSamplers(maxAnisotropy);
@@ -11,8 +15,10 @@ void ImageManager::InitSamplers(float maxAnisotropy) {
 void ImageManager::Clear() {
 	for (const Image& image : this->images)
 		this->DestroyImage(image);
-	images.clear();
-	loadedImagesInfo.clear();
+	this->images.clear();
+	this->loadedImagesInfo.clear();
+
+	this->bindlessManager.Clear();
 }
 
 void ImageManager::DestroyImage(const Image& image) {
@@ -24,7 +30,7 @@ const Image& ImageManager::GetImage(ImageId id) const {
 	return this->images.at(id);
 }
 
-ImageId ImageManager::LoadImageFromFile(const std::filesystem::path& path, VkFormat format, VkImageUsageFlags usage, bool mipMap) {
+ImageId ImageManager::LoadImageFromFile(const std::filesystem::path& path, VkFormat format, VkImageUsageFlags usage, bool mipMap) const {
 	for (const std::pair<ImageId, LoadedImageInfo>& info : this->loadedImagesInfo)
 		if (info.second.path == path && info.second.format == format &&
 			info.second.usage == usage && info.second.mipMap == mipMap)
@@ -63,7 +69,7 @@ ImageId ImageManager::LoadImageFromFile(const std::filesystem::path& path, VkFor
 	return id;
 }
 
-ImageId ImageManager::CreateImage(const CreateImageInfo& createInfo, void* data, ImageId id) {
+ImageId ImageManager::CreateImage(const CreateImageInfo& createInfo, void* data, ImageId id) const {
 	Image image = this->AllocateImage(createInfo);
 	if (data)
 		this->LoadToGPU(image, data, 0U);
@@ -71,7 +77,7 @@ ImageId ImageManager::CreateImage(const CreateImageInfo& createInfo, void* data,
 	return this->PushToMemory(id, std::move(image));
 }
 
-ImageId ImageManager::PushToMemory(ImageId id, Image image) {
+ImageId ImageManager::PushToMemory(ImageId id, Image image) const {
 	if (id == INVALID_IMAGE_ID) {
 		id = this->images.size();
 		image.id = id;

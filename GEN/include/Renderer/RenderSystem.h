@@ -8,16 +8,16 @@
 #include "Renderer/Gltf/SceneManager.h"
 
 class RenderSystem : GECS::System<RenderSystem> {
-	gvk::Vulkan vulkan;
-	MeshManager meshManager;
-	MaterialManager materialManager;
-	SceneManager sceneManager;
+	gvk::Vulkan& vulkan;
+	MeshManager& meshManager;
+	MaterialManager& materialManager;
 
+	bool sceneLoaded{ false };
 public:
-	RenderSystem();
+	RenderSystem(gvk::Vulkan& vulkan, MeshManager& meshManager, MaterialManager& meterialManager);
 	~RenderSystem();
 
-	virtual void Update(GECS::f32 delta);
+	virtual void Update(GECS::f32 delta) override;
 
 private:
 

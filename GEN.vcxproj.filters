@@ -64,6 +64,15 @@
     <Filter Include="Файлы заголовков\Renderer\Vulkan\Pipelines">
       <UniqueIdentifier>{1830af27-1891-4a3b-9a88-42c43d421a79}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Файлы заголовков\Components">
+      <UniqueIdentifier>{efc8f599-a2ff-494a-9c95-6931339e2fe0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\GameObject">
+      <UniqueIdentifier>{7a203c41-3dd7-4f0d-be48-a40029606d0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Components">
+      <UniqueIdentifier>{bda5c277-1bbf-421d-adaa-df3ae613d759}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GEN\src\GEN.cpp">
@@ -99,7 +108,7 @@
     <ClCompile Include="GEN\src\Renderer\Vulkan\VolkImplementation.cpp">
       <Filter>Исходные файлы\Renderer\Vulkan</Filter>
     </ClCompile>
-    <ClCompile Include="GEN\src\Renderer\Vulkan\VmaImplementation.cpp">
+    <ClCompile Include="GEN\src\Renderer\Vulkan\VmaUsage.cpp">
       <Filter>Исходные файлы\Renderer\Vulkan</Filter>
     </ClCompile>
     <ClCompile Include="GEN\src\Renderer\Vulkan\MaterialManager.cpp">
@@ -161,6 +170,15 @@
     </ClCompile>
     <ClCompile Include="GEN\src\Renderer\Vulkan\Pipelines\PostFXPipeline.cpp">
       <Filter>Исходные файлы\Renderer\Vulkan\Pipelines</Filter>
+    </ClCompile>
+    <ClCompile Include="GEN\src\Engine\SceneSystem.cpp">
+      <Filter>Исходные файлы\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="GEN\src\GameObject\RenderableGameObject.cpp">
+      <Filter>Исходные файлы\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="GEN\src\Components\RenderComponent.cpp">
+      <Filter>Исходные файлы\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -286,6 +304,18 @@
     </ClInclude>
     <ClInclude Include="GEN\include\Renderer\Vulkan\Pipelines\PostFXPipeline.h">
       <Filter>Файлы заголовков\Renderer\Vulkan\Pipelines</Filter>
+    </ClInclude>
+    <ClInclude Include="GEN\include\Components\RenderComponent.h">
+      <Filter>Файлы заголовков\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GEN\include\Engine\SceneSystem.h">
+      <Filter>Файлы заголовков\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="GEN\include\GameObject\RenderableGameObject.h">
+      <Filter>Файлы заголовков\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="GEN\include\Renderer\Vulkan\VmaUsage.h">
+      <Filter>Файлы заголовков\Renderer\Vulkan</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,12 +1,14 @@
 #include "Renderer/Vulkan/Swapchain.h"
 
 void Swapchain::Init(VkDevice logDevice) {
-	VkFenceCreateInfo fenceCreateInfo;
-	fenceCreateInfo.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
-	fenceCreateInfo.flags = VK_FENCE_CREATE_SIGNALED_BIT;
+	const VkFenceCreateInfo fenceCreateInfo = VkFenceCreateInfo {
+		.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO,
+		.flags = VK_FENCE_CREATE_SIGNALED_BIT
+	};
 
-	VkSemaphoreCreateInfo semaphoreCreateInfo;
-	semaphoreCreateInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+	const VkSemaphoreCreateInfo semaphoreCreateInfo{
+		.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO
+	};
 
 	for (GECS::i32 i = 0; i < MAX_FRAMES_IN_FLIGHT; i++) {
 		vkCreateFence(logDevice, &fenceCreateInfo, nullptr, &(this->frameSyncs.fenceInFlight[i]));

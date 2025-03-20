@@ -1,12 +1,12 @@
 #pragma once
 
 //#define VK_NO_PROTOTYPES
-#include <vulkan/vulkan.h>
+//#include <vulkan/vulkan.h>
 //#define VOLK_IMPLEMENTATION
-//#include "Volk/volk.h"
+#include "Volk/volk.h"
 
 #include <VkBootstrap/VkBootstrap.h>
-#include <vma/vk_mem_alloc.h>
+#include "Renderer/Vulkan/VmaUsage.h"
 
 #include <glm.hpp>
 
@@ -49,7 +49,7 @@ namespace gvk {
 		// graphics objects
 		VkSurfaceKHR surface;
 		VkFormat swapchainFormat;
-		GECS::i32 graphicsQueueFamily{ 0 };
+		GECS::u32 graphicsQueueFamily{ 0 };
 		VkQueue graphicsQueue; // With present queue
 		GECS::u32 currentFrame{ 0 };
 
@@ -90,7 +90,7 @@ namespace gvk {
 		inline GECS::u32 GetCurrentFrame() const { return this->currentFrame; }
 		inline VkDevice GetDevice() const { return this->logDevice; }
 		inline VmaAllocator GetAllocator() const { return this->vkAllocator; }
-		inline ImageManager GetImageManager() const { return this->imageManager; }
+		inline const ImageManager& GetImageManager() const { return this->imageManager; }
 		inline VkSampleCountFlagBits GetMaxSampleCount() const { return this->highestSupportedSamples; }
 
 	private:

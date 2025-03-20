@@ -24,19 +24,20 @@ class ImageManager {
 
     gvk::Vulkan& vulkanInstance;
 
-	std::vector<Image> images;
-    std::unordered_map<ImageId, LoadedImageInfo> loadedImagesInfo;
+	mutable std::vector<Image> images;
+    mutable std::unordered_map<ImageId, LoadedImageInfo> loadedImagesInfo;
 
-    BindlessManager bindlessManager;
+    mutable BindlessManager bindlessManager;
     
 public:
     ImageManager(gvk::Vulkan& vulkan);
+    void InitBindlessManager(VkDevice device);
     void InitSamplers(float maxAnisotropy);
 
     void Clear();
 
-    ImageId LoadImageFromFile(const std::filesystem::path& path, VkFormat format, VkImageUsageFlags usage, bool mipMap);
-    ImageId CreateImage(const CreateImageInfo& createInfo, void* data, ImageId id);
+    ImageId LoadImageFromFile(const std::filesystem::path& path, VkFormat format, VkImageUsageFlags usage, bool mipMap) const;
+    ImageId CreateImage(const CreateImageInfo& createInfo, void* data, ImageId id) const;
 
     const Image& GetImage(ImageId id) const;
     inline VkDescriptorSetLayout GetDescSetLayout() const { return this->bindlessManager.getDescriptorSetLayout(); }
@@ -57,7 +58,7 @@ private:
     Image AllocateImage(const CreateImageInfo& createInfo) const;
     void LoadToGPU(const Image& image, void* data, GECS::u32 layer) const;
 
-    ImageId PushToMemory(ImageId id, Image image);
+    ImageId PushToMemory(ImageId id, Image image) const;
 
     void DestroyImage(const Image& image);
 };

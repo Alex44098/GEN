@@ -9,7 +9,7 @@
 #include "Renderer/Vulkan/MaterialManager.h"
 
 class SceneManager {
-	std::unordered_map < std::string, Gltf::GLTFScene> scenes;
+	std::unordered_map <std::string, Gltf::GLTFScene> scenes;
 
 	gvk::Vulkan& vulkan;
 	MeshManager& meshManager;

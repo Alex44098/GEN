@@ -18,6 +18,9 @@ Engine::Engine(const WindowParams& params) {
 		assert(false && "SDL window not created");
 	}
 
+	this->vulkan.Init(this->window);
+	this->materialManager.Init(this->vulkan);
+
 	GECS::Init();
 	// there should be a creation of engine systems here
 	// ...
@@ -44,6 +47,9 @@ void Engine::run() {
 }
 
 Engine::~Engine() {
+	this->materialManager.Destroy(this->vulkan);
+	this->vulkan.Destroy();
+
 	GECS::Destroy();
 
 	SDL_DestroyWindow(this->window);
