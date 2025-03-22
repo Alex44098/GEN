@@ -18,7 +18,7 @@ namespace GECS {
 	template<class T>
 	class ComponentContainer : public Memory::ChunkAllocator<T, COMPONENT_CONTAINER_CHUNK_MAX_OBJECTS>, public IComponentContainer {
 	public:
-		ComponentContainer() : ChunkAllocator()
+		ComponentContainer() : Memory::ChunkAllocator<T, COMPONENT_CONTAINER_CHUNK_MAX_OBJECTS>()
 		{}
 
 		virtual ~ComponentContainer()
@@ -39,6 +39,8 @@ namespace GECS {
 		if (container == componentTypeContainers.end()) {
 			newContainer = new ComponentContainer<T>();
 			componentTypeContainers[componentTypeID] = newContainer;
+
+			L_(ldebug) << "Created a new component container with type " << typeid(T).name();
 		}
 		else
 			newContainer = static_cast<ComponentContainer<T>*>(container->second);

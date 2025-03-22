@@ -3,6 +3,7 @@
 #define TINYGLTF_IMPLEMENTATION
 #define TINYGLTF_NO_STB_IMAGE
 #define TINYGLTF_NO_STB_IMAGE_WRITE
+#define TINYGLTF_USE_CPP14
 #include <tiny_gltf.h>
 
 namespace {
@@ -304,8 +305,8 @@ namespace Gltf {
 			scene.lights.push_back(LoadLight(light));
 
 		// Loading nodes
-		scene.nodes.reserve(model.nodes.size());
-		for (std::size_t i = 0; i < model.nodes.size(); i++) {
+		scene.nodes.resize(model.nodes.size());
+		for (std::size_t i = 0; i < gltfScene.nodes.size(); i++) {
 			const tinygltf::Node gltfNode = model.nodes[gltfScene.nodes[i]];
 
 			std::unique_ptr<GLTFSceneNode>& nodePtr = scene.nodes[i];

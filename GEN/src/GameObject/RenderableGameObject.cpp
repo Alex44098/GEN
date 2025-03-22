@@ -1,9 +1,9 @@
 #include "GameObject/RenderableGameObject.h"
 
 RenderableGameObject::RenderableGameObject() {
-	//this->AddComponent<RenderComponent>();
+	this->AddComponent<RenderComponent>();
 }
 
 RenderableGameObject::~RenderableGameObject() {
-	//this->RemoveComponent<RenderComponent>();
+	this->RemoveComponent<RenderComponent>();
 }

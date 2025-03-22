@@ -37,7 +37,7 @@ ImageId ImageManager::LoadImageFromFile(const std::filesystem::path& path, VkFor
 			return info.first;
 
 	STBImage stbImage = Util::LoadSTBImage(path);
-	if (!stbImage.data || !stbImage.hdrData)
+	if (!stbImage.data && !stbImage.hdrData)
 		assert(false && "Image didn't load");
 
 	Image image = this->AllocateImage({
@@ -54,8 +54,7 @@ ImageId ImageManager::LoadImageFromFile(const std::filesystem::path& path, VkFor
 	this->LoadToGPU(image, (stbImage.data != nullptr
 		? stbImage.data : static_cast<void*>(stbImage.hdrData)), 0U);
 
-	const GECS::u32 id = this->images.size();
-	this->PushToMemory(id, std::move(image));
+	const GECS::u32 id = this->PushToMemory(INVALID_IMAGE_ID, std::move(image));
 	this->loadedImagesInfo.emplace(
 		id,
 		LoadedImageInfo{

@@ -25,6 +25,9 @@ Engine::Engine(const WindowParams& params) {
 	// there should be a creation of engine systems here
 	// ...
 	//
+
+	this->sceneSystem = GECS::GECSInstance->GetSystemManager()->AddSystem<SceneSystem>(this->vulkan, this->meshManager, this->materialManager);
+	this->sceneSystem->LoadScene("scenes/City/City.gltf");
 }
 
 void Engine::run() {
@@ -47,6 +50,7 @@ void Engine::run() {
 }
 
 Engine::~Engine() {
+	this->meshManager.CleanMeshes(this->vulkan);
 	this->materialManager.Destroy(this->vulkan);
 	this->vulkan.Destroy();
 

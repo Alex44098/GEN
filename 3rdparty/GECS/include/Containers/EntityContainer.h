@@ -18,7 +18,7 @@ namespace GECS {
 	template<class T>
 	class EntityContainer : public Memory::ChunkAllocator<T, ENTITY_CONTAINER_CHUNK_MAX_OBJECTS>, public IEntityContainer {
 	public:
-		EntityContainer() : ChunkAllocator()
+		EntityContainer() : Memory::ChunkAllocator<T, ENTITY_CONTAINER_CHUNK_MAX_OBJECTS>()
 		{}
 
 		virtual ~EntityContainer()
@@ -39,6 +39,8 @@ namespace GECS {
 		if (container == entityTypeContainers.end()) {
 			newContainer = new EntityContainer<T>();
 			entityTypeContainers[entityTypeID] = newContainer;
+
+			L_(ldebug) << "Created a new entity container with type " << typeid(T).name();
 		}
 		else
 			newContainer = static_cast<EntityContainer<T>*>(container->second);

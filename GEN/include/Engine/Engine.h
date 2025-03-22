@@ -8,6 +8,8 @@
 #include "Renderer/Vulkan/MeshManager.h"
 #include "Renderer/Vulkan/MaterialManager.h"
 
+#include "Engine/SceneSystem.h"
+
 class Engine {
 	WindowParams wParams;
 	SDL_Window* window;
@@ -15,6 +17,8 @@ class Engine {
 	gvk::Vulkan vulkan;
 	MeshManager meshManager;
 	MaterialManager materialManager;
+
+	SceneSystem* sceneSystem;
 
 public:
 	Engine(const WindowParams& params);

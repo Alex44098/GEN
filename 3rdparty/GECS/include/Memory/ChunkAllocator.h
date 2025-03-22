@@ -30,13 +30,18 @@ namespace GECS {
 			std::list<MemoryChunk*> m_chunks;
 
 		public:
-			class iterator : public std::iterator<std::forward_iterator_tag, T>
+			class iterator
 			{
 				typename std::list<MemoryChunk*>::iterator curChunk;
 				typename std::list<MemoryChunk*>::iterator lastChunk;
 				typename std::list<T*>::iterator curObject;
 
 			public:
+				using iterator_category = std::contiguous_iterator_tag;
+				using value_type = T;
+				using difference_type = std::ptrdiff_t;
+				using pointer = T*;
+				using reference = T&;
 
 				iterator(typename std::list<MemoryChunk*>::iterator begin, typename std::list<MemoryChunk*>::iterator end) :
 				curChunk(begin),
@@ -48,6 +53,7 @@ namespace GECS {
 					}
 					else
 						curObject = (*std::prev(lastChunk))->m_objects.end();
+					
 				}
 
 				inline iterator& operator++() {
@@ -63,15 +69,15 @@ namespace GECS {
 					return *this;
 				}
 
-				inline T& operator*() const { return *curObject; }
-				inline T* operator->() const { return *curObject; }
+				inline reference operator*() const { return *curObject; }
+				inline pointer operator->() const { return *curObject; }
 
 				inline bool operator==(iterator& other) {
 					return (this->curChunk == other.curChunk) && (this->curObject == other.curObject);
 				}
-				inline bool operator!=(iterator& other) {
-					return (this->curChunk != other.curChunk) && (this->curObject != other.curObject);
-				}
+				//inline bool operator!=(iterator& other) {
+				//	return (this->curChunk != other.curChunk) && (this->curObject != other.curObject);
+				//}
 			};
 
 			ChunkAllocator() {
@@ -94,8 +100,10 @@ namespace GECS {
 
 					// don't forget free allocator in chunk!!!
 					delete chunk->m_allocator;
+					chunk->m_allocator = nullptr;
 
 					delete chunk;
+					chunk = nullptr;
 				}
 				m_chunks.clear();
 			}
@@ -110,6 +118,9 @@ namespace GECS {
 					slot = chunk->m_allocator->Allocate(sizeof(T), alignof(T));
 					if (slot != 0) {
 						chunk->m_objects.push_back((T*)slot);
+
+						L_(ldebug) << "Chunk allocator: created a new chunk with type " << typeid(T).name();
+
 						return slot;
 					}
 					else

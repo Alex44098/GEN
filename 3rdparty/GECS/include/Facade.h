@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Logger/LiteLogger.h"
 #include "Platform.h"
 
 // Setting global memory size
@@ -37,7 +38,7 @@ namespace GECS {
 
 	namespace Memory {
 		class GlobalMemoryManager;
-		extern GlobalMemoryManager* g_globalMemManager; // global manager
+		GECS_API extern GlobalMemoryManager* g_globalMemManager; // global manager
 	}
 
 	class GECSMain;
