@@ -305,7 +305,7 @@ namespace Gltf {
 			scene.lights.push_back(LoadLight(light));
 
 		// Loading nodes
-		scene.nodes.resize(model.nodes.size());
+		scene.nodes.resize(gltfScene.nodes.size());
 		for (std::size_t i = 0; i < gltfScene.nodes.size(); i++) {
 			const tinygltf::Node gltfNode = model.nodes[gltfScene.nodes[i]];
 

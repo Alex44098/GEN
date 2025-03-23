@@ -6,6 +6,9 @@
 
 #include "Renderer/Gltf/GLTFScene.h"
 #include "Renderer/Gltf/SceneManager.h"
+#include "Math/Transform.h"
+#include "GameObject/RenderableGameObject.h"
+#include "Components/RenderComponent.h"
 
 class SceneSystem : public GECS::System<SceneSystem> {
 	gvk::Vulkan& vulkan;
@@ -22,5 +25,6 @@ public:
 
 private:
 	void GenerateEntities(const Gltf::GLTFScene& scene);
-	void ProcessNodeScene();
+	void ProcessNodeScene(const Gltf::GLTFScene& scene, const Gltf::GLTFSceneNode& node);
+	void CreateEntity(const Gltf::GLTFSceneMesh& sceneMesh, const glm::mat4 transform);
 };

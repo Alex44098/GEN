@@ -27,7 +27,7 @@ Engine::Engine(const WindowParams& params) {
 	//
 
 	this->sceneSystem = GECS::GECSInstance->GetSystemManager()->AddSystem<SceneSystem>(this->vulkan, this->meshManager, this->materialManager);
-	this->sceneSystem->LoadScene("scenes/City/City.gltf");
+	this->sceneSystem->LoadScene("scenes/Duck/Duck.gltf");
 }
 
 void Engine::run() {
