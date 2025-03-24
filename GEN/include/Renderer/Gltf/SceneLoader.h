@@ -40,10 +40,16 @@ namespace Gltf {
 	// Material loading
 	Material LoadMaterial(gvk::Vulkan& vulkan, const tinygltf::Model& model, const std::filesystem::path& path, const tinygltf::Material& gltfMaterial);
 	LinearColor GetDiffuseColor(const tinygltf::Material& gltfMaterial);
+
 	std::filesystem::path GetDiffuseTexturePath(const tinygltf::Model& model, const tinygltf::Material& gltfMaterial, const std::filesystem::path& fileDir);
 	std::filesystem::path GetNormalMapTexturePath(const tinygltf::Model& model, const tinygltf::Material& gltfMaterial, const std::filesystem::path& fileDir);
+	std::filesystem::path GetMetallicRoughTexturePath(const tinygltf::Model& model, const tinygltf::Material& gltfMaterial, const std::filesystem::path& fileDir);
+	std::filesystem::path GetEmissiveTexturePath(const tinygltf::Model& model, const tinygltf::Material& gltfMaterial, const std::filesystem::path& fileDir);
+
 	bool HasDiffuseTexture(const tinygltf::Material& gltfMaterial);
 	bool HasNormalMapTexture(const tinygltf::Material& gltfMaterial);
+	bool HasMetallicRoughTexture(const tinygltf::Material& gltfMaterial);
+	bool HasEmissiveTexture(const tinygltf::Material& gltfMaterial);
 
 	// Light loading
 	LinearColor Tg2LinearColor(const std::vector<double>& vec);

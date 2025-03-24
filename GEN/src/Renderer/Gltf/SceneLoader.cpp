@@ -67,6 +67,13 @@ namespace {
 			assert(false && "Scene loader: failed to load glTF scene");
 		}
 	}
+
+	GECS::f32 GetEmissiveFactor(const tinygltf::Material& gltfMaterial) {
+		if (gltfMaterial.extensions.contains("KHR_materials_emissive_strength")) {
+			return static_cast<GECS::f32>(gltfMaterial.extensions.at("KHR_materials_emissive_strength").Get("emissiveStrength").GetNumberAsDouble());
+		}
+		return 1.f;
+	}
 }
 
 namespace Gltf {
@@ -138,6 +145,8 @@ namespace Gltf {
 	Material LoadMaterial(gvk::Vulkan& vulkan, const tinygltf::Model& model, const std::filesystem::path& fileDir, const tinygltf::Material& gltfMaterial) {
 		Material material{
 			.baseColor = GetDiffuseColor(gltfMaterial),
+			.metallicFactor = static_cast<GECS::f32>(gltfMaterial.pbrMetallicRoughness.metallicFactor),
+			.roughnessFactor = static_cast<GECS::f32>(gltfMaterial.pbrMetallicRoughness.roughnessFactor),
 			.name = gltfMaterial.name
 		};
 
@@ -161,6 +170,30 @@ namespace Gltf {
 				VK_IMAGE_USAGE_SAMPLED_BIT,
 				true
 			);
+		}
+
+		if (HasMetallicRoughTexture(gltfMaterial)) {
+			const std::filesystem::path metalRoughPath = GetMetallicRoughTexturePath(model, gltfMaterial, fileDir);
+			material.metallicRoughnessTexture = vulkan.GetImageManager().LoadImageFromFile
+			(
+				metalRoughPath,
+				VK_FORMAT_R8G8B8A8_UNORM,
+				VK_IMAGE_USAGE_SAMPLED_BIT,
+				true
+			);
+		}
+
+		if (HasEmissiveTexture(gltfMaterial)) {
+			const std::filesystem::path emissivePath = GetEmissiveTexturePath(model, gltfMaterial, fileDir);
+			material.emissiveTexture = vulkan.GetImageManager().LoadImageFromFile
+			(
+				emissivePath,
+				VK_FORMAT_R8G8B8A8_SRGB,
+				VK_IMAGE_USAGE_SAMPLED_BIT,
+				true
+			);
+
+			material.emissiveFactor = GetEmissiveFactor(gltfMaterial);
 		}
 
 		return material;
@@ -188,6 +221,22 @@ namespace Gltf {
 		return fileDir / image.uri;
 	}
 
+	std::filesystem::path GetMetallicRoughTexturePath(const tinygltf::Model& model, const tinygltf::Material& gltfMaterial, const std::filesystem::path& fileDir) {
+		const GECS::i32 textureIndex = gltfMaterial.pbrMetallicRoughness.metallicRoughnessTexture.index;
+		const tinygltf::Texture& texture = model.textures[textureIndex];
+		const tinygltf::Image& image = model.images[texture.source];
+
+		return fileDir / image.uri;
+	}
+
+	std::filesystem::path GetEmissiveTexturePath(const tinygltf::Model& model, const tinygltf::Material& gltfMaterial, const std::filesystem::path& fileDir) {
+		const GECS::i32 textureIndex = gltfMaterial.emissiveTexture.index;
+		const tinygltf::Texture& texture = model.textures[textureIndex];
+		const tinygltf::Image& image = model.images[texture.source];
+
+		return fileDir / image.uri;
+	}
+
 	bool HasDiffuseTexture(const tinygltf::Material& gltfMaterial) {
 		const GECS::i32 textureIndex = gltfMaterial.pbrMetallicRoughness.baseColorTexture.index;
 		return textureIndex != -1;
@@ -195,6 +244,16 @@ namespace Gltf {
 
 	bool HasNormalMapTexture(const tinygltf::Material& gltfMaterial) {
 		const GECS::i32 textureIndex = gltfMaterial.normalTexture.index;
+		return textureIndex != -1;
+	}
+
+	bool HasMetallicRoughTexture(const tinygltf::Material& gltfMaterial) {
+		const GECS::i32 textureIndex = gltfMaterial.pbrMetallicRoughness.metallicRoughnessTexture.index;
+		return textureIndex != -1;
+	}
+
+	bool HasEmissiveTexture(const tinygltf::Material& gltfMaterial) {
+		const GECS::i32 textureIndex = gltfMaterial.emissiveTexture.index;
 		return textureIndex != -1;
 	}
 

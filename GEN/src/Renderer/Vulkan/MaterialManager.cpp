@@ -50,10 +50,22 @@ MaterialId MaterialManager::AddMaterial(gvk::Vulkan& vulkan, Material material) 
 	GECS::u32 id = this->materials.size();
 	matData[id] = MaterialData{
 		.baseColor = material.baseColor,
+
+		.factors = glm::vec4{
+			material.metallicFactor,
+			material.roughnessFactor,
+			material.emissiveFactor,
+			0.f
+		},
+
 		.diffuseTexture = material.diffuseTexture != INVALID_IMAGE_ID
 			? material.diffuseTexture : this->placeholderDiffuseTex,
 		.normalTexture = material.normalMapTexture != INVALID_IMAGE_ID
-			? material.normalMapTexture : this->placeholderNormalTex
+			? material.normalMapTexture : this->placeholderNormalTex,
+		.metallicRoughTexture = material.metallicRoughnessTexture != INVALID_IMAGE_ID
+			? material.metallicRoughnessTexture : this->placeholderDiffuseTex,
+		.emissiveTexture = material.emissiveTexture != INVALID_IMAGE_ID
+			? material.emissiveTexture : this->placeholderDiffuseTex
 	};
 
 	materials.push_back(std::move(material));

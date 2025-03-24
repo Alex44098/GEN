@@ -9,8 +9,12 @@
 
 struct MaterialData {
 	LinearColor baseColor;
+
+	glm::vec4 factors;
 	std::uint32_t diffuseTexture;
 	std::uint32_t normalTexture;
+	std::uint32_t metallicRoughTexture;
+	std::uint32_t emissiveTexture;
 };
 
 class MaterialManager {

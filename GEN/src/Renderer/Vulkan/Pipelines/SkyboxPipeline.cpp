@@ -2,7 +2,7 @@
 
 void SkyboxPipeline::Init(gvk::Vulkan& vulkan, VkFormat drawImageFormat, VkFormat depthImageFormat, VkSampleCountFlagBits samples) {
 	const VkDevice device = vulkan.GetDevice();
-	const VkShaderModule vertexShader = Util::LoadShaderModule("shaders/skybox_vert.spv", device);
+	const VkShaderModule vertexShader = Util::LoadShaderModule("shaders/fullscreen_vert.spv", device);
 	const VkShaderModule fragmentShader = Util::LoadShaderModule("shaders/skybox_frag.spv", device);
 
 	const VkPushConstantRange bufferRange{
