@@ -1,7 +1,7 @@
 #ifndef GEN_VERTEX
 #define GEN_VERTEX
 
-#extension GL_EXT_buffer_reference : require
+#extension GL_EXT_buffer_reference2 : require
 
 struct Vertex {
     vec3 position;

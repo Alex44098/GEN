@@ -8,10 +8,10 @@ struct Material {
 	GECS::f32 roughnessFactor{0.5f};
 	GECS::f32 emissiveFactor{0.f};
 
-	ImageId diffuseTexture;
-	ImageId normalMapTexture;
-	ImageId metallicRoughnessTexture;
-	ImageId emissiveTexture;
+	ImageId diffuseTexture{ INVALID_IMAGE_ID };
+	ImageId normalMapTexture{ INVALID_IMAGE_ID };
+	ImageId metallicRoughnessTexture{ INVALID_IMAGE_ID };
+	ImageId emissiveTexture{ INVALID_IMAGE_ID };
 
 	std::string name;
 };

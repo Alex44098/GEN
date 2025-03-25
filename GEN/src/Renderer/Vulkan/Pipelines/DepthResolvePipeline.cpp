@@ -3,7 +3,7 @@
 void DepthResolvePipeline::Init(gvk::Vulkan& vulkan, VkFormat drawImageFormat, VkFormat depthImageFormat, VkSampleCountFlagBits samples) {
 	const VkDevice device = vulkan.GetDevice();
 	const VkShaderModule vertexShader = Util::LoadShaderModule("shaders/fullscreen_vert.spv", device);
-	const VkShaderModule fragmentShader = Util::LoadShaderModule("shaders/depth_resolve_frag.spv", device);
+	const VkShaderModule fragmentShader = Util::LoadShaderModule("shaders/depthResolve_frag.spv", device);
 
 	const VkPushConstantRange bufferRange{
 		.stageFlags = VK_SHADER_STAGE_FRAGMENT_BIT,

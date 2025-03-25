@@ -20,7 +20,6 @@ class MeshPipeline : public Pipeline {
 		VkDeviceAddress sceneDataBuffer;
 		VkDeviceAddress vertexBuffer;
 		std::uint32_t materialId;
-		std::uint32_t padding;
 	};
 
 public:
