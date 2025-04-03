@@ -18,7 +18,9 @@ void main()
 
     gl_Position = meshConstants.sceneData.viewProjection * worldPos;
     outPosition = worldPos.xyz;
-    outTexCoords = vertex.texCoord;
+
+    //outTexCoords = vertex.texCoords;
+    outTexCoords = vec2(vertex.texCoordX, vertex.texCoordY);
     //outNormal = mat3(transpose(inverse(meshConstants.transform))) * vertex.normal;
 
     //outTangent = vertex.tangent;

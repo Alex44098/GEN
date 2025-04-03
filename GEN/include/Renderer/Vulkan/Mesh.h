@@ -8,10 +8,17 @@
 struct Mesh {
 	struct Vertex {
 		glm::vec3 position;
+		float texCoordX{};
+		glm::vec3 normal;
+		float texCoordY{};
+		glm::vec4 tangent;
+	};
+	/*struct Vertex {
+		glm::vec3 position;
 		glm::vec3 normal;
 		glm::vec4 tangent;
-		glm::vec2 texCoord;
-	};
+		glm::vec2 texCoords;
+	};*/
 
 	std::vector<Vertex> vertices;
 	std::vector<GECS::u32> indices;

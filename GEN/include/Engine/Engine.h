@@ -9,6 +9,7 @@
 #include "Renderer/Vulkan/MaterialManager.h"
 
 #include "Engine/SceneSystem.h"
+#include "Renderer/RenderSystem.h"
 
 class Engine {
 	WindowParams wParams;
@@ -19,6 +20,7 @@ class Engine {
 	MaterialManager materialManager;
 
 	SceneSystem* sceneSystem;
+	RenderSystem* renderSystem;
 
 public:
 	Engine(const WindowParams& params);

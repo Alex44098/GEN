@@ -15,5 +15,5 @@ void main() {
     vec4 coord = skyboxConstants.invViewProj * vec4(ndc, 1.0, 1.0);
     vec3 samplePoint = normalize(coord.xyz / vec3(coord.w) - skyboxConstants.cameraPos.xyz);
 
-    outFragColor = sampleTextureCubeLinear(skyboxConstants.skyboxTexId, samplePoint);
+    outFragColor = sampleTextureCubeLinear(skyboxConstants.skyboxTextureId, samplePoint);
 }

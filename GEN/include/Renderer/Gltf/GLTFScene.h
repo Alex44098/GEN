@@ -39,9 +39,9 @@ namespace Gltf {
 	struct GLTFSceneData {
 		const Camera& camera;
 		LinearColor ambientColor;
-		GECS::f32 ambientIntensity;
+		GECS::f32 ambientIntensity{0.f};
 		LinearColor fogColor;
-		GECS::f32 fogIntensity;
+		GECS::f32 fogIntensity{0.f};
 	};
 
 	struct GLTFShaderSceneData {
@@ -52,15 +52,10 @@ namespace Gltf {
 
 		LinearColorWithoutAlpha ambientColor;
 		GECS::f32 ambientIntensity;
+
 		LinearColorWithoutAlpha fogColor;
 		GECS::f32 fogIntensity;
 
 		VkDeviceAddress materialsBuffer; // for bindless textures
-
-		// Lightings
-		VkDeviceAddress lightsBuffer;
-		GECS::u32 numLights;
-		GECS::i64 sunIndex;
-		GECS::f32 pointLightFarPlane;
 	};
 }

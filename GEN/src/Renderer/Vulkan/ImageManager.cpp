@@ -1,4 +1,5 @@
 #include "Renderer/Vulkan/ImageManager.h"
+#include "Renderer/Vulkan/Util/DebugLabels.h"
 #include "Renderer/Vulkan/Vulkan.h"
 
 ImageManager::ImageManager(gvk::Vulkan& vulkan) : vulkanInstance(vulkan)
@@ -21,7 +22,7 @@ void ImageManager::Clear() {
 	this->bindlessManager.Clear();
 }
 
-void ImageManager::DestroyImage(const Image& image) {
+void ImageManager::DestroyImage(const Image& image) const {
 	vkDestroyImageView(this->vulkanInstance.GetDevice(), image.imageView, nullptr);
 	vmaDestroyImage(this->vulkanInstance.GetAllocator(), image.image, image.allocation);
 }
@@ -64,14 +65,18 @@ ImageId ImageManager::LoadImageFromFile(const std::filesystem::path& path, VkFor
 			.mipMap = mipMap
 	});
 
+	Debug::AddDebugLabel4Image(this->vulkanInstance.GetDevice(), image.image, "Loaded texture");
+
 	stbImage.Destroy();
 	return id;
 }
 
-ImageId ImageManager::CreateImage(const CreateImageInfo& createInfo, void* data, ImageId id) const {
+ImageId ImageManager::CreateImage(const CreateImageInfo& createInfo, void* data, ImageId id, const char* label) const {
 	Image image = this->AllocateImage(createInfo);
 	if (data)
 		this->LoadToGPU(image, data, 0U);
+
+	Debug::AddDebugLabel4Image(this->vulkanInstance.GetDevice(), image.image, label);
 
 	return this->PushToMemory(id, std::move(image));
 }
@@ -80,21 +85,29 @@ ImageId ImageManager::PushToMemory(ImageId id, Image image) const {
 	if (id == INVALID_IMAGE_ID) {
 		id = this->images.size();
 		image.id = id;
+		this->bindlessManager.AddImage(id, image.imageView);
 		this->images.push_back(std::move(image));
 	}
 	else {
 		image.id = id;
+		this->bindlessManager.AddImage(id, image.imageView);
 		this->images[id] = std::move(image);
 	}
-	this->bindlessManager.AddImage(id, image.imageView);
 	return id;
 }
 
 Image ImageManager::AllocateImage(const CreateImageInfo& createInfo) const {
+
 	GECS::u32 mipLevels = 1;
 	if (createInfo.mipMap) {
 		const GECS::u32 maxExtent = std::max(createInfo.extent.width, createInfo.extent.height);
 		mipLevels = (GECS::u32)std::floor(std::log2(maxExtent)) + 1;
+	}
+
+	if (createInfo.isCubemap) {
+		assert(createInfo.numLayers % 6 == 0);
+		assert(!createInfo.mipMap);
+		assert((createInfo.flags & VK_IMAGE_CREATE_CUBE_COMPATIBLE_BIT) != 0);
 	}
 
 	const VkImageCreateInfo imageInfo {
@@ -111,6 +124,7 @@ Image ImageManager::AllocateImage(const CreateImageInfo& createInfo) const {
 	};
 
 	const VmaAllocationCreateInfo allocInfo {
+		//.flags = VMA_ALLOCATION_CREATE_MAPPED_BIT | VMA_ALLOCATION_CREATE_HOST_ACCESS_SEQUENTIAL_WRITE_BIT,
 		.usage = VMA_MEMORY_USAGE_AUTO,
 		.requiredFlags = VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
 	};
@@ -121,9 +135,10 @@ Image ImageManager::AllocateImage(const CreateImageInfo& createInfo) const {
 	image.extent = createInfo.extent;
 	image.mipLevels = mipLevels;
 	image.numLayers = createInfo.numLayers;
+	image.isCubemap = createInfo.isCubemap;
 
-	vmaCreateImage(this->vulkanInstance.GetAllocator(), &imageInfo, &allocInfo,
-		&image.image, &image.allocation, nullptr);
+	VK_CHECK(vmaCreateImage(this->vulkanInstance.GetAllocator(), &imageInfo, &allocInfo,
+		&image.image, &image.allocation, nullptr));
 
 	bool canCreateImageView = ((createInfo.usage & VK_IMAGE_USAGE_SAMPLED_BIT) != 0) ||
 		((createInfo.usage & VK_IMAGE_USAGE_STORAGE_BIT) != 0) ||
@@ -136,9 +151,12 @@ Image ImageManager::AllocateImage(const CreateImageInfo& createInfo) const {
 			aspectFlag = VK_IMAGE_ASPECT_DEPTH_BIT;
 		}
 
-		auto viewType = createInfo.numLayers == 1 ? VK_IMAGE_VIEW_TYPE_2D : VK_IMAGE_VIEW_TYPE_2D_ARRAY;
+		VkImageViewType viewType = createInfo.numLayers == 1 ?
+			VK_IMAGE_VIEW_TYPE_2D : VK_IMAGE_VIEW_TYPE_2D_ARRAY;
+		if (createInfo.isCubemap && createInfo.numLayers == 6)
+			viewType = VK_IMAGE_VIEW_TYPE_CUBE;
 
-		const auto viewCreateInfo = VkImageViewCreateInfo{
+		const VkImageViewCreateInfo viewCreateInfo{
 			.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO,
 			.image = image.image,
 			.viewType = viewType,
@@ -153,7 +171,7 @@ Image ImageManager::AllocateImage(const CreateImageInfo& createInfo) const {
 				},
 		};
 
-		vkCreateImageView(this->vulkanInstance.GetDevice(), &viewCreateInfo, nullptr, &image.imageView);
+		VK_CHECK(vkCreateImageView(this->vulkanInstance.GetDevice(), &viewCreateInfo, nullptr, &image.imageView));
 	}
 
 	return image;
@@ -179,7 +197,13 @@ void ImageManager::LoadToGPU(const Image& image, void* data, GECS::u32 layer) co
 
 	assert((image.usage & VK_IMAGE_USAGE_TRANSFER_DST_BIT) != 0 &&
 		"The image cannot accept the data");
-	Util::PipelineImageTransition(cmdBuffer, image.image, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
+	Util::PipelineImageTransition
+	(
+		cmdBuffer,
+		image.image,
+		VK_IMAGE_LAYOUT_UNDEFINED,
+		VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL
+	);
 	const VkBufferImageCopy copyRegion{
 		.bufferOffset = 0,
 		.bufferRowLength = 0,
@@ -205,8 +229,13 @@ void ImageManager::LoadToGPU(const Image& image, void* data, GECS::u32 layer) co
 		Util::GenerateMipMaps(cmdBuffer, image.image, VkExtent2D{image.extent.width, image.extent.height}, image.mipLevels);
 	}
 	else {
-		Util::PipelineImageTransition(cmdBuffer, image.image,
-			VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
+		Util::PipelineImageTransition
+		(
+			cmdBuffer,
+			image.image,
+			VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+			VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL
+		);
 	}
 
 	this->vulkanInstance.EndCommandBufferRecord(cmdBuffer);
@@ -223,7 +252,7 @@ void ImageManager::CopyImage(
 	int destY,
 	int destW,
 	int destH,
-	VkFilter filter) {
+	VkFilter filter) const {
 	
 	const VkImageBlit2 blitRegion{
 		.sType = VK_STRUCTURE_TYPE_IMAGE_BLIT_2,

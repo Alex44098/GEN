@@ -15,7 +15,7 @@ Transform::Transform(const glm::mat4& matrix)
 
     this->position = translationVec;
     this->rotation = rotationQuat;
-    scale = scaleVec;
+    this->scale = scaleVec;
 
     this->needUpdate = true;
 }

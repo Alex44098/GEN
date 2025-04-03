@@ -146,11 +146,11 @@ void Pipeline::SetCullMode(VkCullModeFlags cullMode, VkFrontFace frontFace) {
 }
 
 void Pipeline::EnableCulling() {
-    this->SetCullMode(VK_CULL_MODE_BACK_BIT, VK_FRONT_FACE_CLOCKWISE);
+    this->SetCullMode(VK_CULL_MODE_BACK_BIT, VK_FRONT_FACE_COUNTER_CLOCKWISE);
 }
 
 void Pipeline::DisableCulling() {
-    this->SetCullMode(VK_CULL_MODE_NONE, VK_FRONT_FACE_CLOCKWISE);
+    this->SetCullMode(VK_CULL_MODE_NONE, VK_FRONT_FACE_COUNTER_CLOCKWISE);
 }
 
 void Pipeline::SetMultisamplingEmpty() {

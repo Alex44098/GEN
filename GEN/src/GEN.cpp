@@ -4,7 +4,7 @@
 
 int main(int argc, char* argv[]) {
 
-	WindowParams params{glm::ivec2(640, 480), "Window"};
+	WindowParams params{glm::ivec2(1280, 720), "Window"};
 	Engine* engine = new Engine(params);
 
 	engine->run();

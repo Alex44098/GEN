@@ -5,6 +5,9 @@
 
 # User folder
 scenes/
+shaders/
+scr/
+skybox/
 
 # User-specific files
 *.rsuser

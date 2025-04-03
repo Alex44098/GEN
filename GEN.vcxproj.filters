@@ -183,6 +183,18 @@
     <ClCompile Include="GEN\src\Components\RenderComponent.cpp">
       <Filter>Исходные файлы\Components</Filter>
     </ClCompile>
+    <ClCompile Include="GEN\src\Renderer\RenderSystem.cpp">
+      <Filter>Исходные файлы\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="GEN\src\Renderer\Vulkan\Util\ImageSaver.cpp">
+      <Filter>Исходные файлы\Renderer\Vulkan\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="GEN\src\Renderer\Vulkan\Util\CubemapLoader.cpp">
+      <Filter>Исходные файлы\Renderer\Vulkan\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="GEN\src\Renderer\Vulkan\Util\DebugLabels.cpp">
+      <Filter>Исходные файлы\Renderer\Vulkan\Util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GEN\include\Engine\Engine.h">
@@ -319,6 +331,15 @@
     </ClInclude>
     <ClInclude Include="GEN\include\Renderer\Vulkan\VmaUsage.h">
       <Filter>Файлы заголовков\Renderer\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="GEN\include\Renderer\Vulkan\Util\ImageSaver.h">
+      <Filter>Файлы заголовков\Renderer\Vulkan\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="GEN\include\Renderer\Vulkan\Util\CubemapLoader.h">
+      <Filter>Файлы заголовков\Renderer\Vulkan\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="GEN\include\Renderer\Vulkan\Util\DebugLabels.h">
+      <Filter>Файлы заголовков\Renderer\Vulkan\Util</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

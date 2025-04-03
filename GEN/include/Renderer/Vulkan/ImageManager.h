@@ -37,7 +37,7 @@ public:
     void Clear();
 
     ImageId LoadImageFromFile(const std::filesystem::path& path, VkFormat format, VkImageUsageFlags usage, bool mipMap) const;
-    ImageId CreateImage(const CreateImageInfo& createInfo, void* data, ImageId id) const;
+    ImageId CreateImage(const CreateImageInfo& createInfo, void* data, ImageId id, const char* label) const;
 
     const Image& GetImage(ImageId id) const;
     inline VkDescriptorSetLayout GetDescSetLayout() const { return this->bindlessManager.getDescriptorSetLayout(); }
@@ -52,13 +52,14 @@ public:
         int destY,
         int destW,
         int destH,
-        VkFilter filter);
+        VkFilter filter) const;
 
-private:
     Image AllocateImage(const CreateImageInfo& createInfo) const;
+
+    void DestroyImage(const Image& image) const;
+
     void LoadToGPU(const Image& image, void* data, GECS::u32 layer) const;
+private:
 
     ImageId PushToMemory(ImageId id, Image image) const;
-
-    void DestroyImage(const Image& image);
 };

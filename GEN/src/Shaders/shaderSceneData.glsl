@@ -19,15 +19,11 @@ layout (buffer_reference, scalar) readonly buffer SceneDataBuffer {
 
     vec3 ambientColor;
     float ambientIntensity;
+
     vec3 fogColor;
     float fogIntensity;
 
     MaterialsBuffer materialsBuffer;
-
-    LightDataBuffer lightsBuffer;
-    int numLights;
-    int sunlightIndex;
-    float pointLightFarPlane;
 } sceneDataBuffer;
 
 #endif // GEN_SHADER_SCENE_DATA

@@ -69,11 +69,15 @@ public:
 	void EndFrameBuilding();
 
 	inline ImageId GetDrawImageId() const { return this->drawImageId; }
+	inline ImageId GetResolveDrawImageId() const { return this->resolveDrawImageId; }
+	inline ImageId GetPostFXImageId() const { return this->postFXDrawImageId; }
 
 	const Image& GetDrawImage(gvk::Vulkan& vulkan) const;
 	const Image& GetDepthImage(gvk::Vulkan& vulkan) const;
 	VkFormat GetDrawImageFormat() const;
 	VkFormat GetDepthImageFormat() const;
+
+	void SetSkyboxImage(const ImageId skyboxId);
 
 private:
 	void InitSceneData(gvk::Vulkan& vulkan);

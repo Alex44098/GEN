@@ -1,13 +1,17 @@
 #include "Renderer/Vulkan/VulkanRenderer.h"
+#include "Renderer/Vulkan/Util/DebugLabels.h"
+
+#include <numeric>
 
 VulkanRenderer::VulkanRenderer(MeshManager& meshManager, MaterialManager& materialManager) :
 	meshManager(meshManager), materialManager(materialManager)
 {}
 
 void VulkanRenderer::Init(gvk::Vulkan& vulkan, const glm::ivec2& drawImageSize) {
-	this->InitSceneData(vulkan);
-    this->CreateImages(vulkan, drawImageSize);
     this->samples = vulkan.GetMaxSampleCount();
+    
+    this->InitSceneData(vulkan);
+    this->CreateImages(vulkan, drawImageSize);
 
     this->meshPipeline.Init(vulkan, drawImageFormat, depthImageFormat, samples);
     this->skyboxPipeline.Init(vulkan, drawImageFormat, depthImageFormat, samples);
@@ -27,13 +31,21 @@ void VulkanRenderer::Destroy(gvk::Vulkan& vulkan) {
 }
 
 void VulkanRenderer::InitSceneData(gvk::Vulkan& vulkan) {
-	this->sceneDataBuffer.Init(vulkan,
+	this->sceneDataBuffer.Init
+    (
+        vulkan,
 		VK_BUFFER_USAGE_STORAGE_BUFFER_BIT | VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT,
-		sizeof(Gltf::GLTFSceneData));
+		sizeof(Gltf::GLTFShaderSceneData),
+        "Scene buffer"
+    );
 
-	this->lightDataBuffer.Init(vulkan,
+	this->lightDataBuffer.Init
+    (
+        vulkan,
 		VK_BUFFER_USAGE_STORAGE_BUFFER_BIT | VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT,
-		sizeof(Gltf::GLTFLightData));
+		sizeof(Gltf::GLTFLightData),
+        "Light buffer"
+    );
 }
 
 void VulkanRenderer::CreateImages(gvk::Vulkan& vulkan, const glm::ivec2& drawImageSize) {
@@ -43,6 +55,7 @@ void VulkanRenderer::CreateImages(gvk::Vulkan& vulkan, const glm::ivec2& drawIma
         .depth = 1,
     };
 
+    // draw image
     VkImageUsageFlags usages{};
     usages |= VK_IMAGE_USAGE_TRANSFER_SRC_BIT;
     usages |= VK_IMAGE_USAGE_TRANSFER_DST_BIT;
@@ -56,40 +69,35 @@ void VulkanRenderer::CreateImages(gvk::Vulkan& vulkan, const glm::ivec2& drawIma
         .samples = this->samples,
     };
     
-    this->drawImageId = vulkan.GetImageManager().CreateImage(createDrawImageInfo, nullptr, this->drawImageId);
+    this->drawImageId = vulkan.GetImageManager().CreateImage(createDrawImageInfo, nullptr, this->drawImageId, "Draw image");
 
     if (!this->resolveImagesInitialized) {
+        // postFX image
         createDrawImageInfo.samples = VK_SAMPLE_COUNT_1_BIT;
-        this->postFXDrawImageId = vulkan.GetImageManager().CreateImage(createDrawImageInfo, nullptr, INVALID_IMAGE_ID);
-    }
+        this->postFXDrawImageId = vulkan.GetImageManager().CreateImage(createDrawImageInfo, nullptr, INVALID_IMAGE_ID, "PostFX image");
 
-    if (!this->resolveImagesInitialized) { // setup resolve image
-        VkImageUsageFlags usages{};
-        usages |= VK_IMAGE_USAGE_TRANSFER_SRC_BIT;
-        usages |= VK_IMAGE_USAGE_TRANSFER_DST_BIT;
-        usages |= VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
-        usages |= VK_IMAGE_USAGE_SAMPLED_BIT;
-
-        const CreateImageInfo createImageInfo {
+        // resolve image
+        const CreateImageInfo createResolveDrawImageInfo {
             .format = VK_FORMAT_R16G16B16A16_SFLOAT,
             .usage = usages,
             .extent = drawImageExtent,
         };
-        this->resolveDrawImageId = vulkan.GetImageManager().CreateImage(createImageInfo, nullptr, INVALID_IMAGE_ID);
+        this->resolveDrawImageId = vulkan.GetImageManager().CreateImage(createResolveDrawImageInfo, nullptr, INVALID_IMAGE_ID, "Resolve image");
     }
 
-    CreateImageInfo createInfo{
+    // depth image
+    CreateImageInfo createDepthImageInfo{
         .format = this->depthImageFormat,
         .usage = VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT | VK_IMAGE_USAGE_SAMPLED_BIT,
         .extent = drawImageExtent,
         .samples = this->samples,
     };
 
-    this->depthImageId = vulkan.GetImageManager().CreateImage(createInfo, nullptr, this->depthImageId);
+    this->depthImageId = vulkan.GetImageManager().CreateImage(createDepthImageInfo, nullptr, this->depthImageId, "Depth image");
 
     if (!this->resolveImagesInitialized) {
-        createInfo.samples = VK_SAMPLE_COUNT_1_BIT;
-        this->resolveDepthImageId = vulkan.GetImageManager().CreateImage(createInfo, nullptr, INVALID_IMAGE_ID);
+        createDepthImageInfo.samples = VK_SAMPLE_COUNT_1_BIT;
+        this->resolveDepthImageId = vulkan.GetImageManager().CreateImage(createDepthImageInfo, nullptr, INVALID_IMAGE_ID, "Resolve depth image");
 
         this->resolveImagesInitialized = true;
     }
@@ -98,6 +106,7 @@ void VulkanRenderer::CreateImages(gvk::Vulkan& vulkan, const glm::ivec2& drawIma
 void VulkanRenderer::SortRenderingUnits() {
     this->renderingUnitsOrder.clear();
     this->renderingUnitsOrder.resize(this->renderingUnits.size());
+    std::iota(this->renderingUnitsOrder.begin(), this->renderingUnitsOrder.end(), 0);
 
     std::sort(this->renderingUnitsOrder.begin(), this->renderingUnitsOrder.end(),
         [this](const auto& i1, const auto& i2) {
@@ -140,9 +149,6 @@ void VulkanRenderer::RenderFrame(VkCommandBuffer cmdBuffer, gvk::Vulkan& vulkan,
         .fogColor = fog,
         .fogIntensity = sceneData.fogIntensity,
         .materialsBuffer = this->materialManager.GetMaterialDataBufferAddress(),
-        .lightsBuffer = this->lightDataBuffer.GetBuffer().address,
-        .numLights = (std::uint32_t)this->lightData.size(),
-        .sunIndex = this->sunlightIndex,
     };
     this->sceneDataBuffer.UploadNewFrameData(
         cmdBuffer,
@@ -157,53 +163,57 @@ void VulkanRenderer::RenderFrame(VkCommandBuffer cmdBuffer, gvk::Vulkan& vulkan,
     const Image& resolveImage = vulkan.GetImageManager().GetImage(this->resolveDrawImageId);
     const Image& depthImage = vulkan.GetImageManager().GetImage(this->depthImageId);
 
-    // geometry rendering
-    Util::PipelineImageTransition(
-        cmdBuffer,
-        drawImage.image,
-        VK_IMAGE_LAYOUT_UNDEFINED,
-        VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL
-    );
-    Util::PipelineImageTransition(
-        cmdBuffer,
-        depthImage.image,
-        VK_IMAGE_LAYOUT_UNDEFINED,
-        VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL
-    );
-    if (this->MultisamplingEnabled()) {
+    {
+        Debug::BeginDebugLabel(cmdBuffer, "Geometry + Skybox");
+        // geometry rendering
         Util::PipelineImageTransition(
             cmdBuffer,
-            resolveImage.image,
+            drawImage.image,
             VK_IMAGE_LAYOUT_UNDEFINED,
             VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL
         );
-    }
+        Util::PipelineImageTransition(
+            cmdBuffer,
+            depthImage.image,
+            VK_IMAGE_LAYOUT_UNDEFINED,
+            VK_IMAGE_LAYOUT_DEPTH_ATTACHMENT_OPTIMAL
+        );
+        if (this->MultisamplingEnabled()) {
+            Util::PipelineImageTransition(
+                cmdBuffer,
+                resolveImage.image,
+                VK_IMAGE_LAYOUT_UNDEFINED,
+                VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL
+            );
+        }
 
-    const RenderInfo meshRenderInfo = StructCreators::CreateRenderingInfo({
+        const RenderInfo meshRenderInfo = StructCreators::CreateRenderingInfo({
             .extent = drawImage.getExtent2D(),
             .colorImageView = drawImage.imageView,
-            .hasColorClearValue = true,
             .colorImageClearValue = glm::vec4{0.f, 0.f, 0.f, 1.f},
             .depthImageView = depthImage.imageView,
             .depthImageClearValue = 0.f,
             .resolveImageView = this->MultisamplingEnabled() ? resolveImage.imageView : VK_NULL_HANDLE,
+            //.resolveImageView = VK_NULL_HANDLE
         });
 
-    vkCmdBeginRendering(cmdBuffer, &meshRenderInfo.renderingInfo);
+        vkCmdBeginRendering(cmdBuffer, &meshRenderInfo.renderingInfo);
 
-    meshPipeline.Draw(
-        cmdBuffer,
-        drawImage.getExtent2D(),
-        vulkan,
-        this->meshManager,
-        this->materialManager,
-        sceneData.camera,
-        sceneDataBuffer.GetBuffer(),
-        this->renderingUnits,
-        this->renderingUnitsOrder
-    );
-    skyboxPipeline.Draw(cmdBuffer, vulkan, sceneData.camera);
-    vkCmdEndRendering(cmdBuffer);
+        meshPipeline.Draw(
+            cmdBuffer,
+            drawImage.getExtent2D(),
+            vulkan,
+            this->meshManager,
+            this->materialManager,
+            sceneData.camera,
+            sceneDataBuffer.GetBuffer(),
+            this->renderingUnits,
+            this->renderingUnitsOrder
+        );
+        skyboxPipeline.Draw(cmdBuffer, vulkan, sceneData.camera);
+        vkCmdEndRendering(cmdBuffer);
+        Debug::EndBeginLabel(cmdBuffer);
+    }
 
     //// Synchronization with next frame ////
     const VkImageMemoryBarrier2 imageBarrier{
@@ -214,6 +224,7 @@ void VulkanRenderer::RenderFrame(VkCommandBuffer cmdBuffer, gvk::Vulkan& vulkan,
         .dstAccessMask = VK_ACCESS_2_SHADER_READ_BIT,
         .oldLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
         .newLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
+        //.image = drawImage.image,
         .image = this->MultisamplingEnabled() ? resolveImage.image : drawImage.image,
         .subresourceRange = StructCreators::ImageSubresourceRange(VK_IMAGE_ASPECT_COLOR_BIT),
     };
@@ -237,7 +248,11 @@ void VulkanRenderer::RenderFrame(VkCommandBuffer cmdBuffer, gvk::Vulkan& vulkan,
     vkCmdPipelineBarrier2(cmdBuffer, &dependencyInfo);
     ////////
 
+
+    // multisampling rendering
     if (this->MultisamplingEnabled()) {
+        Debug::BeginDebugLabel(cmdBuffer, "Depth Resolve");
+
         const Image& resolveDepthImage = vulkan.GetImageManager().GetImage(this->resolveDepthImageId);
         Util::PipelineImageTransition(
             cmdBuffer,
@@ -249,51 +264,63 @@ void VulkanRenderer::RenderFrame(VkCommandBuffer cmdBuffer, gvk::Vulkan& vulkan,
             .extent = resolveDepthImage.getExtent2D(),
             .depthImageView = resolveDepthImage.imageView
         });
+
         vkCmdBeginRendering(cmdBuffer, &resolveRenderInfo.renderingInfo);
 
         this->depthResolvePipeline.Draw(cmdBuffer, vulkan, depthImage, this->SamplesToInt(this->samples));
 
         vkCmdEndRendering(cmdBuffer);
 
-        // post FX rendering
         Util::PipelineImageTransition(
             cmdBuffer,
             resolveDepthImage.image,
             VK_IMAGE_LAYOUT_DEPTH_ATTACHMENT_OPTIMAL,
             VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
+
+        Debug::EndBeginLabel(cmdBuffer);
     }
 
+    // post FX rendering
     const Image& postFXDrawImage = vulkan.GetImageManager().GetImage(this->postFXDrawImageId);
-    Util::PipelineImageTransition(
+
+    Debug::BeginDebugLabel(cmdBuffer, "Post FX");
+    Util::PipelineImageTransition
+    (
         cmdBuffer,
         postFXDrawImage.image,
         VK_IMAGE_LAYOUT_UNDEFINED,
-        VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
+        VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL
+    );
 
     const RenderInfo postFXRenderInfo = StructCreators::CreateRenderingInfo({
         .extent = postFXDrawImage.getExtent2D(),
-        .depthImageView = postFXDrawImage.imageView
+        .colorImageView = postFXDrawImage.imageView
     });
     vkCmdBeginRendering(cmdBuffer, &postFXRenderInfo.renderingInfo);
-
     if (this->MultisamplingEnabled()) {
         const Image& resolveDepthImage = vulkan.GetImageManager().GetImage(this->resolveDepthImageId);
-        this->postFXPipeline.Draw(
+        this->postFXPipeline.Draw
+        (
             cmdBuffer,
             vulkan,
             resolveImage,
             resolveDepthImage,
-            this->sceneDataBuffer.GetBuffer());
+            this->sceneDataBuffer.GetBuffer()
+        );
     }
-    else
-        this->postFXPipeline.Draw(
+    else 
+        this->postFXPipeline.Draw
+        (
             cmdBuffer,
             vulkan,
             drawImage,
             depthImage,
-            this->sceneDataBuffer.GetBuffer());
+            this->sceneDataBuffer.GetBuffer()
+        );
 
     vkCmdEndRendering(cmdBuffer);
+
+    Debug::EndBeginLabel(cmdBuffer);
 }
 
 void VulkanRenderer::AddRenderingUnit(MeshId meshId, MaterialId materialId, const glm::mat4& transform, bool castShadow) {
@@ -360,6 +387,10 @@ VkFormat VulkanRenderer::GetDrawImageFormat() const {
 
 VkFormat VulkanRenderer::GetDepthImageFormat() const {
     return this->depthImageFormat;
+}
+
+void VulkanRenderer::SetSkyboxImage(const ImageId skyboxId) {
+    this->skyboxPipeline.SetSkyboxTexture(skyboxId);
 }
 
 int VulkanRenderer::SamplesToInt(VkSampleCountFlagBits samples)

@@ -61,6 +61,11 @@ namespace gvk {
 		// managers
 		ImageManager imageManager;
 
+		// debuger
+		#if _DEBUG
+			VkDebugUtilsMessengerEXT vkDebugMessenger;
+		#endif
+
 	public:
 		Vulkan();
 		Vulkan(const Vulkan& o) = delete;
@@ -80,11 +85,18 @@ namespace gvk {
 		VkCommandBuffer& StartFrameBuilding();
 		void EndFrameBuilding(
 			VkCommandBuffer cmdBuffer,
-			const Image& drawImage,
+			const ImageId drawImageId,
 			const LinearColor clearColor,
 			bool copyImageIntoSwapchain = true,
 			glm::ivec4 drawImageBlitRect = glm::ivec4{},
 			bool drawImageLinearBlit = true);
+
+		// for swapchain
+		void RecreateSwapchain(GECS::u32 w, GECS::u32 h);
+		inline const bool SwapchainNeedsRecreation() const { return this->swapchain.NeedsRecreation(); }
+		inline const glm::ivec2 GetSwapchainSize() const {
+			return glm::ivec2{ this->swapchain.GetExtent().width, this->swapchain.GetExtent().height };
+		}
 
 		// getters
 		inline GECS::u32 GetCurrentFrame() const { return this->currentFrame; }
@@ -93,12 +105,14 @@ namespace gvk {
 		inline const ImageManager& GetImageManager() const { return this->imageManager; }
 		inline VkSampleCountFlagBits GetMaxSampleCount() const { return this->highestSupportedSamples; }
 
+		// other
+		void WaitIdle() const;
+
 	private:
 		void InitVulkan(SDL_Window* window);
 		void SetSamplerParameters();
 		void CreateCommandBuffers();
 		void CreateImageCommandBuffers();
-		
 
 		inline void IncreaseImageIndex() { currentFrame = (currentFrame + 1) % MAX_FRAMES_IN_FLIGHT; }
 	};

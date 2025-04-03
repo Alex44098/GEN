@@ -1,4 +1,5 @@
 #include "Renderer/Vulkan/Pipelines/PostFXPipeline.h"
+#include "Renderer/Vulkan/Util/DebugLabels.h"
 
 void PostFXPipeline::Init(gvk::Vulkan& vulkan, VkFormat drawImageFormat, VkFormat depthImageFormat, VkSampleCountFlagBits samples) {
 	const VkDevice device = vulkan.GetDevice();
@@ -25,6 +26,8 @@ void PostFXPipeline::Init(gvk::Vulkan& vulkan, VkFormat drawImageFormat, VkForma
 	this->DisableDepthTest();
 
 	this->BuildPipeline(device);
+
+	Debug::AddDebugLabel4Pipeline(device, this->pipeline, "PostFX pipeline");
 
 	vkDestroyShaderModule(device, vertexShader, nullptr);
 	vkDestroyShaderModule(device, fragmentShader, nullptr);

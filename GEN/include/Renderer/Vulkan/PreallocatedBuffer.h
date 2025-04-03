@@ -10,7 +10,7 @@ class PreallocatedBuffer {
 	std::size_t gpuBufferSize{ 0 };
 
 public:
-	void Init(gvk::Vulkan& vulkan, VkBufferUsageFlags usage, std::size_t dataSize);
+	void Init(gvk::Vulkan& vulkan, VkBufferUsageFlags usage, std::size_t dataSize, const char* label);
 	void Cleanup(gvk::Vulkan& vulkan);
 
 	void UploadNewFrameData(VkCommandBuffer cmdBuffer, GECS::u32 currentFrame, void* data,

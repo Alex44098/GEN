@@ -29,6 +29,7 @@
     <ClCompile Include="GEN\src\Renderer\Gltf\GLTFLight.cpp" />
     <ClCompile Include="GEN\src\Renderer\Gltf\SceneLoader.cpp" />
     <ClCompile Include="GEN\src\Renderer\Gltf\SceneManager.cpp" />
+    <ClCompile Include="GEN\src\Renderer\RenderSystem.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\BindlessManager.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\ImageManager.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\MaterialManager.cpp" />
@@ -46,6 +47,9 @@
     <ClCompile Include="GEN\src\Renderer\Vulkan\StructCreators\VkRendering13.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\StructCreators\VMAStructs.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\Swapchain.cpp" />
+    <ClCompile Include="GEN\src\Renderer\Vulkan\Util\CubemapLoader.cpp" />
+    <ClCompile Include="GEN\src\Renderer\Vulkan\Util\DebugLabels.cpp" />
+    <ClCompile Include="GEN\src\Renderer\Vulkan\Util\ImageSaver.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\Util\MipMapGenerator.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\Util\PipelineImageTransition.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\Util\ShaderModuleLoader.cpp" />
@@ -94,6 +98,9 @@
     <ClInclude Include="GEN\include\Renderer\Vulkan\StructCreators\VkRendering13.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\StructCreators\VMAStructs.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\Swapchain.h" />
+    <ClInclude Include="GEN\include\Renderer\Vulkan\Util\CubemapLoader.h" />
+    <ClInclude Include="GEN\include\Renderer\Vulkan\Util\DebugLabels.h" />
+    <ClInclude Include="GEN\include\Renderer\Vulkan\Util\ImageSaver.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\Util\MipMapGenerator.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\Util\PipelineImageTransition.h" />
     <ClInclude Include="GEN\include\Renderer\Vulkan\Util\ShaderModuleLoader.h" />

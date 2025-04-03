@@ -58,7 +58,7 @@ public:
 	void SetYawPitch(GECS::f32 yaw, GECS::f32 pitch);
 
 	void SetUseInverseDepth(bool b);
-	inline bool UsesInverseDepth() const { return this->useInverseDepth; }
+	inline bool UseInverseDepth() const { return this->useInverseDepth; }
 
 	void SetClipSpaceYDown(bool b);
 	inline bool IsClipSpaceYDown() const { return this->clipSpaceYDown; }

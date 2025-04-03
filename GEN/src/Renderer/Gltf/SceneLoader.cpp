@@ -36,8 +36,6 @@ namespace {
 		return true;
 	}
 
-
-
 	Transform FormGltfNodeToTransform(const tinygltf::Node& node) {
 		Transform transform;
 		if (!node.translation.empty())
@@ -81,6 +79,8 @@ namespace Gltf {
 	template<typename T>
 	std::span<const T> LoadGLTFBufferToVector(const tinygltf::Model& model, const tinygltf::Accessor& accessor) {
 		const tinygltf::BufferView& bufferView = model.bufferViews[accessor.bufferView]; // without coping
+		assert(accessor.ByteStride(bufferView) == sizeof(T) && "Mesh loading: types in scene and buffer are different");
+
 		const tinygltf::Buffer& buffer = model.buffers[bufferView.buffer]; // without coping
 
 		const T* data = reinterpret_cast<const T*>(&buffer.data.at(0) + bufferView.byteOffset + accessor.byteOffset);
@@ -126,8 +126,10 @@ namespace Gltf {
 		if (texAccessorIndex != -1) {
 			const std::span<const glm::vec2> texCoords = LoadGLTFBufferToVector<glm::vec2>(model, model.accessors[texAccessorIndex]);
 			for (GECS::u32 i = 0; i < texCoords.size(); i++) {
-				mesh.vertices[i].texCoord.x = texCoords[i].x;
-				mesh.vertices[i].texCoord.y = texCoords[i].y;
+				//mesh.vertices[i].texCoords.x = texCoords[i].x;
+				//mesh.vertices[i].texCoords.y = texCoords[i].y;
+				mesh.vertices[i].texCoordX = texCoords[i].x;
+				mesh.vertices[i].texCoordY = texCoords[i].y;
 			}
 		}
 

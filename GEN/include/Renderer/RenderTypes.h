@@ -9,12 +9,18 @@
 #define INVALID_MATERIAL_ID UINT32_MAX
 #define INVALID_IMAGE_ID UINT32_MAX
 
-#define MAX_BINDLESS 20000
+#define MAX_BINDLESS 16536
 #define MAX_SAMPLERS 32
 #define TEX_BIND 0
 #define SAMP_BIND 1
 #define NEAREST_SAMPLER_ID 0
 #define LINEAR_SAMPLER_ID 1
+
+#define VK_CHECK(call)                 \
+    do {                               \
+        VkResult result_ = call;       \
+        assert(result_ == VK_SUCCESS); \
+    } while (0)
 
 using MeshId = GECS::u32;
 using MaterialId = GECS::u32;
@@ -50,4 +56,5 @@ struct CreateImageInfo {
 	VkSampleCountFlagBits samples{ VK_SAMPLE_COUNT_1_BIT };
 	VkImageTiling tiling{ VK_IMAGE_TILING_OPTIMAL };
 	bool mipMap{ false };
+	bool isCubemap{ false };
 };

@@ -1,9 +1,13 @@
 #include "Renderer/Vulkan/Pipelines/MeshPipeline.h"
+#include "Renderer/Vulkan/Util/DebugLabels.h"
 
 void MeshPipeline::Init(gvk::Vulkan& vulkan, VkFormat drawImageFormat, VkFormat depthImageFormat, VkSampleCountFlagBits samples) {
 	const VkDevice device = vulkan.GetDevice();
 	const VkShaderModule vertexShader = Util::LoadShaderModule("shaders/mesh_vert.spv", device);
+	Debug::AddDebugLabel4ShaderModule(device, vertexShader, "mesh.vert");
+
 	const VkShaderModule fragmentShader = Util::LoadShaderModule("shaders/mesh_frag.spv", device);
+	Debug::AddDebugLabel4ShaderModule(device, fragmentShader, "mesh.frag");
 
 	const VkPushConstantRange bufferRange{
 		.stageFlags = VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT,
@@ -19,6 +23,7 @@ void MeshPipeline::Init(gvk::Vulkan& vulkan, VkFormat drawImageFormat, VkFormat 
 	this->SetShaders(vertexShader, fragmentShader);
 	this->SetInputTopology(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST);
 	this->SetPolygonMode(VK_POLYGON_MODE_FILL);
+	//this->DisableCulling();
 	this->EnableCulling();
 	this->SetMultisampling(samples);
 	this->DisableBlending();
@@ -27,6 +32,8 @@ void MeshPipeline::Init(gvk::Vulkan& vulkan, VkFormat drawImageFormat, VkFormat 
 	this->EnableDepthTest(true, VK_COMPARE_OP_GREATER_OR_EQUAL);
 	
 	this->BuildPipeline(device);
+
+	Debug::AddDebugLabel4Pipeline(device, this->pipeline, "Mesh pipeline");
 
 	vkDestroyShaderModule(device, vertexShader, nullptr);
 	vkDestroyShaderModule(device, fragmentShader, nullptr);
@@ -61,11 +68,14 @@ void MeshPipeline::Draw(
 		0,
 		nullptr);
 
+	// viewport flipping
 	const VkViewport viewport{
 		.x = 0,
 		.y = 0,
-		.width = (float)extent.width,
-		.height = (float)extent.height,
+		//.y = static_cast<float>(extent.height),
+		.width = static_cast<float>(extent.width),
+		.height = static_cast<float>(extent.height),
+		//.height = -static_cast<float>(extent.height),
 		.minDepth = 0.f,
 		.maxDepth = 1.f
 	};

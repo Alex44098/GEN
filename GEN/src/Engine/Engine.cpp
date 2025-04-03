@@ -25,9 +25,10 @@ Engine::Engine(const WindowParams& params) {
 	// there should be a creation of engine systems here
 	// ...
 	//
-
 	this->sceneSystem = GECS::GECSInstance->GetSystemManager()->AddSystem<SceneSystem>(this->vulkan, this->meshManager, this->materialManager);
-	this->sceneSystem->LoadScene("scenes/City/City.gltf");
+	this->sceneSystem->LoadScene("scenes/SimpleBox/scene.gltf");
+
+	this->renderSystem = GECS::GECSInstance->GetSystemManager()->AddSystem<RenderSystem>(this->vulkan, this->meshManager, this->materialManager, this->wParams.size);
 }
 
 void Engine::run() {
@@ -43,6 +44,17 @@ void Engine::run() {
 				running = false;
 				return;
 			}
+			if (SDLEvents.type == SDL_WINDOWEVENT) {
+				switch (SDLEvents.window.event) {
+				case SDL_WINDOWEVENT_RESIZED:
+					this->wParams.size = { SDLEvents.window.data1, SDLEvents.window.data2 };
+					break;
+				}
+			}
+		}
+
+		if (this->vulkan.SwapchainNeedsRecreation()) {
+			this->vulkan.RecreateSwapchain(wParams.size.x, wParams.size.y);
 		}
 
 		GECS::GECSInstance->Update(dt);
@@ -50,11 +62,13 @@ void Engine::run() {
 }
 
 Engine::~Engine() {
+	this->vulkan.WaitIdle();
+
+	GECS::Destroy();
+
 	this->meshManager.CleanMeshes(this->vulkan);
 	this->materialManager.Destroy(this->vulkan);
 	this->vulkan.Destroy();
-
-	GECS::Destroy();
 
 	SDL_DestroyWindow(this->window);
 	SDL_Quit();

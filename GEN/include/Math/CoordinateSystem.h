@@ -2,8 +2,8 @@
 
 #include <glm.hpp>
 
-// Left-handed coordinate system
-// +X - right
+// Left-handed coordinate system with inverted X
+// +X - left
 // +Y - up
 // +Z - from camera
 
@@ -16,8 +16,8 @@ namespace CoordSystem {
 	inline constexpr glm::vec3 upAxis{ 0.f, 1.f, 0.f };
 	inline constexpr glm::vec3 downAxis{ 0.f, -1.f, 0.f };
 
-	inline constexpr glm::vec3 rightAxis{ 1.f, 0.f, 0.f };
-	inline constexpr glm::vec3 leftAxis{ -1.f, 0.f, 0.f };
+	inline constexpr glm::vec3 rightAxis{ -1.f, 0.f, 0.f };
+	inline constexpr glm::vec3 leftAxis{ 1.f, 0.f, 0.f };
 
 	inline constexpr glm::vec3 frontAxis{ 0.f, 0.f, 1.f };
 	inline constexpr glm::vec3 backAxis{ 0.f, 0.f, -1.f };

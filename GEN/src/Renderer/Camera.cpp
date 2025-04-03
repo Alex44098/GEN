@@ -62,8 +62,9 @@ glm::mat4 Camera::GetView() const {
 	if (this->isOrtho2d)
 		return glm::translate(glm::mat4{ 1.f }, -this->transform.GetPosition());
 
+	const glm::vec3 up = this->transform.GetLocalUp();
 	const glm::vec3 target = this->GetPosition() + this->transform.GetLocalFront();
-	return glm::lookAt(this->GetPosition(), target, this->transform.GetLocalUp());
+	return glm::lookAt(this->GetPosition(), target, up);
 }
 
 glm::mat4 Camera::GetViewProjection() const {

@@ -5,10 +5,17 @@
 
 struct Vertex {
     vec3 position;
+    float texCoordX;
     vec3 normal;
+    float texCoordY;
     vec4 tangent;
-    vec2 texCoord;
 };
+// struct Vertex {
+//     vec3 position;
+//     vec3 normal;
+//     vec4 tangent;
+//     vec2 texCoords;
+// };
 
 layout (buffer_reference, std430) readonly buffer VertexBuffer {
     Vertex vertices[];

@@ -1,4 +1,5 @@
 #include "Renderer/Vulkan/Pipelines/SkyboxPipeline.h"
+#include "Renderer/Vulkan/Util/DebugLabels.h"
 
 void SkyboxPipeline::Init(gvk::Vulkan& vulkan, VkFormat drawImageFormat, VkFormat depthImageFormat, VkSampleCountFlagBits samples) {
 	const VkDevice device = vulkan.GetDevice();
@@ -27,6 +28,8 @@ void SkyboxPipeline::Init(gvk::Vulkan& vulkan, VkFormat drawImageFormat, VkForma
 	this->EnableDepthTest(false, VK_COMPARE_OP_EQUAL);
 
 	this->BuildPipeline(device);
+
+	Debug::AddDebugLabel4Pipeline(device, this->pipeline, "Skybox pipeline");
 
 	vkDestroyShaderModule(device, vertexShader, nullptr);
 	vkDestroyShaderModule(device, fragmentShader, nullptr);

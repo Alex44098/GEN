@@ -22,11 +22,11 @@ void BindlessManager::CreateDescriptorPool() {
 		.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO,
 		.flags = VK_DESCRIPTOR_POOL_CREATE_UPDATE_AFTER_BIND_BIT_EXT,
 		.maxSets = MAX_BINDLESS * 2,
-		.poolSizeCount = 2,
+		.poolSizeCount = 2U,
 		.pPoolSizes = poolSizes
 	};
 
-	vkCreateDescriptorPool(this->device, &poolInfo, nullptr, &(this->descriptorPool));
+	VK_CHECK(vkCreateDescriptorPool(this->device, &poolInfo, nullptr, &(this->descriptorPool)));
 }
 
 void BindlessManager::CreateDescriptorSetLayout() {
@@ -50,7 +50,7 @@ void BindlessManager::CreateDescriptorSetLayout() {
 	};
 	const VkDescriptorSetLayoutBindingFlagsCreateInfo flagsCreateInfo{
 		.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_BINDING_FLAGS_CREATE_INFO,
-		.bindingCount = 2,
+		.bindingCount = 2U,
 		.pBindingFlags = bindingFlags
 	};
 	const VkDescriptorSetLayoutCreateInfo descriptorCreateInfo{
@@ -61,7 +61,7 @@ void BindlessManager::CreateDescriptorSetLayout() {
 		.pBindings = bindings
 	};
 
-	vkCreateDescriptorSetLayout(this->device, &descriptorCreateInfo, nullptr, &(this->descriptorSetLayout));
+	VK_CHECK(vkCreateDescriptorSetLayout(this->device, &descriptorCreateInfo, nullptr, &(this->descriptorSetLayout)));
 }
 
 void BindlessManager::AllocateDescriptorSet() {
@@ -78,7 +78,7 @@ void BindlessManager::AllocateDescriptorSet() {
 		.pDescriptorCounts = &maxBinding,
 	};
 
-	vkAllocateDescriptorSets(this->device, &descriptorAllocInfo, &(this->descriptorSet));
+	VK_CHECK(vkAllocateDescriptorSets(this->device, &descriptorAllocInfo, &(this->descriptorSet)));
 }
 
 void BindlessManager::InitDefaultSamplers(float maxAnisotropy) {
@@ -87,7 +87,7 @@ void BindlessManager::InitDefaultSamplers(float maxAnisotropy) {
 			.magFilter = VK_FILTER_NEAREST,
 			.minFilter = VK_FILTER_NEAREST,
 	};
-	vkCreateSampler(this->device, &nearestCreateInfo, nullptr, &(this->nearestSampler));
+	VK_CHECK(vkCreateSampler(this->device, &nearestCreateInfo, nullptr, &(this->nearestSampler)));
 	this->AddSampler(NEAREST_SAMPLER_ID, this->nearestSampler);
 
 	const VkSamplerCreateInfo linearCreateInfo{
@@ -99,7 +99,7 @@ void BindlessManager::InitDefaultSamplers(float maxAnisotropy) {
 			.anisotropyEnable = VK_TRUE,
 			.maxAnisotropy = maxAnisotropy,
 	};
-	vkCreateSampler(this->device, &linearCreateInfo, nullptr, &(this->linearSampler));
+	VK_CHECK(vkCreateSampler(this->device, &linearCreateInfo, nullptr, &(this->linearSampler)));
 	this->AddSampler(LINEAR_SAMPLER_ID, this->linearSampler);
 }
 

@@ -1,10 +1,13 @@
 #include "Renderer/Vulkan/PreallocatedBuffer.h"
+#include "Renderer/Vulkan/Util/DebugLabels.h"
 
-void PreallocatedBuffer::Init(gvk::Vulkan& vulkan, VkBufferUsageFlags usage, std::size_t dataSize) {
+void PreallocatedBuffer::Init(gvk::Vulkan& vulkan, VkBufferUsageFlags usage, std::size_t dataSize, const char* label) {
 	this->gpuBufferSize = dataSize;
 
 	this->gpuBuffer = vulkan.CreateBuffer(dataSize, usage | VK_IMAGE_USAGE_TRANSFER_DST_BIT,
 		VMA_MEMORY_USAGE_AUTO_PREFER_DEVICE);
+
+	Debug::AddDebugLabel4Buffer(vulkan.GetDevice(), this->gpuBuffer.vkBuffer, label);
 
 	for (std::size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
 		this->stagingBuffers.push_back(vulkan.CreateBuffer(dataSize, usage | VK_IMAGE_USAGE_TRANSFER_SRC_BIT,

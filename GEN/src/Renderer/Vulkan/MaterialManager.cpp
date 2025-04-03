@@ -1,4 +1,5 @@
 #include "Renderer/Vulkan/MaterialManager.h"
+#include "Renderer/Vulkan/Util/DebugLabels.h"
 
 void MaterialManager::Init(gvk::Vulkan& vulkan) {
 	this->materialDataBuffer = vulkan.CreateBuffer(MAX_NUM_MATERIALS * sizeof(MaterialData),
@@ -10,6 +11,8 @@ void MaterialManager::Init(gvk::Vulkan& vulkan) {
 	this->placeholderMaterialId = this->AddMaterial(vulkan, placeholderMaterial);
 
 	this->CreatePlaceholders(vulkan);
+
+	Debug::AddDebugLabel4Buffer(vulkan.GetDevice(), this->materialDataBuffer.vkBuffer, "Material buffer");
 }
 
 void MaterialManager::Destroy(gvk::Vulkan& vulkan) {
@@ -26,7 +29,8 @@ void MaterialManager::CreatePlaceholders(gvk::Vulkan& vulkan) {
 			.extent = VkExtent3D{1, 1, 1}
 		},
 		&normalMap,
-		INVALID_IMAGE_ID
+		INVALID_IMAGE_ID,
+		"Placeholder normal"
 	);
 
 	// create diffuse texture placeholder
@@ -41,7 +45,8 @@ void MaterialManager::CreatePlaceholders(gvk::Vulkan& vulkan) {
 			.extent = VkExtent3D{ 2, 2, 1 }
 		},
 		textureData,
-		INVALID_IMAGE_ID
+		INVALID_IMAGE_ID,
+		"Placeholder diffuse"
 	);
 }
 

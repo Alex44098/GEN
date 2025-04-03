@@ -1,4 +1,5 @@
 #include "Renderer/Vulkan/Pipelines/DepthResolvePipeline.h"
+#include "Renderer/Vulkan/Util/DebugLabels.h"
 
 void DepthResolvePipeline::Init(gvk::Vulkan& vulkan, VkFormat drawImageFormat, VkFormat depthImageFormat, VkSampleCountFlagBits samples) {
 	const VkDevice device = vulkan.GetDevice();
@@ -24,6 +25,8 @@ void DepthResolvePipeline::Init(gvk::Vulkan& vulkan, VkFormat drawImageFormat, V
 	this->EnableDepthTest(true, VK_COMPARE_OP_ALWAYS);
 
 	this->BuildPipeline(device);
+
+	Debug::AddDebugLabel4Pipeline(device, this->pipeline, "Depth resolve pipeline");
 
 	vkDestroyShaderModule(device, vertexShader, nullptr);
 	vkDestroyShaderModule(device, fragmentShader, nullptr);
