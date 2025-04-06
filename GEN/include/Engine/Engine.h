@@ -10,6 +10,7 @@
 
 #include "Engine/SceneSystem.h"
 #include "Renderer/RenderSystem.h"
+#include "Renderer/CameraSystem.h"
 
 class Engine {
 	WindowParams wParams;

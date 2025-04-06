@@ -1,4 +1,6 @@
 #include "Engine/Engine.h"
+#include "Events/MouseMoveEvent.h"
+#include "Events/KeyDownEvent.h"
 
 Engine::Engine(const WindowParams& params) {
 	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER);
@@ -26,9 +28,13 @@ Engine::Engine(const WindowParams& params) {
 	// ...
 	//
 	this->sceneSystem = GECS::GECSInstance->GetSystemManager()->AddSystem<SceneSystem>(this->vulkan, this->meshManager, this->materialManager);
-	this->sceneSystem->LoadScene("scenes/SimpleBox/scene.gltf");
+	this->sceneSystem->LoadScene("scenes/Burn/Scene.gltf");
 
 	this->renderSystem = GECS::GECSInstance->GetSystemManager()->AddSystem<RenderSystem>(this->vulkan, this->meshManager, this->materialManager, this->wParams.size);
+	CameraSystem* cs = GECS::GECSInstance->GetSystemManager()->AddSystem<CameraSystem>(this->renderSystem->GetCamera());
+
+	this->renderSystem->AddDependency(cs);
+	GECS::GECSInstance->GetSystemManager()->RebuildSystemsOrder();
 }
 
 void Engine::run() {
@@ -50,6 +56,19 @@ void Engine::run() {
 					this->wParams.size = { SDLEvents.window.data1, SDLEvents.window.data2 };
 					break;
 				}
+			}
+			if (SDLEvents.type == SDL_MOUSEMOTION) {
+				GECS::GECSInstance->GetEventQueue()->Send<MouseMoveEvent>
+					(
+						static_cast<GECS::f32>(SDLEvents.motion.xrel),
+						static_cast<GECS::f32>(SDLEvents.motion.yrel)
+					);
+			}
+			if (SDLEvents.type = SDL_KEYDOWN) {
+				GECS::GECSInstance->GetEventQueue()->Send<KeyDownEvent>
+					(
+						SDLEvents.key.keysym.sym
+					);
 			}
 		}
 

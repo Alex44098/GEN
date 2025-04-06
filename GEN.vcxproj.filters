@@ -76,6 +76,12 @@
     <Filter Include="Исходные файлы\Shaders">
       <UniqueIdentifier>{d6351bf3-02df-4c0f-bb78-1d24fbd725d9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Файлы заголовков\Events">
+      <UniqueIdentifier>{d17f2aad-bfac-4ebc-b975-68f9c10cb44c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Events">
+      <UniqueIdentifier>{3179cd7e-390e-4e72-b2d3-d732dd2dcb69}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GEN\src\GEN.cpp">
@@ -194,6 +200,9 @@
     </ClCompile>
     <ClCompile Include="GEN\src\Renderer\Vulkan\Util\DebugLabels.cpp">
       <Filter>Исходные файлы\Renderer\Vulkan\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="GEN\src\Renderer\CameraSystem.cpp">
+      <Filter>Исходные файлы\Renderer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -340,6 +349,15 @@
     </ClInclude>
     <ClInclude Include="GEN\include\Renderer\Vulkan\Util\DebugLabels.h">
       <Filter>Файлы заголовков\Renderer\Vulkan\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="GEN\include\Renderer\CameraSystem.h">
+      <Filter>Файлы заголовков\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="GEN\include\Events\MouseMoveEvent.h">
+      <Filter>Файлы заголовков\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="GEN\include\Events\KeyDownEvent.h">
+      <Filter>Файлы заголовков\Events</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

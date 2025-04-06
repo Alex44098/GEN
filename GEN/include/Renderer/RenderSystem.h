@@ -29,6 +29,8 @@ public:
 
 	virtual void Update(GECS::f32 delta) override;
 
+	Camera& GetCamera() { return this->camera; }
+
 private:
 	void CreateDraws();
 

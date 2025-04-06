@@ -14,8 +14,8 @@ RenderSystem::RenderSystem(gvk::Vulkan& vulkan, MeshManager& meshManager, Materi
 		static_cast<GECS::f32>(drawImageSize.x) / static_cast<GECS::f32>(drawImageSize.y);
 	//this->camera.SetUseInverseDepth(true);
 	this->camera.Init(glm::radians(45.f), 0.01f, 2000.f, aspectRatio);
-	this->camera.SetPosition(glm::vec3{2.f, 1.f, -4.f});
-	this->camera.SetRotation(glm::quat{ 0.9622502f, 0.084186f, -0.2578342f, -0.0225576f });
+	this->camera.SetPosition(glm::vec3{0.f, 0.f, -4.f});
+	//this->camera.SetRotation(glm::quat{ 0.9622502f, 0.084186f, -0.2578342f, -0.0225576f });
 }
 
 RenderSystem::~RenderSystem() {
@@ -52,7 +52,6 @@ void RenderSystem::Update(GECS::f32 delta) {
 	(
 		cmdBuffer,
 		this->renderer.GetPostFXImageId(),
-		//this->renderer.GetResolveDrawImageId(),
 		LinearColor{0.f, 0.f, 0.f, 1.f}, // Black
 		true,
 		glm::vec4{this->windowPos.x, this->windowPos.y, this->windowSize.x, this->windowSize.y}

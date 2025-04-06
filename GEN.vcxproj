@@ -26,6 +26,7 @@
     <ClCompile Include="GEN\src\GEN.cpp" />
     <ClCompile Include="GEN\src\Math\Transform.cpp" />
     <ClCompile Include="GEN\src\Renderer\Camera.cpp" />
+    <ClCompile Include="GEN\src\Renderer\CameraSystem.cpp" />
     <ClCompile Include="GEN\src\Renderer\Gltf\GLTFLight.cpp" />
     <ClCompile Include="GEN\src\Renderer\Gltf\SceneLoader.cpp" />
     <ClCompile Include="GEN\src\Renderer\Gltf\SceneManager.cpp" />
@@ -65,11 +66,14 @@
     <ClInclude Include="GEN\include\Engine\EngineEvents.h" />
     <ClInclude Include="GEN\include\Engine\EngineTypes.h" />
     <ClInclude Include="GEN\include\Engine\SceneSystem.h" />
+    <ClInclude Include="GEN\include\Events\KeyDownEvent.h" />
+    <ClInclude Include="GEN\include\Events\MouseMoveEvent.h" />
     <ClInclude Include="GEN\include\GameObject\GameObject.h" />
     <ClInclude Include="GEN\include\GameObject\RenderableGameObject.h" />
     <ClInclude Include="GEN\include\Math\CoordinateSystem.h" />
     <ClInclude Include="GEN\include\Math\Transform.h" />
     <ClInclude Include="GEN\include\Renderer\Camera.h" />
+    <ClInclude Include="GEN\include\Renderer\CameraSystem.h" />
     <ClInclude Include="GEN\include\Renderer\Gltf\GLTFLight.h" />
     <ClInclude Include="GEN\include\Renderer\Gltf\GLTFScene.h" />
     <ClInclude Include="GEN\include\Renderer\Gltf\SceneLoader.h" />
