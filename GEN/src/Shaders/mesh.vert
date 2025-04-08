@@ -17,6 +17,7 @@ void main()
     vec4 worldPos = meshConstants.transform * vec4(vertex.position, 1.0f);
 
     gl_Position = meshConstants.sceneData.viewProjection * worldPos;
+    gl_Position.z = 1.0 / gl_Position.z;
     outPosition = worldPos.xyz;
 
     //outTexCoords = vertex.texCoords;

@@ -8,6 +8,8 @@
 #include <VkBootstrap/VkBootstrap.h>
 #include "Renderer/Vulkan/VmaUsage.h"
 
+#define GLM_FORCE_RADIANS
+#define GLM_FORCE_DEPTH_ZERO_TO_ONE
 #include <glm.hpp>
 
 #include "Renderer/RenderTypes.h"

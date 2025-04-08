@@ -28,7 +28,12 @@ Engine::Engine(const WindowParams& params) {
 	// ...
 	//
 	this->sceneSystem = GECS::GECSInstance->GetSystemManager()->AddSystem<SceneSystem>(this->vulkan, this->meshManager, this->materialManager);
-	this->sceneSystem->LoadScene("scenes/Burn/Scene.gltf");
+	//this->sceneSystem->LoadScene("scenes/SimpleBox/Scene.gltf");
+	//this->sceneSystem->LoadScene("scenes/Mita/scene.gltf");
+	//this->sceneSystem->LoadScene("scenes/Burn/Scene.gltf");
+	//this->sceneSystem->LoadScene("scenes/Duck/Duck.gltf");
+	//this->sceneSystem->LoadScene("scenes/sample/scene.gltf");
+	this->sceneSystem->LoadScene("scenes/hk/scene.gltf");
 
 	this->renderSystem = GECS::GECSInstance->GetSystemManager()->AddSystem<RenderSystem>(this->vulkan, this->meshManager, this->materialManager, this->wParams.size);
 	CameraSystem* cs = GECS::GECSInstance->GetSystemManager()->AddSystem<CameraSystem>(this->renderSystem->GetCamera());

@@ -29,7 +29,9 @@ void MeshPipeline::Init(gvk::Vulkan& vulkan, VkFormat drawImageFormat, VkFormat 
 	this->DisableBlending();
 	this->SetColorAttachmentFormat(drawImageFormat);
 	this->SetDepthFormat(depthImageFormat);
+	//this->DisableDepthTest();
 	this->EnableDepthTest(true, VK_COMPARE_OP_GREATER_OR_EQUAL);
+	//this->EnableDepthTest(true, VK_COMPARE_OP_LESS);
 	
 	this->BuildPipeline(device);
 

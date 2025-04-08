@@ -147,6 +147,7 @@ void Pipeline::SetCullMode(VkCullModeFlags cullMode, VkFrontFace frontFace) {
 
 void Pipeline::EnableCulling() {
     this->SetCullMode(VK_CULL_MODE_BACK_BIT, VK_FRONT_FACE_COUNTER_CLOCKWISE);
+    //this->SetCullMode(VK_CULL_MODE_BACK_BIT, VK_FRONT_FACE_CLOCKWISE);
 }
 
 void Pipeline::DisableCulling() {

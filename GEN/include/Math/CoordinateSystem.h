@@ -2,10 +2,10 @@
 
 #include <glm.hpp>
 
-// Left-handed coordinate system with inverted X
+// Right-handed coordinate system
 // +X - left
 // +Y - up
-// +Z - from camera
+// +Z - forward
 
 // !!!WARNING!!!
 // But glTF 2.0 uses a right-handed coordinate system.

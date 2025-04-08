@@ -136,8 +136,15 @@ namespace Gltf {
 		// INDICES
 		if (primitive.indices != -1) {
 			const tinygltf::Accessor& accessor = model.accessors[primitive.indices];
-			const std::span<const GECS::u32> indices = LoadGLTFBufferToVector<GECS::u32>(model, accessor);
-			mesh.indices.assign(indices.begin(), indices.end());
+
+			if (accessor.ByteStride(model.bufferViews[accessor.bufferView]) == sizeof(GECS::u16)) {
+				const std::span<const GECS::u16> indices = LoadGLTFBufferToVector<GECS::u16>(model, accessor);
+				mesh.indices.assign(indices.begin(), indices.end());
+			}
+			else if (accessor.ByteStride(model.bufferViews[accessor.bufferView]) == sizeof(GECS::u32)) {
+				const std::span<const GECS::u32> indices = LoadGLTFBufferToVector<GECS::u32>(model, accessor);
+				mesh.indices.assign(indices.begin(), indices.end());
+			}
 		}
 
 		return mesh;

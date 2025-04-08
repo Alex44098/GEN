@@ -10,7 +10,7 @@ namespace StructCreators {
                 .imageLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
                 .loadOp = params.colorImageClearValue
                 ? VK_ATTACHMENT_LOAD_OP_CLEAR : VK_ATTACHMENT_LOAD_OP_LOAD,
-                .storeOp = VK_ATTACHMENT_STORE_OP_STORE
+                .storeOp = VK_ATTACHMENT_STORE_OP_STORE,
             };
             if (params.colorImageClearValue) {
                 const glm::vec4 col = params.colorImageClearValue.value();
@@ -25,10 +25,13 @@ namespace StructCreators {
                 .imageLayout = VK_IMAGE_LAYOUT_DEPTH_ATTACHMENT_OPTIMAL,
                 .loadOp = params.depthImageClearValue ? VK_ATTACHMENT_LOAD_OP_CLEAR :
                                                         VK_ATTACHMENT_LOAD_OP_LOAD,
+                //.loadOp = VK_ATTACHMENT_LOAD_OP_LOAD,
                 .storeOp = VK_ATTACHMENT_STORE_OP_STORE
+                //.storeOp = VK_ATTACHMENT_STORE_OP_DONT_CARE
             };
             if (params.depthImageClearValue) {
-                renderInfo.depthAttach.clearValue.depthStencil.depth = params.depthImageClearValue.value();
+                //renderInfo.depthAttach.clearValue.depthStencil.depth = params.depthImageClearValue.value();
+                renderInfo.depthAttach.clearValue.depthStencil = {params.depthImageClearValue.value(), 0};
             }
         }
 

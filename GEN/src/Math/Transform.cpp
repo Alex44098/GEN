@@ -75,9 +75,10 @@ void Transform::SetScale(const glm::vec3& sc)
 
 glm::vec3 Transform::Tg2GlmVec3(const std::vector<double>& vec) {
     assert(vec.size() == 3 && "Transform conversion: unexpected vec");
-    return { vec[0], vec[1], vec[2] };
+    return glm::vec3{ vec[0], vec[1], vec[2] };
 }
 
+// in glm quat W is first
 glm::quat Transform::Tg2GlmQuat(const std::vector<double>& vec) {
     return {
         static_cast<float>(vec[3]), // w

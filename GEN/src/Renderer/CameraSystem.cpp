@@ -37,7 +37,7 @@ void CameraSystem::Update(GECS::f32 delta) {
 	glm::vec3 moveVector{};
 	moveVector += this->camera.GetTransform().GetLocalFront() * moveDirection.y;
 	moveVector += this->camera.GetTransform().GetLocalRight() * moveDirection.x;
-	this->camera.SetPosition(this->camera.GetPosition() + moveVector * 8.f * delta);
+	this->camera.SetPosition(this->camera.GetPosition() + moveVector * 20.f * delta);
 
 	//this->prevMouseX = this->mouseX;
 	//this->prevMouseY = this->mouseY;
