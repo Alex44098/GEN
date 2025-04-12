@@ -33,12 +33,16 @@ Engine::Engine(const WindowParams& params) {
 	//this->sceneSystem->LoadScene("scenes/Burn/Scene.gltf");
 	//this->sceneSystem->LoadScene("scenes/Duck/Duck.gltf");
 	//this->sceneSystem->LoadScene("scenes/sample/scene.gltf");
-	this->sceneSystem->LoadScene("scenes/hk/scene.gltf");
+	this->sceneSystem->LoadScene("scenes/big_city_bl/scene.gltf");
 
+	InputSystem* is = GECS::GECSInstance->GetSystemManager()->AddSystem<InputSystem>();
 	this->renderSystem = GECS::GECSInstance->GetSystemManager()->AddSystem<RenderSystem>(this->vulkan, this->meshManager, this->materialManager, this->wParams.size);
 	CameraSystem* cs = GECS::GECSInstance->GetSystemManager()->AddSystem<CameraSystem>(this->renderSystem->GetCamera());
 
+	cs->AddDependency(is);
 	this->renderSystem->AddDependency(cs);
+	this->sceneSystem->AddDependency(is);
+
 	GECS::GECSInstance->GetSystemManager()->RebuildSystemsOrder();
 }
 
@@ -47,33 +51,22 @@ void Engine::run() {
 	const GECS::f32 dt = 1.f / FPS;
 
 	bool running = true;
-	SDL_Event SDLEvents;
+	SDL_Event event;
 
 	while (running) {
-		while (SDL_PollEvent(&SDLEvents)) {
-			if (SDLEvents.type == SDL_QUIT) {
+		SDL_PumpEvents();
+		while (SDL_PeepEvents(&event, 1, SDL_GETEVENT, SDL_FIRSTEVENT, SDL_SYSWMEVENT)) {
+			switch (event.window.event)
+			{
+			case SDL_WINDOWEVENT_CLOSE:
 				running = false;
 				return;
-			}
-			if (SDLEvents.type == SDL_WINDOWEVENT) {
-				switch (SDLEvents.window.event) {
-				case SDL_WINDOWEVENT_RESIZED:
-					this->wParams.size = { SDLEvents.window.data1, SDLEvents.window.data2 };
-					break;
-				}
-			}
-			if (SDLEvents.type == SDL_MOUSEMOTION) {
-				GECS::GECSInstance->GetEventQueue()->Send<MouseMoveEvent>
-					(
-						static_cast<GECS::f32>(SDLEvents.motion.xrel),
-						static_cast<GECS::f32>(SDLEvents.motion.yrel)
-					);
-			}
-			if (SDLEvents.type = SDL_KEYDOWN) {
-				GECS::GECSInstance->GetEventQueue()->Send<KeyDownEvent>
-					(
-						SDLEvents.key.keysym.sym
-					);
+				break;
+			case SDL_WINDOWEVENT_RESIZED:
+				this->wParams.size = { event.window.data1, event.window.data2 };
+				break;
+			default:
+				break;
 			}
 		}
 

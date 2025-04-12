@@ -8,6 +8,7 @@
 #include "Renderer/Vulkan/MeshManager.h"
 #include "Renderer/Vulkan/MaterialManager.h"
 
+#include "Engine/InputSystem.h"
 #include "Engine/SceneSystem.h"
 #include "Renderer/RenderSystem.h"
 #include "Renderer/CameraSystem.h"

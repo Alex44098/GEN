@@ -204,6 +204,9 @@
     <ClCompile Include="GEN\src\Renderer\CameraSystem.cpp">
       <Filter>Исходные файлы\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="GEN\src\Engine\InputSystem.cpp">
+      <Filter>Исходные файлы\Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GEN\include\Engine\Engine.h">
@@ -358,6 +361,9 @@
     </ClInclude>
     <ClInclude Include="GEN\include\Events\KeyDownEvent.h">
       <Filter>Файлы заголовков\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="GEN\include\Engine\InputSystem.h">
+      <Filter>Файлы заголовков\Engine</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
