@@ -95,7 +95,6 @@ void BindlessManager::InitDefaultSamplers(float maxAnisotropy) {
 			.magFilter = VK_FILTER_LINEAR,
 			.minFilter = VK_FILTER_LINEAR,
 			.mipmapMode = VK_SAMPLER_MIPMAP_MODE_LINEAR,
-			// TODO: make possible to disable anisotropy or set other values?
 			.anisotropyEnable = VK_TRUE,
 			.maxAnisotropy = maxAnisotropy,
 	};

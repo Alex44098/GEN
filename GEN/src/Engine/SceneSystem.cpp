@@ -17,8 +17,6 @@ void SceneSystem::LoadScene(const std::filesystem::path& path) {
 	}
 
 	const Gltf::GLTFScene& scene = this->sceneManager.LoadScene(path);
-	
-	std::cout << scene.nodes.size() << std::endl;
 
 	this->GenerateEntities(scene);
 }

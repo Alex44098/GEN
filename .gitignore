@@ -15,6 +15,7 @@ skybox/
 *.user
 *.userosscache
 *.sln.docstates
+default.json
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

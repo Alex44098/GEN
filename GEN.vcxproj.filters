@@ -82,6 +82,12 @@
     <Filter Include="Исходные файлы\Events">
       <UniqueIdentifier>{3179cd7e-390e-4e72-b2d3-d732dd2dcb69}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Файлы заголовков\Engine\Util">
+      <UniqueIdentifier>{e3a8e0d5-d7b4-4be5-9ffd-7de9b36a5d10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Engine\Util">
+      <UniqueIdentifier>{f35ce7ba-55d0-4d8f-887a-d7ddec1f42e6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GEN\src\GEN.cpp">
@@ -206,6 +212,9 @@
     </ClCompile>
     <ClCompile Include="GEN\src\Engine\InputSystem.cpp">
       <Filter>Исходные файлы\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="GEN\src\Engine\Util\JsonFile.cpp">
+      <Filter>Исходные файлы\Engine\Util</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -364,6 +373,9 @@
     </ClInclude>
     <ClInclude Include="GEN\include\Engine\InputSystem.h">
       <Filter>Файлы заголовков\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="GEN\include\Engine\Util\JsonFile.h">
+      <Filter>Файлы заголовков\Engine\Util</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

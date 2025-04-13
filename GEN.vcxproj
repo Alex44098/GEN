@@ -23,6 +23,7 @@
     <ClCompile Include="GEN\src\Engine\Engine.cpp" />
     <ClCompile Include="GEN\src\Engine\InputSystem.cpp" />
     <ClCompile Include="GEN\src\Engine\SceneSystem.cpp" />
+    <ClCompile Include="GEN\src\Engine\Util\JsonFile.cpp" />
     <ClCompile Include="GEN\src\GameObject\RenderableGameObject.cpp" />
     <ClCompile Include="GEN\src\GEN.cpp" />
     <ClCompile Include="GEN\src\Math\Transform.cpp" />
@@ -68,6 +69,7 @@
     <ClInclude Include="GEN\include\Engine\EngineTypes.h" />
     <ClInclude Include="GEN\include\Engine\InputSystem.h" />
     <ClInclude Include="GEN\include\Engine\SceneSystem.h" />
+    <ClInclude Include="GEN\include\Engine\Util\JsonFile.h" />
     <ClInclude Include="GEN\include\Events\KeyDownEvent.h" />
     <ClInclude Include="GEN\include\Events\MouseMoveEvent.h" />
     <ClInclude Include="GEN\include\GameObject\GameObject.h" />

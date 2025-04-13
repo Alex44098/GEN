@@ -1,6 +1,7 @@
 #include "Engine/Engine.h"
 #include "Events/MouseMoveEvent.h"
 #include "Events/KeyDownEvent.h"
+#include "Engine/Util/JsonFile.h"
 
 Engine::Engine(const WindowParams& params) {
 	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER);
@@ -23,20 +24,18 @@ Engine::Engine(const WindowParams& params) {
 	this->vulkan.Init(this->window);
 	this->materialManager.Init(this->vulkan);
 
+	JsonFile jsonLevel(std::filesystem::path{ "default.json" });
+
 	GECS::Init();
-	// there should be a creation of engine systems here
-	// ...
-	//
+
 	this->sceneSystem = GECS::GECSInstance->GetSystemManager()->AddSystem<SceneSystem>(this->vulkan, this->meshManager, this->materialManager);
-	//this->sceneSystem->LoadScene("scenes/SimpleBox/Scene.gltf");
-	//this->sceneSystem->LoadScene("scenes/Mita/scene.gltf");
-	//this->sceneSystem->LoadScene("scenes/Burn/Scene.gltf");
-	//this->sceneSystem->LoadScene("scenes/Duck/Duck.gltf");
-	//this->sceneSystem->LoadScene("scenes/sample/scene.gltf");
-	this->sceneSystem->LoadScene("scenes/big_city_bl/scene.gltf");
+	this->sceneSystem->LoadScene(jsonLevel.GetPath("scene"));
+	//this->sceneSystem->LoadScene("scenes/big_city_bl/scene.gltf");
 
 	InputSystem* is = GECS::GECSInstance->GetSystemManager()->AddSystem<InputSystem>();
+
 	this->renderSystem = GECS::GECSInstance->GetSystemManager()->AddSystem<RenderSystem>(this->vulkan, this->meshManager, this->materialManager, this->wParams.size);
+	
 	CameraSystem* cs = GECS::GECSInstance->GetSystemManager()->AddSystem<CameraSystem>(this->renderSystem->GetCamera());
 
 	cs->AddDependency(is);
