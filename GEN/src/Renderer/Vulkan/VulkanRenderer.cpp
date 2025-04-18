@@ -192,7 +192,7 @@ void VulkanRenderer::RenderFrame(VkCommandBuffer cmdBuffer, gvk::Vulkan& vulkan,
             .colorImageView = drawImage.imageView,
             .colorImageClearValue = glm::vec4{0.f, 0.f, 0.f, 1.f},
             .depthImageView = depthImage.imageView,
-            .depthImageClearValue = 0.f,
+            .depthImageClearValue = 1.f,
             .resolveImageView = this->MultisamplingEnabled() ? resolveImage.imageView : VK_NULL_HANDLE,
             //.resolveImageView = VK_NULL_HANDLE
         });
@@ -211,6 +211,7 @@ void VulkanRenderer::RenderFrame(VkCommandBuffer cmdBuffer, gvk::Vulkan& vulkan,
             this->renderingUnitsOrder
         );
         skyboxPipeline.Draw(cmdBuffer, vulkan, sceneData.camera);
+        
         vkCmdEndRendering(cmdBuffer);
         Debug::EndBeginLabel(cmdBuffer);
     }

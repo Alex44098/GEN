@@ -15,8 +15,6 @@ void CameraSystem::Update(GECS::f32 delta) {
 		return;
 	}
 
-	//GECS::f32 offsetX = this->mouseX - this->prevMouseX;
-	//GECS::f32 offsetY = this->prevMouseY - this->mouseY;
 	GECS::f32 offsetX = this->mouseRelX;
 	GECS::f32 offsetY = this->mouseRelY;
 

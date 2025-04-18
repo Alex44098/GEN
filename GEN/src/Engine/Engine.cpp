@@ -30,7 +30,6 @@ Engine::Engine(const WindowParams& params) {
 
 	this->sceneSystem = GECS::GECSInstance->GetSystemManager()->AddSystem<SceneSystem>(this->vulkan, this->meshManager, this->materialManager);
 	this->sceneSystem->LoadScene(jsonLevel.GetPath("scene"));
-	//this->sceneSystem->LoadScene("scenes/big_city_bl/scene.gltf");
 
 	InputSystem* is = GECS::GECSInstance->GetSystemManager()->AddSystem<InputSystem>();
 
