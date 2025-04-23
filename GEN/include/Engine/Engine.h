@@ -13,6 +13,8 @@
 #include "Renderer/RenderSystem.h"
 #include "Renderer/CameraSystem.h"
 
+#include "Engine/Util/Level.h"
+
 class Engine {
 	WindowParams wParams;
 	SDL_Window* window;
@@ -28,4 +30,7 @@ public:
 	Engine(const WindowParams& params);
 	void run();
 	~Engine();
+
+private:
+	Level LoadLevel(std::string file);
 };

@@ -11,6 +11,8 @@
 #include "Renderer/Vulkan/VulkanRenderer.h"
 #include "Renderer/Camera.h"
 
+#include "Engine/Util/Level.h"
+
 class RenderSystem : public GECS::System<RenderSystem> {
 	gvk::Vulkan& vulkan;
 	MeshManager& meshManager;
@@ -19,12 +21,13 @@ class RenderSystem : public GECS::System<RenderSystem> {
 	VulkanRenderer renderer;
 	Camera camera;
 
-	glm::ivec2 windowPos;
-	glm::ivec2 windowSize;
+	glm::ivec2 windowPos{};
+	glm::ivec2 windowSize{};
 
-	bool sceneLoaded{ false };
+	const Level currentLevel;
+
 public:
-	RenderSystem(gvk::Vulkan& vulkan, MeshManager& meshManager, MaterialManager& materialManager, const glm::ivec2& drawImageSize);
+	RenderSystem(gvk::Vulkan& vulkan, MeshManager& meshManager, MaterialManager& materialManager, const glm::ivec2& drawImageSize, const Level level);
 	~RenderSystem();
 
 	virtual void Update(GECS::f32 delta) override;

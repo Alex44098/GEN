@@ -2,12 +2,12 @@
 
 #include "Renderer/Vulkan/Util/CubemapLoader.h"
 
-RenderSystem::RenderSystem(gvk::Vulkan& vulkan, MeshManager& meshManager, MaterialManager& materialManager, const glm::ivec2& drawImageSize)
-			:vulkan(vulkan), meshManager(meshManager), materialManager(materialManager), renderer(meshManager, materialManager) {
+RenderSystem::RenderSystem(gvk::Vulkan& vulkan, MeshManager& meshManager, MaterialManager& materialManager, const glm::ivec2& drawImageSize, const Level level)
+			:vulkan(vulkan), meshManager(meshManager), materialManager(materialManager), renderer(meshManager, materialManager), currentLevel(level) {
 
 	this->renderer.Init(vulkan, drawImageSize);
 
-	ImageId skyboxId = Util::LoadCubemap(vulkan, "skybox");
+	ImageId skyboxId = Util::LoadCubemap(vulkan, level.skyboxPath);
 	this->renderer.SetSkyboxImage(skyboxId);
 
 	const GECS::f32 aspectRatio =
@@ -42,10 +42,18 @@ void RenderSystem::Update(GECS::f32 delta) {
 
 	Gltf::GLTFSceneData sceneData{
 		.camera = this->camera,
-		.ambientColor = {11, 33, 33},
-		.ambientIntensity = 1.0,
-		.fogColor = {193, 180, 180},
-		.fogIntensity = 0.05
+		.ambientColor = {
+			this->currentLevel.ambientColor[0],
+			this->currentLevel.ambientColor[1],
+			this->currentLevel.ambientColor[2]
+		},
+		.ambientIntensity = this->currentLevel.ambientIntensity,
+		.fogColor = {
+			this->currentLevel.fogColor[0],
+			this->currentLevel.fogColor[1],
+			this->currentLevel.fogColor[2]
+		},
+		.fogIntensity = this->currentLevel.fogIntensity
 	};
 
 	VkCommandBuffer cmdBuffer = this->vulkan.StartFrameBuilding();
@@ -59,14 +67,6 @@ void RenderSystem::Update(GECS::f32 delta) {
 		true,
 		glm::vec4{this->windowPos.x, this->windowPos.y, this->windowSize.x, this->windowSize.y}
 	);
-
-	//float pastZ = this->camera.GetPosition().z + 0.01f;
-	//this->camera.SetPosition(glm::vec3{ 0.f, 0.f, pastZ});
-	
-	//glm::quat oc = this->camera.GetRotation();
-	//oc.z += 0.001f;
-	//oc.y += 0.001f;
-	//this->camera.SetRotation(oc);
 }
 
 void RenderSystem::CreateDraws() {

@@ -70,6 +70,7 @@
     <ClInclude Include="GEN\include\Engine\InputSystem.h" />
     <ClInclude Include="GEN\include\Engine\SceneSystem.h" />
     <ClInclude Include="GEN\include\Engine\Util\JsonFile.h" />
+    <ClInclude Include="GEN\include\Engine\Util\Level.h" />
     <ClInclude Include="GEN\include\Events\KeyDownEvent.h" />
     <ClInclude Include="GEN\include\Events\MouseMoveEvent.h" />
     <ClInclude Include="GEN\include\GameObject\GameObject.h" />

@@ -7,7 +7,8 @@
 scenes/
 shaders/
 scr/
-skybox/
+default_skybox/
+blue_skybox/
 
 # User-specific files
 *.rsuser

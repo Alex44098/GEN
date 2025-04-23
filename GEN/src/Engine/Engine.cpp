@@ -24,16 +24,16 @@ Engine::Engine(const WindowParams& params) {
 	this->vulkan.Init(this->window);
 	this->materialManager.Init(this->vulkan);
 
-	JsonFile jsonLevel(std::filesystem::path{ "default.json" });
-
 	GECS::Init();
 
+	Level level = this->LoadLevel("default.json");
+
 	this->sceneSystem = GECS::GECSInstance->GetSystemManager()->AddSystem<SceneSystem>(this->vulkan, this->meshManager, this->materialManager);
-	this->sceneSystem->LoadScene(jsonLevel.GetPath("scene"));
+	this->sceneSystem->LoadScene(level.scenePath);
 
 	InputSystem* is = GECS::GECSInstance->GetSystemManager()->AddSystem<InputSystem>();
 
-	this->renderSystem = GECS::GECSInstance->GetSystemManager()->AddSystem<RenderSystem>(this->vulkan, this->meshManager, this->materialManager, this->wParams.size);
+	this->renderSystem = GECS::GECSInstance->GetSystemManager()->AddSystem<RenderSystem>(this->vulkan, this->meshManager, this->materialManager, this->wParams.size, level);
 	
 	CameraSystem* cs = GECS::GECSInstance->GetSystemManager()->AddSystem<CameraSystem>(this->renderSystem->GetCamera());
 
@@ -87,4 +87,20 @@ Engine::~Engine() {
 
 	SDL_DestroyWindow(this->window);
 	SDL_Quit();
+}
+
+Level Engine::LoadLevel(std::string file) {
+	Level level;
+
+	JsonFile jsonLevel(std::filesystem::path{ "default.json" });
+	level.scenePath = jsonLevel.GetPath("scene");
+	level.skyboxPath = jsonLevel.GetPath("skybox");
+
+	level.ambientIntensity = jsonLevel.GetFloat("ambient");
+	level.fogIntensity = jsonLevel.GetFloat("fog");
+
+	level.ambientColor = jsonLevel.GetVec3("ambient_color");
+	level.fogColor = jsonLevel.GetVec3("fog_color");
+
+	return level;
 }

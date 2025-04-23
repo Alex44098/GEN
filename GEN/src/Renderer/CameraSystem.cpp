@@ -33,8 +33,8 @@ void CameraSystem::Update(GECS::f32 delta) {
 	this->camera.SetYawPitch(-this->yaw, -this->pitch);
 
 	glm::vec3 moveVector{};
-	moveVector += this->camera.GetTransform().GetLocalFront() * moveDirection.y;
-	moveVector += this->camera.GetTransform().GetLocalRight() * moveDirection.x;
+	moveVector += this->camera.GetTransform().GetLocalFront() * moveDirection.y * delta;
+	moveVector += this->camera.GetTransform().GetLocalRight() * moveDirection.x * delta;
 	this->camera.SetPosition(this->camera.GetPosition() + moveVector * 20.f * delta);
 
 	//this->prevMouseX = this->mouseX;
@@ -60,17 +60,17 @@ void CameraSystem::SetCameraPos(const GECS::Event::IEvent* e) {
 
 	switch (event->keyCode) {
 		case SDLK_w:
-			this->moveDirection.y = 1.f;
+			this->moveDirection.y = 20.f;
 			break;
 		case SDLK_s:
-			this->moveDirection.y = -1.f;
+			this->moveDirection.y = -20.f;
 			break;
 		
 		case SDLK_a:
-			this->moveDirection.x = -1.f;
+			this->moveDirection.x = -20.f;
 			break;
 		case SDLK_d:
-			this->moveDirection.x = 1.f;
+			this->moveDirection.x = 20.f;
 			break;
 	}
 }
