@@ -28,9 +28,9 @@ const glm::vec3 JsonFile::GetVec3(std::string value) {
 	const auto& vec = this->file.at(value);
 	if (vec.size() == 3) {
 		return glm::vec3{
-			vec[0].get<std::uint8_t>(),
-			vec[1].get<std::uint8_t>(),
-			vec[2].get<std::uint8_t>()
+			vec[0].get<std::uint32_t>(),
+			vec[1].get<std::uint32_t>(),
+			vec[2].get<std::uint32_t>()
 		};
 	}
 	else {

@@ -14,7 +14,7 @@ RenderSystem::RenderSystem(gvk::Vulkan& vulkan, MeshManager& meshManager, Materi
 		static_cast<GECS::f32>(drawImageSize.x) / static_cast<GECS::f32>(drawImageSize.y);
 	//this->camera.SetUseInverseDepth(true);
 	this->camera.Init(glm::radians(90.f), 0.1f, 100.f, aspectRatio);
-	this->camera.SetPosition(glm::vec3{0.f, 0.f, -4.f});
+	this->camera.SetPosition(level.cameraPos);
 }
 
 RenderSystem::~RenderSystem() {
@@ -42,17 +42,9 @@ void RenderSystem::Update(GECS::f32 delta) {
 
 	Gltf::GLTFSceneData sceneData{
 		.camera = this->camera,
-		.ambientColor = {
-			this->currentLevel.ambientColor[0],
-			this->currentLevel.ambientColor[1],
-			this->currentLevel.ambientColor[2]
-		},
+		.ambientColor = this->currentLevel.ambientColor,
 		.ambientIntensity = this->currentLevel.ambientIntensity,
-		.fogColor = {
-			this->currentLevel.fogColor[0],
-			this->currentLevel.fogColor[1],
-			this->currentLevel.fogColor[2]
-		},
+		.fogColor = this->currentLevel.fogColor,
 		.fogIntensity = this->currentLevel.fogIntensity
 	};
 

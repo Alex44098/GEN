@@ -96,11 +96,24 @@ Level Engine::LoadLevel(std::string file) {
 	level.scenePath = jsonLevel.GetPath("scene");
 	level.skyboxPath = jsonLevel.GetPath("skybox");
 
+	level.cameraPos = jsonLevel.GetVec3("camera");
+
 	level.ambientIntensity = jsonLevel.GetFloat("ambient");
 	level.fogIntensity = jsonLevel.GetFloat("fog");
 
-	level.ambientColor = jsonLevel.GetVec3("ambient_color");
-	level.fogColor = jsonLevel.GetVec3("fog_color");
+	glm::vec3 ac = jsonLevel.GetVec3("ambient_color");
+	glm::vec3 fc = jsonLevel.GetVec3("fog_color");
+
+	level.ambientColor = {
+		ac[0] / 255,
+		ac[1] / 255,
+		ac[2] / 255
+	};
+	level.fogColor = {
+		fc[0] / 255,
+		fc[1] / 255,
+		fc[2] / 255
+	};
 
 	return level;
 }
