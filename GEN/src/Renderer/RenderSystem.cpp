@@ -13,7 +13,7 @@ RenderSystem::RenderSystem(gvk::Vulkan& vulkan, MeshManager& meshManager, Materi
 	const GECS::f32 aspectRatio =
 		static_cast<GECS::f32>(drawImageSize.x) / static_cast<GECS::f32>(drawImageSize.y);
 	//this->camera.SetUseInverseDepth(true);
-	this->camera.Init(glm::radians(90.f), 0.1f, 100.f, aspectRatio);
+	this->camera.Init(glm::radians(90.f), 0.1f, 300.f, aspectRatio);
 	this->camera.SetPosition(level.cameraPos);
 }
 

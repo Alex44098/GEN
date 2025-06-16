@@ -27,7 +27,8 @@ void Swapchain::Create(vkb::Device device, VkFormat format, GECS::u32 width, GEC
 	vkb::Result<vkb::Swapchain> swapchainResult = vkb::SwapchainBuilder{ device }
 		.set_desired_format(surfaceFormat)
 		.add_image_usage_flags(VK_IMAGE_USAGE_TRANSFER_DST_BIT)
-		.set_desired_present_mode(VK_PRESENT_MODE_FIFO_KHR) // vsync
+		//.set_desired_present_mode(VK_PRESENT_MODE_FIFO_KHR) // vsync
+		.set_desired_present_mode(VK_PRESENT_MODE_IMMEDIATE_KHR)
 		.set_desired_extent(width, height)
 		.build();
 
@@ -55,7 +56,8 @@ void Swapchain::Recreate(vkb::Device device, VkFormat format, GECS::u32 width, G
 		.set_old_swapchain(this->swapchain)
 		.set_desired_format(surfaceFormat)
 		.add_image_usage_flags(VK_IMAGE_USAGE_TRANSFER_DST_BIT)
-		.set_desired_present_mode(VK_PRESENT_MODE_FIFO_KHR)
+		//.set_desired_present_mode(VK_PRESENT_MODE_FIFO_KHR)
+		.set_desired_present_mode(VK_PRESENT_MODE_IMMEDIATE_KHR)
 		.set_desired_extent(width, height)
 		.build();
 

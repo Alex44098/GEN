@@ -211,8 +211,8 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)3rdparty\GECS\lib\x64\debug;$(SolutionDir)3rdparty\Vulkan\1.3.290.0\Lib\debug;$(SolutionDir)3rdparty\SDL2\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>GECS.lib;vk-bootstrap.lib;vulkan-1.lib;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)3rdparty\GECS\lib\x64\debug;$(SolutionDir)3rdparty\Vulkan\1.3.290.0\Lib\debug;$(SolutionDir)3rdparty\SDL2\lib\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>GECS.lib;vk-bootstrap.lib;vulkan-1.lib;SDL2d.lib;SDL2maind.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy /Y "$(SolutionDir)3rdparty\GECS\bin\x64\debug\GECS.dll" "$(TargetDir)GECS.dll"</Command>
@@ -226,13 +226,20 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)GEN\include\;$(SolutionDir)3rdparty\tinygltf;$(SolutionDir)3rdparty\Vulkan\1.3.290.0\Include;$(SolutionDir)3rdparty\GECS\include;$(SolutionDir)3rdparty\SDL2\include;$(SolutionDir)3rdparty\glm</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)3rdparty\GECS\lib\x64\release;$(SolutionDir)3rdparty\Vulkan\1.3.290.0\Lib\release;$(SolutionDir)3rdparty\SDL2\lib\release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>GECS.lib;vk-bootstrap.lib;vulkan-1.lib;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>copy /Y "$(SolutionDir)3rdparty\GECS\bin\x64\release\GECS.dll" "$(TargetDir)GECS.dll"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

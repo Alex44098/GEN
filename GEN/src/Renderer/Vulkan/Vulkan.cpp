@@ -1,5 +1,5 @@
-#define VK_NO_PROTOTYPES
-#include <vulkan/vulkan.h>
+//#define VK_NO_PROTOTYPES
+//#include <vulkan/vulkan.h>
 #define VOLK_IMPLEMENTATION
 #include <Volk/volk.h>
 #include "Renderer/Vulkan/VmaUsage.h"
@@ -40,7 +40,7 @@ namespace gvk {
 	}
 
 	void Vulkan::InitVulkan(SDL_Window* window) {
-		assert(volkInitialize() == VK_SUCCESS);
+		VK_CHECK(volkInitialize());
 
 		this->instance = vkb::InstanceBuilder{}
 			.set_app_name("GEN")
@@ -91,7 +91,7 @@ namespace gvk {
 				this->logDevice.device,
 				vmaVkFunctions);
 
-		assert(vmaCreateAllocator(&vmaAllocatorInfo, &(this->vkAllocator)) == VK_SUCCESS);
+		VK_CHECK(vmaCreateAllocator(&vmaAllocatorInfo, &(this->vkAllocator)));
 	}
 
 	void Vulkan::Destroy() {

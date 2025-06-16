@@ -36,7 +36,8 @@ void MaterialManager::CreatePlaceholders(gvk::Vulkan& vulkan) {
 	// create diffuse texture placeholder
 	const GECS::u32 black = 0xFF000000;
 	const GECS::u32 magenta = 0xFFFF00FF;
-	GECS::u32 textureData[4] { black, magenta, black, magenta };
+	//GECS::u32 textureData[4] { black, magenta, black, magenta };
+	GECS::u32 textureData[4]{ black, black, black, black };
 	this->placeholderDiffuseTex = vulkan.GetImageManager().CreateImage(
 		{
 			.format = VK_FORMAT_R8G8B8A8_UNORM,
