@@ -315,7 +315,7 @@ namespace gvk {
 		this->swapchain.Recreate(this->logDevice, this->swapchainFormat, w, h);
 	}
 
-	Buffer Vulkan::CreateBuffer(std::size_t size, VkBufferUsageFlags vkUsage, VmaMemoryUsage vmaUsage) {
+	Buffer Vulkan::CreateBuffer(std::size_t size, VkBufferUsageFlags vkUsage, VmaMemoryUsage vmaUsage) const {
 		const VkBufferCreateInfo bufferInfo{
 			.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO,
 			.size = size,
@@ -328,7 +328,7 @@ namespace gvk {
 			.usage = vmaUsage
 		};
 
-		Buffer buffer;
+		Buffer buffer{};
 		VK_CHECK(vmaCreateBuffer(this->vkAllocator, &bufferInfo, &allocInfo,
 			&buffer.vkBuffer, &buffer.allocation, &buffer.allocInfo));
 

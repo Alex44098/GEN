@@ -2,6 +2,11 @@
 #include "Renderer/Vulkan/Util/DebugLabels.h"
 
 void MaterialManager::Init(gvk::Vulkan& vulkan) {
+	//size_t size = MAX_NUM_MATERIALS * sizeof(MaterialData);
+	//this->materialDataBuffer = vulkan.CreateBuffer(size,
+	//	VK_BUFFER_USAGE_STORAGE_BUFFER_BIT | VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT,
+	//	VMA_MEMORY_USAGE_AUTO);
+
 	this->materialDataBuffer = vulkan.CreateBuffer(MAX_NUM_MATERIALS * sizeof(MaterialData),
 		VK_BUFFER_USAGE_STORAGE_BUFFER_BIT | VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT,
 		VMA_MEMORY_USAGE_AUTO);

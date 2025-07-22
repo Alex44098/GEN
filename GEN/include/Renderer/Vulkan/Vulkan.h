@@ -1,8 +1,5 @@
 #pragma once
 
-//#define VK_NO_PROTOTYPES
-//#include <vulkan/vulkan.h>
-//#define VOLK_IMPLEMENTATION
 #include "Volk/volk.h"
 
 #include <VkBootstrap/VkBootstrap.h>
@@ -76,7 +73,7 @@ namespace gvk {
 		void Init(SDL_Window* window);
 		void Destroy();
 
-		Buffer CreateBuffer(std::size_t size, VkBufferUsageFlags vkUsage, VmaMemoryUsage vmaUsage);
+		Buffer CreateBuffer(std::size_t size, VkBufferUsageFlags vkUsage, VmaMemoryUsage vmaUsage) const;
 		void DestroyBuffer(const Buffer& buffer);
 
 		// commands recording
