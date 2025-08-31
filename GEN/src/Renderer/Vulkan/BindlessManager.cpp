@@ -95,8 +95,11 @@ void BindlessManager::InitDefaultSamplers(float maxAnisotropy) {
 			.magFilter = VK_FILTER_LINEAR,
 			.minFilter = VK_FILTER_LINEAR,
 			.mipmapMode = VK_SAMPLER_MIPMAP_MODE_LINEAR,
+			.mipLodBias = 0.0f,
 			.anisotropyEnable = VK_TRUE,
 			.maxAnisotropy = maxAnisotropy,
+			.minLod = 0.0f,
+			.maxLod = VK_LOD_CLAMP_NONE,
 	};
 	VK_CHECK(vkCreateSampler(this->device, &linearCreateInfo, nullptr, &(this->linearSampler)));
 	this->AddSampler(LINEAR_SAMPLER_ID, this->linearSampler);

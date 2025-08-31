@@ -99,10 +99,8 @@ ImageId ImageManager::PushToMemory(ImageId id, Image image) const {
 Image ImageManager::AllocateImage(const CreateImageInfo& createInfo) const {
 
 	GECS::u32 mipLevels = 1;
-	if (createInfo.mipMap) {
-		const GECS::u32 maxExtent = std::max(createInfo.extent.width, createInfo.extent.height);
-		mipLevels = (GECS::u32)std::floor(std::log2(maxExtent)) + 1;
-	}
+	if (createInfo.mipMap) 
+		mipLevels = static_cast<GECS::u32>(std::floor(std::log2(std::max(createInfo.extent.width, createInfo.extent.height))) + 1);
 
 	if (createInfo.isCubemap) {
 		assert(createInfo.numLayers % 6 == 0);

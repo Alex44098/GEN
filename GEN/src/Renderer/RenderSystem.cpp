@@ -29,15 +29,15 @@ void RenderSystem::Update(GECS::f32 delta) {
 	{
 		const glm::ivec2 drawImageSize = this->renderer.GetDrawImage(this->vulkan).getSize2D();
 		const glm::ivec2 swapchainSize = this->vulkan.GetSwapchainSize();
-		const glm::vec4 blitRect = this->CalcLetterBox(drawImageSize, swapchainSize, 1);
+		// const glm::vec4 blitRect = this->CalcLetterBox(drawImageSize, swapchainSize, 1);
 
 		// x, y - window position
 		// z, w - window width and height
-		this->windowPos.x = blitRect.x;
-		this->windowPos.y = blitRect.y;
+		this->windowPos.x = 0;
+		this->windowPos.y = 0;
 
-		this->windowSize.x = blitRect.z;
-		this->windowSize.y = blitRect.w;
+		this->windowSize.x = drawImageSize.x;
+		this->windowSize.y = drawImageSize.y;
 	}
 
 	Gltf::GLTFSceneData sceneData{
