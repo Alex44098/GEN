@@ -38,14 +38,16 @@ protected:
     void EnableCulling();
     void DisableCulling();
     void SetMultisamplingEmpty();
-    void SetMultisampling(VkSampleCountFlagBits samples);
+    void SetMultisampling(VkSampleCountFlagBits samples, bool enableA2C);
     void DisableBlending();
-    void EnableBlending(
+    void EnableBlendingAdditive();
+    void EnableBlendingAlpha();
+    /*void EnableBlending(
         VkBlendOp blendOp = VK_BLEND_OP_ADD,
         VkBlendFactor srcBlendFactor = VK_BLEND_FACTOR_SRC_ALPHA,
         VkBlendFactor dstBlendFactor = VK_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA,
         VkBlendFactor srcAlphaBlendFactor = VK_BLEND_FACTOR_ONE,
-        VkBlendFactor dstAlphaBlendFactor = VK_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA);
+        VkBlendFactor dstAlphaBlendFactor = VK_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA);*/
     void SetColorAttachmentFormat(VkFormat format);
     void SetDepthFormat(VkFormat format);
     void EnableDepthTest(bool depthWriteEnable, VkCompareOp op);

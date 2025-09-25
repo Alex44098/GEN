@@ -21,7 +21,7 @@ void SkyboxPipeline::Init(gvk::Vulkan& vulkan, VkFormat drawImageFormat, VkForma
 	this->SetInputTopology(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST);
 	this->SetPolygonMode(VK_POLYGON_MODE_FILL);
 	this->DisableCulling();
-	this->SetMultisampling(samples);
+	this->SetMultisampling(samples, false);
 	this->DisableBlending();
 	this->SetColorAttachmentFormat(drawImageFormat);
 	this->SetDepthFormat(depthImageFormat);

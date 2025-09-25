@@ -162,11 +162,11 @@ void Pipeline::SetMultisamplingEmpty() {
     this->multisampling.alphaToOneEnable = VK_FALSE;
 }
 
-void Pipeline::SetMultisampling(VkSampleCountFlagBits samples) {
+void Pipeline::SetMultisampling(VkSampleCountFlagBits samples, bool enableA2C) {
     this->multisampling.sampleShadingEnable = VK_FALSE;
     this->multisampling.rasterizationSamples = samples;
     this->multisampling.minSampleShading = 1.0f;
-    this->multisampling.alphaToCoverageEnable = VK_FALSE;
+    this->multisampling.alphaToCoverageEnable = enableA2C;
     this->multisampling.alphaToOneEnable = VK_FALSE;
 }
 
@@ -179,7 +179,39 @@ void Pipeline::DisableBlending() {
         VK_COLOR_COMPONENT_A_BIT;
 }
 
-void Pipeline::EnableBlending(
+void Pipeline::EnableBlendingAdditive() {
+    this->colorBlendAttachment.blendEnable = VK_TRUE;
+    this->colorBlendAttachment.colorWriteMask =
+        VK_COLOR_COMPONENT_R_BIT |
+        VK_COLOR_COMPONENT_G_BIT |
+        VK_COLOR_COMPONENT_B_BIT |
+        VK_COLOR_COMPONENT_A_BIT;
+
+    this->colorBlendAttachment.srcColorBlendFactor = VK_BLEND_FACTOR_SRC_ALPHA;
+    this->colorBlendAttachment.dstColorBlendFactor = VK_BLEND_FACTOR_ONE;
+    this->colorBlendAttachment.colorBlendOp = VK_BLEND_OP_ADD;
+    this->colorBlendAttachment.srcAlphaBlendFactor = VK_BLEND_FACTOR_ONE;
+    this->colorBlendAttachment.dstAlphaBlendFactor = VK_BLEND_FACTOR_ZERO;
+    this->colorBlendAttachment.alphaBlendOp = VK_BLEND_OP_ADD;
+}
+
+void Pipeline::EnableBlendingAlpha() {
+    this->colorBlendAttachment.blendEnable = VK_TRUE;
+    this->colorBlendAttachment.colorWriteMask =
+        VK_COLOR_COMPONENT_R_BIT |
+        VK_COLOR_COMPONENT_G_BIT |
+        VK_COLOR_COMPONENT_B_BIT |
+        VK_COLOR_COMPONENT_A_BIT;
+
+    this->colorBlendAttachment.srcColorBlendFactor = VK_BLEND_FACTOR_SRC_ALPHA;
+    this->colorBlendAttachment.dstColorBlendFactor = VK_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA;
+    this->colorBlendAttachment.colorBlendOp = VK_BLEND_OP_ADD;
+    this->colorBlendAttachment.srcAlphaBlendFactor = VK_BLEND_FACTOR_ONE;
+    this->colorBlendAttachment.dstAlphaBlendFactor = VK_BLEND_FACTOR_ZERO;
+    this->colorBlendAttachment.alphaBlendOp = VK_BLEND_OP_ADD;
+}
+
+/*void Pipeline::EnableBlending(
     VkBlendOp blendOp,
     VkBlendFactor srcBlendFactor,
     VkBlendFactor dstBlendFactor,
@@ -198,7 +230,7 @@ void Pipeline::EnableBlending(
     this->colorBlendAttachment.srcAlphaBlendFactor = srcAlphaBlendFactor;
     this->colorBlendAttachment.dstAlphaBlendFactor = dstAlphaBlendFactor;
     this->colorBlendAttachment.alphaBlendOp = blendOp;
-}
+}*/
 
 void Pipeline::SetColorAttachmentFormat(VkFormat format) {
     this->colorAttachmentformat = format;

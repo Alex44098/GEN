@@ -24,9 +24,10 @@ void MeshPipeline::Init(gvk::Vulkan& vulkan, VkFormat drawImageFormat, VkFormat 
 	this->SetInputTopology(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST);
 	this->SetPolygonMode(VK_POLYGON_MODE_FILL);
 	this->EnableCulling();
-	this->SetMultisampling(samples);
-	this->EnableBlending();
-	//this->DisableBlending();
+	this->SetMultisampling(samples, true);
+	this->DisableBlending();
+	//this->EnableBlendingAlpha();
+	//this->EnableBlending();
 	this->SetColorAttachmentFormat(drawImageFormat);
 	this->SetDepthFormat(depthImageFormat);
 	this->EnableDepthTest(true, VK_COMPARE_OP_LESS_OR_EQUAL);
