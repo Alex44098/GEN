@@ -20,6 +20,8 @@
 #include "Renderer/Vulkan/StructCreators/VkImageSubresourceRange.h"
 #include "Renderer/Vulkan/Util/PipelineImageTransition.h"
 
+#include "Engine/EngineConfig.h"
+
 class VulkanRenderer {
 	MeshManager& meshManager;
 	MaterialManager& materialManager;
@@ -58,7 +60,7 @@ class VulkanRenderer {
 public:
 	VulkanRenderer(MeshManager& meshManager, MaterialManager& materialManager);
 
-	void Init(gvk::Vulkan& vulkan, const glm::ivec2& drawImageSize);
+	void Init(gvk::Vulkan& vulkan, const EngineConfig config);
 	void Destroy(gvk::Vulkan& vulkan);
 
 	void RenderFrame(VkCommandBuffer cmdBuffer, gvk::Vulkan& vulkan, const Gltf::GLTFSceneData& sceneData);

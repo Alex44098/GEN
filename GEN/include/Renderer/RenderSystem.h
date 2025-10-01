@@ -12,6 +12,7 @@
 #include "Renderer/Camera.h"
 
 #include "Engine/Util/Level.h"
+#include "Engine/EngineConfig.h"
 
 class RenderSystem : public GECS::System<RenderSystem> {
 	gvk::Vulkan& vulkan;
@@ -27,7 +28,7 @@ class RenderSystem : public GECS::System<RenderSystem> {
 	const Level currentLevel;
 
 public:
-	RenderSystem(gvk::Vulkan& vulkan, MeshManager& meshManager, MaterialManager& materialManager, const glm::ivec2& drawImageSize, const Level level);
+	RenderSystem(gvk::Vulkan& vulkan, MeshManager& meshManager, MaterialManager& materialManager, const EngineConfig config, const Level level);
 	~RenderSystem();
 
 	virtual void Update(GECS::f32 delta) override;

@@ -3,16 +3,17 @@
 #include "Events/KeyDownEvent.h"
 #include "Engine/Util/JsonFile.h"
 
-Engine::Engine(const WindowParams& params) {
+Engine::Engine(const char* configPath) {
 	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER);
+	
+	this->config = LoadConfig(configPath);
 
-	this->wParams = params;
 	this->window = SDL_CreateWindow(
-		this->wParams.name.c_str(),
+		this->config.win_name.c_str(),
 		SDL_WINDOWPOS_UNDEFINED,
 		SDL_WINDOWPOS_UNDEFINED,
-		this->wParams.size.x,
-		this->wParams.size.y,
+		this->config.win_width,
+		this->config.win_height,
 		SDL_WINDOW_VULKAN);
 
 	SDL_SetWindowResizable(this->window, SDL_TRUE);
@@ -26,14 +27,14 @@ Engine::Engine(const WindowParams& params) {
 
 	GECS::Init();
 
-	Level level = this->LoadLevel("default.json");
+	Level level = this->LoadLevel(this->config.scene_name);
 
 	this->sceneSystem = GECS::GECSInstance->GetSystemManager()->AddSystem<SceneSystem>(this->vulkan, this->meshManager, this->materialManager);
 	this->sceneSystem->LoadScene(level.scenePath);
 
 	InputSystem* is = GECS::GECSInstance->GetSystemManager()->AddSystem<InputSystem>();
 
-	this->renderSystem = GECS::GECSInstance->GetSystemManager()->AddSystem<RenderSystem>(this->vulkan, this->meshManager, this->materialManager, this->wParams.size, level);
+	this->renderSystem = GECS::GECSInstance->GetSystemManager()->AddSystem<RenderSystem>(this->vulkan, this->meshManager, this->materialManager, config, level);
 	
 	CameraSystem* cs = GECS::GECSInstance->GetSystemManager()->AddSystem<CameraSystem>(this->renderSystem->GetCamera());
 
@@ -61,7 +62,8 @@ void Engine::run() {
 				return;
 				break;
 			case SDL_WINDOWEVENT_RESIZED:
-				this->wParams.size = { event.window.data1, event.window.data2 };
+				this->config.win_width = event.window.data1;
+				this->config.win_height = event.window.data2;
 				break;
 			default:
 				break;
@@ -69,7 +71,7 @@ void Engine::run() {
 		}
 
 		if (this->vulkan.SwapchainNeedsRecreation()) {
-			this->vulkan.RecreateSwapchain(wParams.size.x, wParams.size.y);
+			this->vulkan.RecreateSwapchain(this->config.win_width, this->config.win_height);
 		}
 
 		GECS::GECSInstance->Update(dt);
@@ -89,7 +91,7 @@ Engine::~Engine() {
 	SDL_Quit();
 }
 
-Level Engine::LoadLevel(std::string file) {
+const Level Engine::LoadLevel(std::string file) {
 	Level level;
 
 	JsonFile jsonLevel(std::filesystem::path{ "default.json" });
@@ -116,4 +118,18 @@ Level Engine::LoadLevel(std::string file) {
 	};
 
 	return level;
+}
+
+const EngineConfig Engine::LoadConfig(const char* configPath) {
+	EngineConfig config;
+
+	JsonFile jsonConfig(std::filesystem::path{configPath});
+	config.win_name = jsonConfig.GetString("win_name");
+	config.win_width = jsonConfig.GetFloat("win_width");
+	config.win_height = jsonConfig.GetFloat("win_height");
+	config.use_a2c = static_cast<bool>(jsonConfig.GetFloat("use_a2c"));
+
+	config.scene_name = jsonConfig.GetString("scene_name");
+	
+	return config;
 }

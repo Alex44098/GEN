@@ -1,0 +1,8 @@
+{
+	"win_name": "GEN engine testing",
+	"win_width": 1280,
+	"win_height": 720,
+	"use_a2c": 1,
+	
+	"scene_name": "default.json"
+}

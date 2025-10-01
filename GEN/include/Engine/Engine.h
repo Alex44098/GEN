@@ -2,6 +2,7 @@
 
 #include <SDL.h>
 
+#include "Engine/EngineConfig.h"
 #include "Engine/EngineTypes.h"
 
 #include "Renderer/Vulkan/Vulkan.h"
@@ -16,7 +17,7 @@
 #include "Engine/Util/Level.h"
 
 class Engine {
-	WindowParams wParams;
+	EngineConfig config;
 	SDL_Window* window;
 
 	gvk::Vulkan vulkan;
@@ -27,10 +28,11 @@ class Engine {
 	RenderSystem* renderSystem;
 
 public:
-	Engine(const WindowParams& params);
+	Engine(const char* configPath);
 	void run();
 	~Engine();
 
 private:
-	Level LoadLevel(std::string file);
+	const Level LoadLevel(std::string file);
+	const EngineConfig LoadConfig(const char* configPath);
 };

@@ -2,16 +2,16 @@
 
 #include "Renderer/Vulkan/Util/CubemapLoader.h"
 
-RenderSystem::RenderSystem(gvk::Vulkan& vulkan, MeshManager& meshManager, MaterialManager& materialManager, const glm::ivec2& drawImageSize, const Level level)
+RenderSystem::RenderSystem(gvk::Vulkan& vulkan, MeshManager& meshManager, MaterialManager& materialManager, const EngineConfig config, const Level level)
 			:vulkan(vulkan), meshManager(meshManager), materialManager(materialManager), renderer(meshManager, materialManager), currentLevel(level) {
 
-	this->renderer.Init(vulkan, drawImageSize);
+	this->renderer.Init(vulkan, config);
 
 	ImageId skyboxId = Util::LoadCubemap(vulkan, level.skyboxPath);
 	this->renderer.SetSkyboxImage(skyboxId);
 
 	const GECS::f32 aspectRatio =
-		static_cast<GECS::f32>(drawImageSize.x) / static_cast<GECS::f32>(drawImageSize.y);
+		static_cast<GECS::f32>(config.win_width) / static_cast<GECS::f32>(config.win_height);
 	//this->camera.SetUseInverseDepth(true);
 	this->camera.Init(glm::radians(90.f), 0.1f, 300.f, aspectRatio);
 	this->camera.SetPosition(level.cameraPos);

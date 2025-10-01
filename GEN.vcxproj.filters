@@ -380,5 +380,8 @@
     <ClInclude Include="GEN\include\Engine\Util\Level.h">
       <Filter>Файлы заголовков\Engine\Util</Filter>
     </ClInclude>
+    <ClInclude Include="GEN\include\Engine\EngineConfig.h">
+      <Filter>Файлы заголовков\Engine</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

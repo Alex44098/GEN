@@ -22,9 +22,13 @@ class MeshPipeline : public Pipeline {
 		std::uint32_t materialId;
 	};
 
+	bool use_a2c = false;
+
 public:
 	virtual void Init(gvk::Vulkan& vulkan, VkFormat drawImageFormat, VkFormat depthImageFormat, VkSampleCountFlagBits samples) override;
 	virtual void Cleanup(VkDevice device) override;
+
+	void SetA2C(bool use_a2c);
 
 	void Draw(
 		VkCommandBuffer cmdBuffer,

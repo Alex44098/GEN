@@ -12,6 +12,12 @@ JsonFile::JsonFile(const std::filesystem::path& path) {
 	this->path = path;
 }
 
+const std::string JsonFile::GetString(std::string value) {
+	std::string s = this->file[value];
+
+	return s;
+}
+
 const std::filesystem::path JsonFile::GetPath(std::string value) {
 	std::string s = this->file[value];
 	const std::filesystem::path p{ s };

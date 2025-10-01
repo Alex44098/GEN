@@ -24,10 +24,11 @@ void MeshPipeline::Init(gvk::Vulkan& vulkan, VkFormat drawImageFormat, VkFormat 
 	this->SetInputTopology(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST);
 	this->SetPolygonMode(VK_POLYGON_MODE_FILL);
 	this->EnableCulling();
-	this->SetMultisampling(samples, true);
-	this->DisableBlending();
-	//this->EnableBlendingAlpha();
-	//this->EnableBlending();
+	this->SetMultisampling(samples, use_a2c);
+	if (use_a2c)
+		this->DisableBlending();
+	else
+		this->EnableBlendingAlpha();
 	this->SetColorAttachmentFormat(drawImageFormat);
 	this->SetDepthFormat(depthImageFormat);
 	this->EnableDepthTest(true, VK_COMPARE_OP_LESS_OR_EQUAL);
@@ -38,6 +39,10 @@ void MeshPipeline::Init(gvk::Vulkan& vulkan, VkFormat drawImageFormat, VkFormat 
 
 	vkDestroyShaderModule(device, vertexShader, nullptr);
 	vkDestroyShaderModule(device, fragmentShader, nullptr);
+}
+
+void MeshPipeline::SetA2C(bool use_a2c) {
+	this->use_a2c = use_a2c;
 }
 
 void MeshPipeline::Cleanup(VkDevice device) {

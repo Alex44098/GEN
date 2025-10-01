@@ -65,6 +65,7 @@
   <ItemGroup>
     <ClInclude Include="GEN\include\Components\RenderComponent.h" />
     <ClInclude Include="GEN\include\Engine\Engine.h" />
+    <ClInclude Include="GEN\include\Engine\EngineConfig.h" />
     <ClInclude Include="GEN\include\Engine\EngineEvents.h" />
     <ClInclude Include="GEN\include\Engine\EngineTypes.h" />
     <ClInclude Include="GEN\include\Engine\InputSystem.h" />

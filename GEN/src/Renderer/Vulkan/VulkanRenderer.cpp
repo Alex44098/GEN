@@ -7,13 +7,15 @@ VulkanRenderer::VulkanRenderer(MeshManager& meshManager, MaterialManager& materi
 	meshManager(meshManager), materialManager(materialManager)
 {}
 
-void VulkanRenderer::Init(gvk::Vulkan& vulkan, const glm::ivec2& drawImageSize) {
+void VulkanRenderer::Init(gvk::Vulkan& vulkan, const EngineConfig config) {
     this->samples = vulkan.GetMaxSampleCount();
     
     this->InitSceneData(vulkan);
-    this->CreateImages(vulkan, drawImageSize);
+    this->CreateImages(vulkan, glm::ivec2{ config.win_width, config.win_height });
 
+    this->meshPipeline.SetA2C(config.use_a2c);
     this->meshPipeline.Init(vulkan, drawImageFormat, depthImageFormat, samples);
+
     this->skyboxPipeline.Init(vulkan, drawImageFormat, depthImageFormat, samples);
     this->depthResolvePipeline.Init(vulkan, drawImageFormat, depthImageFormat, samples);
     this->postFXPipeline.Init(vulkan, drawImageFormat, depthImageFormat, samples);
