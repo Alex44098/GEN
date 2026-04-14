@@ -46,7 +46,7 @@ Example of description:
 * **VMA**: https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator
 * **SDL**: https://github.com/libsdl-org/SDL
 * **tinyglTF**: https://github.com/syoyo/tinygltf
-* **glm**: https://github.com/g-truc/glm
+* **glm**: https://github.com/icaven/glm
 * **nlohmann/json**: https://github.com/nlohmann/json
 
 ## Other
