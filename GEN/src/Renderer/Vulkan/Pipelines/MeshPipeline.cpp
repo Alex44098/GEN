@@ -1,3 +1,4 @@
+#include "Renderer/FrustumCulling/BoundingCalculation.h"
 #include "Renderer/Vulkan/Pipelines/MeshPipeline.h"
 #include "Renderer/Vulkan/Util/DebugLabels.h"
 
@@ -94,9 +95,16 @@ void MeshPipeline::Draw(
 	vkCmdSetScissor(cmdBuffer, 0, 1, &scissor);
 
 	MeshId prevMeshId = INVALID_MESH_ID;
+	const auto cameraFrustum = FrustumCulling::CreateFrustumFromCamera(camera);
 
 	for (const std::size_t curMeshId : unitsOrder) {
 		const GeometryRenderingUnit& unit = units[curMeshId];
+		if (!FrustumCulling::IsInFrustum(cameraFrustum, unit.worldBoundingSphere))
+		{
+			// Not working
+			// continue;
+		}
+
 		const Mesh& mesh = meshManager.GetMesh(unit.meshId);;
 
 		// Loading a new indices
