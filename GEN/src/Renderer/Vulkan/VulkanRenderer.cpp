@@ -1,6 +1,8 @@
 #include "Renderer/Vulkan/VulkanRenderer.h"
 #include "Renderer/Vulkan/Util/DebugLabels.h"
 
+#include "Renderer/FrustumCulling/BoundingCalculation.h"
+
 #include <numeric>
 
 VulkanRenderer::VulkanRenderer(MeshManager& meshManager, MaterialManager& materialManager) :
@@ -329,10 +331,13 @@ void VulkanRenderer::RenderFrame(VkCommandBuffer cmdBuffer, gvk::Vulkan& vulkan,
 void VulkanRenderer::AddRenderingUnit(MeshId meshId, MaterialId materialId, const glm::mat4& transform, bool castShadow) {
     assert(meshId != INVALID_MESH_ID && materialId != INVALID_MATERIAL_ID);
 
+    const auto& mesh = meshManager.GetMesh(meshId);
+
     GeometryRenderingUnit unit{
         .meshId = meshId,
         .materialId = materialId,
         .transformMatrix = transform,
+        .worldBoundingSphere = FrustumCulling::CalculateBoundingSphereWorld(transform, mesh.boundingSphere),
         .castShadows = castShadow
     };
 

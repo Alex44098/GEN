@@ -2,6 +2,7 @@
 
 #include "Frustum.h"
 
+#include <span>
 #include <glm.hpp>
 
 namespace Primitives {
@@ -10,6 +11,8 @@ namespace Primitives {
 }
 
 namespace FrustumCulling {
+	Primitives::Sphere CalculateBoundingSphere(std::span<const glm::vec3> positions);
+
 	bool IsInFrustum(const Frustum& frustum, const Primitives::Sphere& s);
 	bool IsInFrustum(const Frustum& frustum, const Primitives::AABB& aabb);
 
