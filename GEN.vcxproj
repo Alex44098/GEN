@@ -77,9 +77,13 @@
     <ClInclude Include="GEN\include\GameObject\GameObject.h" />
     <ClInclude Include="GEN\include\GameObject\RenderableGameObject.h" />
     <ClInclude Include="GEN\include\Math\CoordinateSystem.h" />
+    <ClInclude Include="GEN\include\Math\GeometricPrimitive\AABB.h" />
+    <ClInclude Include="GEN\include\Math\GeometricPrimitive\Plane.h" />
+    <ClInclude Include="GEN\include\Math\GeometricPrimitive\Sphere.h" />
     <ClInclude Include="GEN\include\Math\Transform.h" />
     <ClInclude Include="GEN\include\Renderer\Camera.h" />
     <ClInclude Include="GEN\include\Renderer\CameraSystem.h" />
+    <ClInclude Include="GEN\include\Renderer\FrustumCulling\FrustumCulling.h" />
     <ClInclude Include="GEN\include\Renderer\Gltf\GLTFLight.h" />
     <ClInclude Include="GEN\include\Renderer\Gltf\GLTFScene.h" />
     <ClInclude Include="GEN\include\Renderer\Gltf\SceneLoader.h" />
