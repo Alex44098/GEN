@@ -26,7 +26,7 @@ class MeshPipeline : public Pipeline {
 
 public:
 	virtual void Init(gvk::Vulkan& vulkan, VkFormat drawImageFormat, VkFormat depthImageFormat, VkSampleCountFlagBits samples) override;
-	virtual void Cleanup(VkDevice device) override;
+	virtual void Cleanup(gvk::Vulkan& vulkan) override;
 
 	void SetA2C(bool use_a2c);
 

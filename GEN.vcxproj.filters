@@ -231,6 +231,12 @@
     <ClCompile Include="GEN\src\Renderer\FrustumCulling\BoundingCalculation.cpp">
       <Filter>Исходные файлы\Renderer\FrustumCulling</Filter>
     </ClCompile>
+    <ClCompile Include="GEN\include\Renderer\Vulkan\Pipelines\DebugDrawPipeline.h">
+      <Filter>Файлы заголовков\Renderer\Vulkan\Pipelines</Filter>
+    </ClCompile>
+    <ClCompile Include="GEN\src\Renderer\Vulkan\Pipelines\DebugDrawPipeline.cpp">
+      <Filter>Исходные файлы\Renderer\Vulkan\Pipelines</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GEN\include\Engine\Engine.h">

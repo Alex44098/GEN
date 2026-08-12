@@ -24,7 +24,7 @@ public:
     Pipeline();
 
 	virtual void Init(gvk::Vulkan& vulkan, VkFormat drawImageFormat, VkFormat depthImageFormat, VkSampleCountFlagBits samples) = 0;
-	virtual void Cleanup(VkDevice device) = 0;
+	virtual void Cleanup(gvk::Vulkan& vulkan) = 0;
 
 protected:
 	void CreatePipelineLayout(VkDevice device, std::span<const VkDescriptorSetLayout> layouts,

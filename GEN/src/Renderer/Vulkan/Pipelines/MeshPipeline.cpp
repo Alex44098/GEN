@@ -46,7 +46,9 @@ void MeshPipeline::SetA2C(bool use_a2c) {
 	this->use_a2c = use_a2c;
 }
 
-void MeshPipeline::Cleanup(VkDevice device) {
+void MeshPipeline::Cleanup(gvk::Vulkan& vulkan) {
+	const VkDevice device = vulkan.GetDevice();
+
 	vkDestroyPipelineLayout(device, this->pipelineLayout, nullptr);
 	vkDestroyPipeline(device, this->pipeline, nullptr);
 }

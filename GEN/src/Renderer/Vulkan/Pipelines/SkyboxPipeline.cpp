@@ -35,7 +35,9 @@ void SkyboxPipeline::Init(gvk::Vulkan& vulkan, VkFormat drawImageFormat, VkForma
 	vkDestroyShaderModule(device, fragmentShader, nullptr);
 }
 
-void SkyboxPipeline::Cleanup(VkDevice device) {
+void SkyboxPipeline::Cleanup(gvk::Vulkan& vulkan) {
+	const VkDevice device = vulkan.GetDevice();
+
 	vkDestroyPipelineLayout(device, this->pipelineLayout, nullptr);
 	vkDestroyPipeline(device, this->pipeline, nullptr);
 }

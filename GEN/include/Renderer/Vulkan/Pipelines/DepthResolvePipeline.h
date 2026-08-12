@@ -11,7 +11,7 @@ class DepthResolvePipeline : public Pipeline {
 	};
 public:
 	virtual void Init(gvk::Vulkan& vulkan, VkFormat drawImageFormat, VkFormat depthImageFormat, VkSampleCountFlagBits samples) override;
-	virtual void Cleanup(VkDevice device) override;
+	virtual void Cleanup(gvk::Vulkan& vulkan) override;
 
 	void Draw(VkCommandBuffer cmdBuffer, gvk::Vulkan& vulkan, const Image& depthImage, int samples);
 };

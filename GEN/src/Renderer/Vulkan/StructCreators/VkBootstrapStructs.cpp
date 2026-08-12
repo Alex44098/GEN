@@ -5,7 +5,8 @@ namespace StructCreators {
 		const VkPhysicalDeviceFeatures physDeviceFeatures {
 			.imageCubeArray = VK_TRUE,
 			.depthClamp = VK_TRUE,
-			.samplerAnisotropy = VK_TRUE
+			.fillModeNonSolid = VK_TRUE,
+			.samplerAnisotropy = VK_TRUE,
 		};
 
 		return physDeviceFeatures;

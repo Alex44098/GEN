@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GEN\include\Renderer\Vulkan\Pipelines\DebugDrawPipeline.h" />
     <ClCompile Include="GEN\src\Components\RenderComponent.cpp" />
     <ClCompile Include="GEN\src\Engine\Engine.cpp" />
     <ClCompile Include="GEN\src\Engine\InputSystem.cpp" />
@@ -39,6 +40,7 @@
     <ClCompile Include="GEN\src\Renderer\Vulkan\ImageManager.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\MaterialManager.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\MeshManager.cpp" />
+    <ClCompile Include="GEN\src\Renderer\Vulkan\Pipelines\DebugDrawPipeline.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\Pipelines\DepthResolvePipeline.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\Pipelines\MeshPipeline.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\Pipelines\Pipeline.cpp" />

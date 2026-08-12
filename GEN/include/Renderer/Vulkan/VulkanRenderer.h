@@ -15,6 +15,7 @@
 #include "Renderer/Vulkan/Pipelines/SkyboxPipeline.h"
 #include "Renderer/Vulkan/Pipelines/DepthResolvePipeline.h"
 #include "Renderer/Vulkan/Pipelines/PostFXPipeline.h"
+#include "Renderer/Vulkan/Pipelines/DebugDrawPipeline.h"
 
 #include "Renderer/Vulkan/StructCreators/VkRendering13.h"
 #include "Renderer/Vulkan/StructCreators/VkImageSubresourceRange.h"
@@ -47,6 +48,9 @@ class VulkanRenderer {
 	SkyboxPipeline skyboxPipeline;
 	DepthResolvePipeline depthResolvePipeline;
 	PostFXPipeline postFXPipeline;
+#ifdef _DEBUG
+	DebugDrawPipeline debugDrawPipeline;
+#endif
 
 	VkFormat drawImageFormat{ VK_FORMAT_R16G16B16A16_SFLOAT };
 	VkFormat depthImageFormat{ VK_FORMAT_D32_SFLOAT };
@@ -68,6 +72,10 @@ public:
 	void StartFrameBuilding();
 	void AddLight(const Gltf::GLTFLight& light, const Transform& transform);
 	void AddRenderingUnit(MeshId meshId, MaterialId materialId, const glm::mat4& transform, bool castShadow);
+#ifdef _DEBUG
+	void ClearDebugDraws();
+	void AddDebugDrawsFromRenderingUnits(gvk::Vulkan& vulkan, const Camera& camera);
+#endif
 	void EndFrameBuilding();
 
 	inline ImageId GetDrawImageId() const { return this->drawImageId; }
