@@ -37,7 +37,7 @@ public:
 
 	void AddLine(const glm::vec3& from, const glm::vec3& to, const glm::vec3& color);
 	void AddFrustum(const FrustumCulling::Frustum& frustum, const glm::vec3& color);
-	void AddSphere(const Primitives::Sphere& sphere, const glm::vec3& color, int rings = 16, int sectors = 16);
+	void AddSphere(const Primitives::Sphere& sphere, const glm::vec3& color, int segments = 32);
 	void AddAABB(const Primitives::AABB& aabb, const glm::vec3& color);
 
 	void Prepare(gvk::Vulkan& vulkan);

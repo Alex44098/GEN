@@ -9,6 +9,7 @@ shaders/
 scr/
 default_skybox/
 blue_skybox/
+!GEN/src/Shaders/
 
 # User-specific files
 *.rsuser

@@ -107,7 +107,7 @@ void MeshPipeline::Draw(
 			// continue;
 		}
 
-		const Mesh& mesh = meshManager.GetMesh(unit.meshId);;
+		const Mesh& mesh = meshManager.GetMesh(unit.meshId);
 
 		// Loading a new indices
 		if (unit.meshId != prevMeshId) {

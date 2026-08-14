@@ -364,7 +364,7 @@ void VulkanRenderer::ClearDebugDraws() {
 void VulkanRenderer::AddDebugDrawsFromRenderingUnits(gvk::Vulkan& vulkan, const Camera& camera) {
     const auto cameraFrustum = FrustumCulling::CreateFrustumFromCamera(camera);
 
-    //this->debugDrawPipeline.AddFrustum(cameraFrustum, glm::vec3(0, 1, 0));
+    this->debugDrawPipeline.AddFrustum(cameraFrustum, glm::vec3(0, 1, 0));
 
     for (const GeometryRenderingUnit& unit : this->renderingUnits) {
         this->debugDrawPipeline.AddSphere(unit.worldBoundingSphere, glm::vec3(1, 0, 0));

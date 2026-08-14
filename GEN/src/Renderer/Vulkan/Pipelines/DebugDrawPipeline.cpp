@@ -61,22 +61,27 @@ void DebugDrawPipeline::AddFrustum(const FrustumCulling::Frustum& frustum, const
 
 }
 
-void DebugDrawPipeline::AddSphere(const Primitives::Sphere& sphere, const glm::vec3& color, int rings, int sectors) {
+void DebugDrawPipeline::AddSphere(const Primitives::Sphere& sphere, const glm::vec3& color, int segments) {
 	const float r = sphere.radius;
 	const glm::vec3 c = sphere.center;
-	// Рисуем три ортогональные окружности
-	const int steps = sectors;
-	for (int axis = 0; axis < 3; ++axis) {
-		glm::vec3 u, v;
-		if (axis == 0) { u = glm::vec3(0, 1, 0); v = glm::vec3(0, 0, 1); }
-		else if (axis == 1) { u = glm::vec3(1, 0, 0); v = glm::vec3(0, 0, 1); }
-		else { u = glm::vec3(1, 0, 0); v = glm::vec3(0, 1, 0); }
-		glm::vec3 prevPoint = c + u * r;
-		for (int i = 1; i <= steps; ++i) {
-			float angle = glm::two_pi<float>() * i / steps;
-			glm::vec3 p = c + (u * cos(angle) + v * sin(angle)) * r;
-			AddLine(prevPoint, p, color);
-			prevPoint = p;
+	
+	// Orthogonal axes for three circles
+	const std::array<std::pair<glm::vec3, glm::vec3>, 3> planes = { {
+			// X and Y
+			{glm::vec3(1, 0, 0), glm::vec3(0, 1, 0)},
+			// X and Z
+			{glm::vec3(1, 0, 0), glm::vec3(0, 0, 1)},
+			// Y and Z
+			{glm::vec3(0, 1, 0), glm::vec3(0, 0, 1)}
+		} };
+
+	for (const auto& [u, v] : planes) {
+		glm::vec3 prevPoint = c + r * u; // θ = 0
+		for (int i = 1; i <= segments; ++i) {
+			const float angle = glm::two_pi<float>() * static_cast<float>(i) / static_cast<float>(segments);
+			const glm::vec3 point = c + r * (u * std::cos(angle) + v * std::sin(angle));
+			AddLine(prevPoint, point, color);
+			prevPoint = point;
 		}
 	}
 }
@@ -114,6 +119,9 @@ void DebugDrawPipeline::Prepare(gvk::Vulkan& vulkan) {
 }
 
 void DebugDrawPipeline::Draw(VkCommandBuffer cmdBuffer, gvk::Vulkan& vulkan, const Camera& camera) {
+	if (lineVertices.size() == 0)
+		return;
+
 	vkCmdBindPipeline(cmdBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, this->pipeline);
 
 	// Binding bindless desc set
