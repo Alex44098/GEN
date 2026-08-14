@@ -32,7 +32,9 @@ void DepthResolvePipeline::Init(gvk::Vulkan& vulkan, VkFormat drawImageFormat, V
 	vkDestroyShaderModule(device, fragmentShader, nullptr);
 }
 
-void DepthResolvePipeline::Cleanup(VkDevice device) {
+void DepthResolvePipeline::Cleanup(gvk::Vulkan& vulkan) {
+	const VkDevice device = vulkan.GetDevice();
+
 	vkDestroyPipelineLayout(device, this->pipelineLayout, nullptr);
 	vkDestroyPipeline(device, this->pipeline, nullptr);
 }

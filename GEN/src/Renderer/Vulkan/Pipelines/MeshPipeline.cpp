@@ -1,3 +1,4 @@
+#include "Renderer/FrustumCulling/BoundingCalculation.h"
 #include "Renderer/Vulkan/Pipelines/MeshPipeline.h"
 #include "Renderer/Vulkan/Util/DebugLabels.h"
 
@@ -45,7 +46,9 @@ void MeshPipeline::SetA2C(bool use_a2c) {
 	this->use_a2c = use_a2c;
 }
 
-void MeshPipeline::Cleanup(VkDevice device) {
+void MeshPipeline::Cleanup(gvk::Vulkan& vulkan) {
+	const VkDevice device = vulkan.GetDevice();
+
 	vkDestroyPipelineLayout(device, this->pipelineLayout, nullptr);
 	vkDestroyPipeline(device, this->pipeline, nullptr);
 }
@@ -94,10 +97,17 @@ void MeshPipeline::Draw(
 	vkCmdSetScissor(cmdBuffer, 0, 1, &scissor);
 
 	MeshId prevMeshId = INVALID_MESH_ID;
+	const auto cameraFrustum = FrustumCulling::CreateFrustumFromCamera(camera);
 
 	for (const std::size_t curMeshId : unitsOrder) {
 		const GeometryRenderingUnit& unit = units[curMeshId];
-		const Mesh& mesh = meshManager.GetMesh(unit.meshId);;
+		if (!FrustumCulling::IsInFrustum(cameraFrustum, unit.worldBoundingSphere))
+		{
+			// Not working
+			// continue;
+		}
+
+		const Mesh& mesh = meshManager.GetMesh(unit.meshId);
 
 		// Loading a new indices
 		if (unit.meshId != prevMeshId) {

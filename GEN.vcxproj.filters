@@ -88,6 +88,15 @@
     <Filter Include="Исходные файлы\Engine\Util">
       <UniqueIdentifier>{f35ce7ba-55d0-4d8f-887a-d7ddec1f42e6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Файлы заголовков\Renderer\FrustumCulling">
+      <UniqueIdentifier>{9ecabaa1-47d9-4c07-b1b4-afc7e9f03d63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Math\GeometricPrimitive">
+      <UniqueIdentifier>{c52ce5f7-7404-43eb-9a5e-fdf85cca1083}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Renderer\FrustumCulling">
+      <UniqueIdentifier>{29b81f47-26b0-4823-8dfb-4fa6c32e874c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GEN\src\GEN.cpp">
@@ -215,6 +224,18 @@
     </ClCompile>
     <ClCompile Include="GEN\src\Engine\Util\JsonFile.cpp">
       <Filter>Исходные файлы\Engine\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="GEN\src\Renderer\FrustumCulling\Frustum.cpp">
+      <Filter>Исходные файлы\Renderer\FrustumCulling</Filter>
+    </ClCompile>
+    <ClCompile Include="GEN\src\Renderer\FrustumCulling\BoundingCalculation.cpp">
+      <Filter>Исходные файлы\Renderer\FrustumCulling</Filter>
+    </ClCompile>
+    <ClCompile Include="GEN\include\Renderer\Vulkan\Pipelines\DebugDrawPipeline.h">
+      <Filter>Файлы заголовков\Renderer\Vulkan\Pipelines</Filter>
+    </ClCompile>
+    <ClCompile Include="GEN\src\Renderer\Vulkan\Pipelines\DebugDrawPipeline.cpp">
+      <Filter>Исходные файлы\Renderer\Vulkan\Pipelines</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -382,6 +403,21 @@
     </ClInclude>
     <ClInclude Include="GEN\include\Engine\EngineConfig.h">
       <Filter>Файлы заголовков\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="GEN\include\Math\GeometricPrimitive\AABB.h">
+      <Filter>Файлы заголовков\Math\GeometricPrimitive</Filter>
+    </ClInclude>
+    <ClInclude Include="GEN\include\Math\GeometricPrimitive\Sphere.h">
+      <Filter>Файлы заголовков\Math\GeometricPrimitive</Filter>
+    </ClInclude>
+    <ClInclude Include="GEN\include\Math\GeometricPrimitive\Plane.h">
+      <Filter>Файлы заголовков\Math\GeometricPrimitive</Filter>
+    </ClInclude>
+    <ClInclude Include="GEN\include\Renderer\FrustumCulling\Frustum.h">
+      <Filter>Файлы заголовков\Renderer\FrustumCulling</Filter>
+    </ClInclude>
+    <ClInclude Include="GEN\include\Renderer\FrustumCulling\BoundingCalculation.h">
+      <Filter>Файлы заголовков\Renderer\FrustumCulling</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

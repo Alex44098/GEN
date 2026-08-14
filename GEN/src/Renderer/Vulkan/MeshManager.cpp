@@ -1,7 +1,22 @@
 #include "Renderer/Vulkan/MeshManager.h"
 #include "Renderer/Vulkan/Util/DebugLabels.h"
 
+#include "Renderer/FrustumCulling/BoundingCalculation.h"
+
+namespace {
+	void AddBoundingSphere(Mesh& mesh)
+	{
+		std::vector<glm::vec3> positions(mesh.vertices.size());
+		for (std::size_t i = 0; i < mesh.vertices.size(); ++i) {
+			positions[i] = mesh.vertices[i].position;
+		}
+		mesh.boundingSphere = FrustumCulling::CalculateBoundingSphere(positions);
+	}
+}
+
 MeshId MeshManager::AddMesh(gvk::Vulkan& vulkan, Mesh& mesh) {
+	AddBoundingSphere(mesh);
+
 	this->LoadToBuffer(vulkan, mesh);
 
 	const GECS::u32 id = this->meshes.size();

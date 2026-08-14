@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GEN\include\Renderer\Vulkan\Pipelines\DebugDrawPipeline.h" />
     <ClCompile Include="GEN\src\Components\RenderComponent.cpp" />
     <ClCompile Include="GEN\src\Engine\Engine.cpp" />
     <ClCompile Include="GEN\src\Engine\InputSystem.cpp" />
@@ -29,6 +30,8 @@
     <ClCompile Include="GEN\src\Math\Transform.cpp" />
     <ClCompile Include="GEN\src\Renderer\Camera.cpp" />
     <ClCompile Include="GEN\src\Renderer\CameraSystem.cpp" />
+    <ClCompile Include="GEN\src\Renderer\FrustumCulling\BoundingCalculation.cpp" />
+    <ClCompile Include="GEN\src\Renderer\FrustumCulling\Frustum.cpp" />
     <ClCompile Include="GEN\src\Renderer\Gltf\GLTFLight.cpp" />
     <ClCompile Include="GEN\src\Renderer\Gltf\SceneLoader.cpp" />
     <ClCompile Include="GEN\src\Renderer\Gltf\SceneManager.cpp" />
@@ -37,6 +40,7 @@
     <ClCompile Include="GEN\src\Renderer\Vulkan\ImageManager.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\MaterialManager.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\MeshManager.cpp" />
+    <ClCompile Include="GEN\src\Renderer\Vulkan\Pipelines\DebugDrawPipeline.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\Pipelines\DepthResolvePipeline.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\Pipelines\MeshPipeline.cpp" />
     <ClCompile Include="GEN\src\Renderer\Vulkan\Pipelines\Pipeline.cpp" />
@@ -77,9 +81,14 @@
     <ClInclude Include="GEN\include\GameObject\GameObject.h" />
     <ClInclude Include="GEN\include\GameObject\RenderableGameObject.h" />
     <ClInclude Include="GEN\include\Math\CoordinateSystem.h" />
+    <ClInclude Include="GEN\include\Math\GeometricPrimitive\AABB.h" />
+    <ClInclude Include="GEN\include\Math\GeometricPrimitive\Plane.h" />
+    <ClInclude Include="GEN\include\Math\GeometricPrimitive\Sphere.h" />
     <ClInclude Include="GEN\include\Math\Transform.h" />
     <ClInclude Include="GEN\include\Renderer\Camera.h" />
     <ClInclude Include="GEN\include\Renderer\CameraSystem.h" />
+    <ClInclude Include="GEN\include\Renderer\FrustumCulling\BoundingCalculation.h" />
+    <ClInclude Include="GEN\include\Renderer\FrustumCulling\Frustum.h" />
     <ClInclude Include="GEN\include\Renderer\Gltf\GLTFLight.h" />
     <ClInclude Include="GEN\include\Renderer\Gltf\GLTFScene.h" />
     <ClInclude Include="GEN\include\Renderer\Gltf\SceneLoader.h" />

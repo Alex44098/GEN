@@ -2,6 +2,8 @@
 
 #include "glm.hpp"
 
+#include "Math/GeometricPrimitive/Sphere.h"
+
 #include "Renderer/Vulkan/Buffer.h"
 #include "Renderer/RenderTypes.h"
 
@@ -17,6 +19,8 @@ struct Mesh {
 	std::vector<Vertex> vertices;
 	std::vector<GECS::u32> indices;
 	std::string name;
+
+	Primitives::Sphere boundingSphere;
 
 	// buffers on GPU
 	Buffer vertexBuffer;

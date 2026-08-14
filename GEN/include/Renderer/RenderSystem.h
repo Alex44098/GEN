@@ -22,6 +22,8 @@ class RenderSystem : public GECS::System<RenderSystem> {
 	VulkanRenderer renderer;
 	Camera camera;
 
+	bool drawCullingLines = false;
+
 	glm::ivec2 windowPos{};
 	glm::ivec2 windowSize{};
 
@@ -36,7 +38,13 @@ public:
 	Camera& GetCamera() { return this->camera; }
 
 private:
-	void CreateDraws();
+	void CreateDraws(gvk::Vulkan& vulkan, const Gltf::GLTFSceneData& sceneData);
+	void CollectRenderingUnits();
+	
+#ifdef _DEBUG
+	void CollectDebugDraws(gvk::Vulkan& vulkan, const Gltf::GLTFSceneData& sceneData);
+#endif
 
 	glm::vec4 CalcLetterBox(const glm::ivec2 srcSize, const glm::ivec2 dstSize, GECS::i32 scale);
+	void ProcessKeyDown(const GECS::Event::IEvent* e);
 };

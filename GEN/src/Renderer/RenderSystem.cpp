@@ -1,4 +1,5 @@
 #include "Renderer/RenderSystem.h"
+#include "Events/KeyDownEvent.h"
 
 #include "Renderer/Vulkan/Util/CubemapLoader.h"
 
@@ -15,6 +16,8 @@ RenderSystem::RenderSystem(gvk::Vulkan& vulkan, MeshManager& meshManager, Materi
 	//this->camera.SetUseInverseDepth(true);
 	this->camera.Init(glm::radians(90.f), 0.1f, 300.f, aspectRatio);
 	this->camera.SetPosition(level.cameraPos);
+
+	GECS::GECSInstance->GetEventQueue()->AddEventHandler<KeyDownEvent>(this, &RenderSystem::ProcessKeyDown);
 }
 
 RenderSystem::~RenderSystem() {
@@ -22,8 +25,16 @@ RenderSystem::~RenderSystem() {
 }
 
 void RenderSystem::Update(GECS::f32 delta) {
+	Gltf::GLTFSceneData sceneData{
+		.camera = this->camera,
+		.ambientColor = this->currentLevel.ambientColor,
+		.ambientIntensity = this->currentLevel.ambientIntensity,
+		.fogColor = this->currentLevel.fogColor,
+		.fogIntensity = this->currentLevel.fogIntensity
+	};
+
 	// Build drawing order
-	this->CreateDraws();
+	this->CreateDraws(this->vulkan, sceneData);
 
 	// Calc window params for bliting
 	{
@@ -40,14 +51,6 @@ void RenderSystem::Update(GECS::f32 delta) {
 		this->windowSize.y = drawImageSize.y;
 	}
 
-	Gltf::GLTFSceneData sceneData{
-		.camera = this->camera,
-		.ambientColor = this->currentLevel.ambientColor,
-		.ambientIntensity = this->currentLevel.ambientIntensity,
-		.fogColor = this->currentLevel.fogColor,
-		.fogIntensity = this->currentLevel.fogIntensity
-	};
-
 	VkCommandBuffer cmdBuffer = this->vulkan.StartFrameBuilding();
 	this->renderer.RenderFrame(cmdBuffer, this->vulkan, sceneData);
 
@@ -61,9 +64,19 @@ void RenderSystem::Update(GECS::f32 delta) {
 	);
 }
 
-void RenderSystem::CreateDraws() {
+void RenderSystem::CreateDraws(gvk::Vulkan& vulkan, const Gltf::GLTFSceneData& sceneData) {
 	this->renderer.StartFrameBuilding();
 
+	this->CollectRenderingUnits();
+
+#ifdef _DEBUG
+	this->CollectDebugDraws(vulkan, sceneData);
+#endif
+
+	this->renderer.EndFrameBuilding();
+}
+
+void RenderSystem::CollectRenderingUnits() {
 	GECS::ComponentManager* cm = GECS::GECSInstance->GetComponentManager();
 	for (auto it = cm->begin<RenderComponent>(); it != cm->end<RenderComponent>(); ++it) {
 		for (std::size_t i = 0; i < it->meshes.size(); i++) {
@@ -77,9 +90,15 @@ void RenderSystem::CreateDraws() {
 			);
 		}
 	}
-
-	this->renderer.EndFrameBuilding();
 }
+
+#ifdef _DEBUG
+void RenderSystem::CollectDebugDraws(gvk::Vulkan& vulkan, const Gltf::GLTFSceneData& sceneData) {
+	this->renderer.ClearDebugDraws();
+	if (drawCullingLines)
+		this->renderer.AddDebugDrawsFromRenderingUnits(vulkan, sceneData.camera);
+}
+#endif
 
 glm::vec4 RenderSystem::CalcLetterBox(const glm::ivec2 srcSize, const glm::ivec2 dstSize, GECS::i32 scale) {
 	if (scale != 0 && dstSize.x >= srcSize.x && dstSize.y >= srcSize.y) {
@@ -112,4 +131,14 @@ glm::vec4 RenderSystem::CalcLetterBox(const glm::ivec2 srcSize, const glm::ivec2
 		resWidth,
 		resHeight
 	};
+}
+
+void RenderSystem::ProcessKeyDown(const GECS::Event::IEvent* e) {
+	const KeyDownEvent* event = reinterpret_cast<const KeyDownEvent*>(e);
+
+	switch (event->keyCode) {
+	case SDLK_p:
+		this->drawCullingLines = !drawCullingLines;
+		break;
+	}
 }

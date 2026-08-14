@@ -1,6 +1,8 @@
 #include "Renderer/Vulkan/VulkanRenderer.h"
 #include "Renderer/Vulkan/Util/DebugLabels.h"
 
+#include "Renderer/FrustumCulling/BoundingCalculation.h"
+
 #include <numeric>
 
 VulkanRenderer::VulkanRenderer(MeshManager& meshManager, MaterialManager& materialManager) :
@@ -19,17 +21,25 @@ void VulkanRenderer::Init(gvk::Vulkan& vulkan, const EngineConfig config) {
     this->skyboxPipeline.Init(vulkan, drawImageFormat, depthImageFormat, samples);
     this->depthResolvePipeline.Init(vulkan, drawImageFormat, depthImageFormat, samples);
     this->postFXPipeline.Init(vulkan, drawImageFormat, depthImageFormat, samples);
+
+#ifdef _DEBUG
+    this->debugDrawPipeline.Init(vulkan, drawImageFormat, depthImageFormat, samples);
+#endif
+
 }
 
 void VulkanRenderer::Destroy(gvk::Vulkan& vulkan) {
     this->lightDataBuffer.Cleanup(vulkan);
     this->sceneDataBuffer.Cleanup(vulkan);
 
-    const VkDevice device = vulkan.GetDevice();
-    this->meshPipeline.Cleanup(device);
-    this->skyboxPipeline.Cleanup(device);
-    this->depthResolvePipeline.Cleanup(device);
-    this->postFXPipeline.Cleanup(device);
+    this->meshPipeline.Cleanup(vulkan);
+    this->skyboxPipeline.Cleanup(vulkan);
+    this->depthResolvePipeline.Cleanup(vulkan);
+    this->postFXPipeline.Cleanup(vulkan);
+
+#ifdef _DEBUG
+    this->debugDrawPipeline.Cleanup(vulkan);
+#endif
 }
 
 void VulkanRenderer::InitSceneData(gvk::Vulkan& vulkan) {
@@ -214,6 +224,10 @@ void VulkanRenderer::RenderFrame(VkCommandBuffer cmdBuffer, gvk::Vulkan& vulkan,
         );
         skyboxPipeline.Draw(cmdBuffer, vulkan, sceneData.camera);
         
+#ifdef _DEBUG
+        debugDrawPipeline.Draw(cmdBuffer, vulkan, sceneData.camera);
+#endif
+
         vkCmdEndRendering(cmdBuffer);
         Debug::EndBeginLabel(cmdBuffer);
     }
@@ -329,21 +343,41 @@ void VulkanRenderer::RenderFrame(VkCommandBuffer cmdBuffer, gvk::Vulkan& vulkan,
 void VulkanRenderer::AddRenderingUnit(MeshId meshId, MaterialId materialId, const glm::mat4& transform, bool castShadow) {
     assert(meshId != INVALID_MESH_ID && materialId != INVALID_MATERIAL_ID);
 
+    const auto& mesh = meshManager.GetMesh(meshId);
+
     GeometryRenderingUnit unit{
         .meshId = meshId,
         .materialId = materialId,
         .transformMatrix = transform,
+        .worldBoundingSphere = FrustumCulling::CalculateBoundingSphereWorld(transform, mesh.boundingSphere),
         .castShadows = castShadow
     };
 
     this->renderingUnits.push_back(std::move(unit));
 }
 
+#ifdef _DEBUG
+void VulkanRenderer::ClearDebugDraws() {
+    this->debugDrawPipeline.Clear();
+}
+
+void VulkanRenderer::AddDebugDrawsFromRenderingUnits(gvk::Vulkan& vulkan, const Camera& camera) {
+    const auto cameraFrustum = FrustumCulling::CreateFrustumFromCamera(camera);
+
+    this->debugDrawPipeline.AddFrustum(cameraFrustum, glm::vec3(0, 1, 0));
+
+    for (const GeometryRenderingUnit& unit : this->renderingUnits) {
+        this->debugDrawPipeline.AddSphere(unit.worldBoundingSphere, glm::vec3(1, 0, 0));
+    }
+    this->debugDrawPipeline.Prepare(vulkan);
+}
+#endif
+
 void VulkanRenderer::AddLight(const Gltf::GLTFLight& light, const Transform& transform) {
     // only sun can be directional
     if (light.type == Gltf::GLTFLightType::Directional)
         this->sunlightIndex = this->lightData.size();
-
+    
     Gltf::GLTFLightData lightData;
     lightData.position - transform.GetPosition();
     lightData.type = light.GetTypeCode();
