@@ -104,7 +104,7 @@ void MeshPipeline::Draw(
 		if (!FrustumCulling::IsInFrustum(cameraFrustum, unit.worldBoundingSphere))
 		{
 			// Not working
-			// continue;
+			continue;
 		}
 
 		const Mesh& mesh = meshManager.GetMesh(unit.meshId);

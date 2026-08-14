@@ -30,10 +30,16 @@ namespace FrustumCulling {
     [[nodiscard]]
     Primitives::Sphere CalculateBoundingSphere(std::span<const glm::vec3> positions)
     {
-        assert(!positions.empty());
+        // Если нет вершин – возвращаем сферу с нулевым радиусом
+        if (positions.empty()) {
+            return Primitives::Sphere{ .center = glm::vec3(0.f), .radius = 0.f };
+        }
 
-        // 13 фиксированных направлений для поиска пары наиболее разнесённых точек.
-        // Направления охватывают октанты пространства и основные оси.
+        // Если всего одна вершина – сфера вокруг неё
+        if (positions.size() == 1) {
+            return Primitives::Sphere{ .center = positions[0], .radius = 0.f };
+        }
+
         constexpr std::array<glm::vec3, 13> directions = { {
             {1.f, 0.f, 0.f}, {0.f, 1.f, 0.f}, {0.f, 0.f, 1.f},
             {1.f, 1.f, 0.f}, {1.f, 0.f, 1.f}, {0.f, 1.f, 1.f},
@@ -41,10 +47,8 @@ namespace FrustumCulling {
             {1.f, 1.f, 1.f}, {1.f,-1.f, 1.f}, {1.f, 1.f,-1.f}, {1.f,-1.f,-1.f}
         } };
 
-        // Индексы вершин с минимальной и максимальной проекцией для каждого направления.
         std::array<std::size_t, directions.size()> minIndex{}, maxIndex{};
 
-        // Для каждого направления находим точки, дающие минимальную и максимальную скалярную проекцию.
         for (std::size_t dirIdx = 0; dirIdx < directions.size(); ++dirIdx) {
             const auto& dir = directions[dirIdx];
 
@@ -67,7 +71,7 @@ namespace FrustumCulling {
             maxIndex[dirIdx] = maxI;
         }
 
-        // Выбираем направление, вдоль которого расстояние между экстремальными точками максимально.
+        // Выбор направления с максимальным расстоянием между экстремумами
         std::size_t bestDir = 0;
         float maxDistSq = 0.f;
         for (std::size_t dirIdx = 0; dirIdx < directions.size(); ++dirIdx) {
@@ -78,6 +82,12 @@ namespace FrustumCulling {
             }
         }
 
+        // Если все точки совпадают – создаём сферу с минимальным радиусом
+        constexpr float minRadius = 1e-4f; // можно подобрать под масштаб сцены
+        if (maxDistSq <= std::numeric_limits<float>::epsilon()) {
+            return Primitives::Sphere{ .center = positions[0], .radius = minRadius };
+        }
+
         const auto& A = positions[minIndex[bestDir]];
         const auto& B = positions[maxIndex[bestDir]];
         Primitives::Sphere sphere{
@@ -85,19 +95,22 @@ namespace FrustumCulling {
             .radius = std::sqrt(maxDistSq) * 0.5f
         };
 
-        // Расширяем сферу, если какие-то точки оказались вне неё.
-        for (const auto& point : positions) {
-            const glm::vec3 diff = point - sphere.center;
-            const float distSq = glm::length2(diff);
-            if (distSq > sphere.radius * sphere.radius) {
-                // Перемещаем центр в сторону новой точки и увеличиваем радиус.
-                const glm::vec3 directionToCenter = glm::normalize(-diff); // от точки к текущему центру
-                const glm::vec3 newCenter = point + directionToCenter * sphere.radius;
-                sphere.center = (newCenter + point) * 0.5f;
-                sphere.radius = glm::length(newCenter - sphere.center);
-            }
-        }
+        // Расширение сферы, чтобы включить все точки
+        //for (const auto& point : positions) {
+        //    const glm::vec3 diff = point - sphere.center;
+        //    const float distSq = glm::length2(diff);
+        //    if (distSq > sphere.radius * sphere.radius) {
+        //        // Направление от точки к текущему центру (единичный вектор)
+        //        const glm::vec3 dirToCenter = glm::normalize(-diff);
+        //        // Точка на прямой от point к старому центру на расстоянии radius от point
+        //        const glm::vec3 newCenter = point + dirToCenter * sphere.radius;
+        //        sphere.center = (newCenter + point) * 0.5f;
+        //        sphere.radius = glm::length(newCenter - sphere.center);
+        //    }
+        //}
 
+        // Дополнительная гарантия: радиус не может быть меньше minRadius
+        sphere.radius = std::max(sphere.radius, minRadius);
         return sphere;
     }
 
