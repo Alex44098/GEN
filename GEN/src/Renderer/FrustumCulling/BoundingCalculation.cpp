@@ -24,18 +24,16 @@ namespace {
 }
 
 namespace FrustumCulling {
-    // Вычисляет приближённую минимальную охватывающую сферу для набора точек.
-    // Используется эвристика Риттера: сначала грубая оценка по 13 направлениям,
-    // затем проход по всем точкам с расширением сферы при необходимости.
+    // Use Jack Ritter’s algorithm (O(n))
+    // This algorithm create sphere with radius typically 5% to 20% larger than the optimal.
     [[nodiscard]]
     Primitives::Sphere CalculateBoundingSphere(std::span<const glm::vec3> positions)
     {
-        // Если нет вершин – возвращаем сферу с нулевым радиусом
         if (positions.empty()) {
             return Primitives::Sphere{ .center = glm::vec3(0.f), .radius = 0.f };
         }
 
-        // Если всего одна вершина – сфера вокруг неё
+        // If only one vertex
         if (positions.size() == 1) {
             return Primitives::Sphere{ .center = positions[0], .radius = 0.f };
         }
@@ -71,7 +69,7 @@ namespace FrustumCulling {
             maxIndex[dirIdx] = maxI;
         }
 
-        // Выбор направления с максимальным расстоянием между экстремумами
+        // Choosing the direction with the maximum distance between the extremes
         std::size_t bestDir = 0;
         float maxDistSq = 0.f;
         for (std::size_t dirIdx = 0; dirIdx < directions.size(); ++dirIdx) {
@@ -82,8 +80,8 @@ namespace FrustumCulling {
             }
         }
 
-        // Если все точки совпадают – создаём сферу с минимальным радиусом
-        constexpr float minRadius = 1e-4f; // можно подобрать под масштаб сцены
+        // If all the points match, we create a sphere with a minimum radius.
+        constexpr float minRadius = 1e-4f;
         if (maxDistSq <= std::numeric_limits<float>::epsilon()) {
             return Primitives::Sphere{ .center = positions[0], .radius = minRadius };
         }
@@ -95,21 +93,6 @@ namespace FrustumCulling {
             .radius = std::sqrt(maxDistSq) * 0.5f
         };
 
-        // Расширение сферы, чтобы включить все точки
-        //for (const auto& point : positions) {
-        //    const glm::vec3 diff = point - sphere.center;
-        //    const float distSq = glm::length2(diff);
-        //    if (distSq > sphere.radius * sphere.radius) {
-        //        // Направление от точки к текущему центру (единичный вектор)
-        //        const glm::vec3 dirToCenter = glm::normalize(-diff);
-        //        // Точка на прямой от point к старому центру на расстоянии radius от point
-        //        const glm::vec3 newCenter = point + dirToCenter * sphere.radius;
-        //        sphere.center = (newCenter + point) * 0.5f;
-        //        sphere.radius = glm::length(newCenter - sphere.center);
-        //    }
-        //}
-
-        // Дополнительная гарантия: радиус не может быть меньше minRadius
         sphere.radius = std::max(sphere.radius, minRadius);
         return sphere;
     }

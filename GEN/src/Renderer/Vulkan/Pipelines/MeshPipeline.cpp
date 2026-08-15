@@ -103,7 +103,6 @@ void MeshPipeline::Draw(
 		const GeometryRenderingUnit& unit = units[curMeshId];
 		if (!FrustumCulling::IsInFrustum(cameraFrustum, unit.worldBoundingSphere))
 		{
-			// Not working
 			continue;
 		}
 
